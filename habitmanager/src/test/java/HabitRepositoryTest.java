@@ -17,7 +17,7 @@ public class HabitRepositoryTest {
     @DisplayName("Добавление новой привычки")
     public void HabitRepositoryAddHabit() {
         HabitRepository repository = new HabitRepositoryImplementation();
-        Person person = new Person("FirstPerson","email@server.ru","password",0);
+        Person person = new Person("FirstPerson","email@server.ru","password",0,true);
         Habit habit = new Habit("Полезная привычка","Очень полезная привычка", person, Period.daily,LocalDate.now());
 
         Assertions.assertTrue(repository.save(habit));
@@ -28,7 +28,7 @@ public class HabitRepositoryTest {
     @DisplayName("Удаление привычки")
     public void HabitRepositoryDeleteHabit() {
         HabitRepository repository = new HabitRepositoryImplementation();
-        Person person = new Person("FirstPerson","email@server.ru","password",0);
+        Person person = new Person("FirstPerson","email@server.ru","password",0,true);
         Habit habit1 = new Habit("Полезная привычка","Очень полезная привычка", person, Period.daily,LocalDate.now());
         Habit habit2 = new Habit("Вторая полезная привычка","Очень полезная привычка", person, Period.daily,LocalDate.now());
 
@@ -44,11 +44,11 @@ public class HabitRepositoryTest {
     public void HabitRepositoryFindPersonHabits() {
         HabitRepository repository = new HabitRepositoryImplementation();
 
-        Person person1 = new Person("FirstPerson","email@server.ru","password",0);
+        Person person1 = new Person("FirstPerson","email@server.ru","password",0,true);
         Habit habit1 = new Habit("Полезная привычка","Очень полезная привычка", person1, Period.daily,LocalDate.now());
         Habit habit2 = new Habit("Вторая полезная привычка","Очень полезная привычка", person1, Period.daily,LocalDate.now());
 
-        Person person2 = new Person("SecondPerson","box@server.ru","word",0);
+        Person person2 = new Person("SecondPerson","box@server.ru","word",0,true);
         Habit habit3 = new Habit("Полезная привычка","Очень полезная привычка", person2, Period.daily,LocalDate.now());
         Habit habit4 = new Habit("Вторая полезная привычка","Очень полезная привычка", person2, Period.daily,LocalDate.now());
 
@@ -67,11 +67,11 @@ public class HabitRepositoryTest {
     public void HabitRepositoryFindAll() {
         HabitRepository repository = new HabitRepositoryImplementation();
 
-        Person person1 = new Person("FirstPerson","email@server.ru","password",0);
+        Person person1 = new Person("FirstPerson","email@server.ru","password",0,true);
         Habit habit1 = new Habit("Полезная привычка","Очень полезная привычка", person1, Period.daily,LocalDate.now());
         Habit habit2 = new Habit("Вторая полезная привычка","Очень полезная привычка", person1, Period.daily,LocalDate.now());
 
-        Person person2 = new Person("SecondPerson","box@server.ru","word",0);
+        Person person2 = new Person("SecondPerson","box@server.ru","word",0,true);
         Habit habit3 = new Habit("Полезная привычка","Очень полезная привычка", person2, Period.daily,LocalDate.now());
         Habit habit4 = new Habit("Вторая полезная привычка","Очень полезная привычка", person2, Period.daily,LocalDate.now());
 

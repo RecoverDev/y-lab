@@ -13,7 +13,13 @@ public class AutorizationServiceImplementation implements AutorizationService {
 
     @Override
     public Person autorizate(String login, String password) {
-        return repository.findByEmailAndPassword(login, password);
+        Person person = repository.findByEmailAndPassword(login, password);
+        if (person != null) {
+            if (person.isBlocked() == true) {
+                return person;
+            }
+        }
+        return null;
     }
 
     @Override

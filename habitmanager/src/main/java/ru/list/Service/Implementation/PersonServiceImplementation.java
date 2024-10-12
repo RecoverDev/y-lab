@@ -1,5 +1,7 @@
 package ru.list.Service.Implementation;
 
+import java.util.List;
+
 import ru.list.Model.Person;
 import ru.list.Repository.PersonRepository;
 import ru.list.Service.PersonService;
@@ -32,5 +34,12 @@ public class PersonServiceImplementation implements PersonService {
         }
         repository.save(person);
     }
+
+
+    @Override
+    public List<Person> getPersons() {
+        return repository.findAll();
+    }
+
 
 }

@@ -5,7 +5,6 @@ import java.util.List;
 
 import ru.list.Observe;
 import ru.list.In.AdminView;
-import ru.list.In.PersonView;
 import ru.list.Model.Person;
 import ru.list.Service.PersonService;
 
@@ -26,15 +25,47 @@ public class AdminController implements ObserveController{
             case 1: //список пользователей
                 showPersons();
                 break;
-        
+            case 2: //удалить пользователя
+                deletePerson();
+                break;
+            case 3: //блокировка пользователя
+                blockedPerson();
+                break;
             default:
                 break;
         }
         this.observe(answer);
     }
 
+    /**
+     * Показать список пользователей
+     */
     private void showPersons() {
-        
+        List<String> result = personService.getPersons()
+                                           .stream()
+                                           .map(p -> String.format("%s - %s",p.getName(),p.isBlocked() ? "доступ открыт" : "заблокирован")).toList();
+        adminView.showPersons(result);
+    }
+    /** 
+     * Удаление пользователя
+     */
+    private void deletePerson() {
+        List<Person> persons = personService.getPersons();
+        List<String> result = persons.stream().map(p -> String.format("%s - %s",p.getName(),p.isBlocked() ? "доступ открыт" : "заблокирован")).toList();
+        int answer = adminView.choicePerson(result);
+        if (answer > 0 & answer <= result.size()) {
+            personService.deletePerson(persons.get(answer - 1));
+        }
+    }
+
+    private void blockedPerson() {
+        List<Person> persons = personService.getPersons();
+        List<String> result = persons.stream().map(p -> String.format("%s - %s",p.getName(),p.isBlocked() ? "доступ открыт" : "заблокирован")).toList();
+        int answer = adminView.choicePerson(result);
+        if (answer > 0 & answer <= result.size()) {
+            persons.get(answer - 1).setBlocked(false);
+            personService.editPerson(persons.get(answer - 1));
+        }
     }
 
     public void setCurrentPerson(Person currentPerson) {

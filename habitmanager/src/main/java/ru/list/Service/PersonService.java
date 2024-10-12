@@ -1,5 +1,7 @@
 package ru.list.Service;
 
+import java.util.List;
+
 import ru.list.Model.Person;
 
 /**
@@ -24,5 +26,10 @@ public interface PersonService {
      * @param person - измененный пользователь
      */
     void editPerson(Person person);
+    /**
+     * Возвращает список всех пользователей
+     * @return List<Person> 
+     */
+    List<Person> getPersons();
 
 }

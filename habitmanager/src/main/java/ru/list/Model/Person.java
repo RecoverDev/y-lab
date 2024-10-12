@@ -28,6 +28,10 @@ public class Person {
      * роль пользователя в приложении (1 - администратор, 0 - пользователь)
      */
     private int role;
+    /**
+     * блокировка пользователя
+     */
+    private boolean blocked;
 
     
     /**
