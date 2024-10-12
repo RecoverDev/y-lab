@@ -1,5 +1,6 @@
 package ru.list;
 
+import ru.list.Controller.AdminController;
 import ru.list.Controller.AutorizationController;
 import ru.list.Controller.PersonController;
 import ru.list.Model.Person;
@@ -31,6 +32,7 @@ public class MainCycle implements Observe {
     private AutorizationService autorizationService = null;
     private AutorizationController autorizationController = null;
     private PersonController personController = null;
+    private AdminController adminController = null;
     private boolean repeat = true;
 
     public MainCycle() {
@@ -45,8 +47,10 @@ public class MainCycle implements Observe {
 
         autorizationController = new AutorizationController(autorizationService, personService);
         personController = new PersonController(personService, habitService, logBookService);
+        adminController = new AdminController(personService);
         autorizationController.addListener(this);
         personController.addListener(this);
+        adminController.addListener(this);
     }
 
 
@@ -63,13 +67,12 @@ public class MainCycle implements Observe {
                         personController.showMenu();
                         break;
                     case 1:
+                        adminController.showMenu();
                         break;
                     default:
                         break;
                 }
             }
-
-
         }
     }
 

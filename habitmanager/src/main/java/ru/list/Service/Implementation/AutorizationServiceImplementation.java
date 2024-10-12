@@ -22,9 +22,4 @@ public class AutorizationServiceImplementation implements AutorizationService {
         return null;
     }
 
-    @Override
-    public Person out() {
-        return null;
-    }
-
 }

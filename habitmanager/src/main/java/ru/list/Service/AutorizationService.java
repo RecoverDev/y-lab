@@ -14,10 +14,5 @@ public interface AutorizationService {
      * @return - объект класса Person или null
      */
     Person autorizate(String login, String password);
-    /**
-     * завершение сеанса работы пользователя
-     * @return - null
-     */
-    Person out();
 
 }

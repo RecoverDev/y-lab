@@ -12,7 +12,6 @@ public class AdminController implements ObserveController{
     private PersonService personService = null;
     private List<Observe> listener = new ArrayList<>();
     private AdminView adminView = new AdminView();
-    private Person currentPerson = null;
 
     public AdminController(PersonService personService) {
         this.personService = personService;
@@ -68,10 +67,6 @@ public class AdminController implements ObserveController{
         }
     }
 
-    public void setCurrentPerson(Person currentPerson) {
-        this.currentPerson = currentPerson;
-    }
-
     @Override
     public void observe(Object o) {
         for (Observe observe : listener) {
@@ -88,7 +83,5 @@ public class AdminController implements ObserveController{
     public void removeListener(Observe observe) {
         this.listener.remove(observe);
     }
-
-
 
 }
