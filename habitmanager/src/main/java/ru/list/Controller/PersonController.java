@@ -13,11 +13,13 @@ import ru.list.Model.Period;
 import ru.list.Model.Person;
 import ru.list.Service.HabitService;
 import ru.list.Service.LogBookService;
+import ru.list.Service.PersonService;
 
 /**
  * Контроллер описывает действия пользователя
  */
 public class PersonController implements ObserveController {
+    private PersonService personService = null;
     private HabitService habitService = null;
     private LogBookService logBookService = null;
     private List<Observe> listener = new ArrayList<>();
@@ -29,7 +31,8 @@ public class PersonController implements ObserveController {
         this.currentPerson = currentPerson;
     }
 
-    public PersonController(HabitService habitService, LogBookService logBookService) {
+    public PersonController(PersonService personService, HabitService habitService, LogBookService logBookService){
+        this.personService = personService;
         this.habitService = habitService;
         this.logBookService = logBookService;
         this.statisticController = new StatisticController(currentPerson, habitService, logBookService);
@@ -158,7 +161,14 @@ public class PersonController implements ObserveController {
     }
 
     private void personalAccount() {
-        
+        List<String> answer = personView.personalAccount();
+        if (answer.size() == 3) {
+            currentPerson.setName(answer.get(0));
+            currentPerson.setEmail(answer.get(1));
+            currentPerson.setPassword(answer.get(2));
+            personService.editPerson(currentPerson);
+        }
+
     }
 
     /**

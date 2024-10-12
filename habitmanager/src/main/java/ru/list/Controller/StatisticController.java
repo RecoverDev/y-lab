@@ -34,8 +34,13 @@ public class StatisticController {
                 break;
             case 2: //процент успешного выполнения привычек
                 percentSuccess();
+                break;
             case 3: //процент успешного выполнения привычек
                 progressHabit();
+                break;
+            case 4: //статистика выполнения привычки
+                executionHabit();
+                break;
             default:
                 break;
         }
@@ -118,6 +123,9 @@ public class StatisticController {
         statisticView.showPercent((double)reality/(double)expectation);
     }
 
+    /**
+     * прогресс выполнения привычки
+     */
     private void progressHabit() {
         List<Habit> habits = habitService.getHabitsByPerson(currentPerson);
         List<LogBook> logBooks = logBookService.getLogBookByPerson(currentPerson);
@@ -129,6 +137,44 @@ public class StatisticController {
         }
         statisticView.showStatistic(result);
 
+    }
+
+    /**
+     * статистика выполнения
+     */
+    private void executionHabit() {
+        List<String> executionPeriod = List.of("1. День", "2. Неделя", "3. Месяц");
+
+        int answer = statisticView.choicePeriod(executionPeriod);
+
+        List<String> logs = null;
+        switch (answer) {
+            case 1:
+                logs = logBookService.getLogBookByPerson(currentPerson)
+                                      .stream()
+                                      .filter(l -> Period.between(l.getDate(), LocalDate.now()).getDays() <= 1)
+                                      .map(l -> String.format("%s - %s",l.getHabit().getName(),l.getDate().toString()))
+                                      .toList();
+                break;
+            case 2:
+                logs = logBookService.getLogBookByPerson(currentPerson)
+                                     .stream()
+                                     .filter(l -> Period.between(l.getDate(), LocalDate.now()).getDays() <= 7)
+                                     .map(l -> String.format("%s - %s",l.getHabit().getName(),l.getDate().toString()))
+                                     .toList();
+                break;
+            case 3:
+                logs = logBookService.getLogBookByPerson(currentPerson)
+                                     .stream()
+                                     .filter(l -> Period.between(l.getDate(), LocalDate.now()).getDays() <= 30)
+                                     .map(l -> String.format("%s - %s",l.getHabit().getName(),l.getDate().toString()))
+                                     .toList();
+                break;
+            default:
+                break;
+        }
+
+        statisticView.showStatistic(logs);
     }
 
 }

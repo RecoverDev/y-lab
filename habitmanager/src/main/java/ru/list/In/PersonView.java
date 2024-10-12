@@ -78,5 +78,15 @@ public class PersonView {
         return response.getDate("Введите дату добавления привычек (ГГГГ-ММ-ДД): ");
     }
 
+    public List<String> personalAccount() {
+        String name = response.getSrting("Введите новое имя: ");
+        String email = response.getSrting("Введите новый адрес электронной почты: ");
+        String password = response.getSrting("Введите новый пароль: ");
+
+        List<String> result = List.of(name, email, password);
+
+        return result;
+    }
+
 
 }

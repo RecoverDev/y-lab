@@ -44,7 +44,7 @@ public class MainCycle implements Observe {
         logBookService = new LogBookServiceImplementation(logBookRepository);
 
         autorizationController = new AutorizationController(autorizationService, personService);
-        personController = new PersonController(habitService, logBookService);
+        personController = new PersonController(personService, habitService, logBookService);
         autorizationController.addListener(this);
         personController.addListener(this);
     }
