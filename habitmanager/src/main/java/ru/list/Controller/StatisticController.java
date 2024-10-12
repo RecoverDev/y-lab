@@ -5,10 +5,10 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.list.In.StatisticView;
 import ru.list.Model.Habit;
 import ru.list.Model.LogBook;
 import ru.list.Model.Person;
+import ru.list.Out.StatisticView;
 import ru.list.Service.HabitService;
 import ru.list.Service.LogBookService;
 

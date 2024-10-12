@@ -4,6 +4,7 @@ import ru.list.Controller.AdminController;
 import ru.list.Controller.AutorizationController;
 import ru.list.Controller.PersonController;
 import ru.list.Model.Person;
+import ru.list.Out.MainView;
 import ru.list.Repository.HabitRepository;
 import ru.list.Repository.LogBookRepository;
 import ru.list.Repository.PersonRepository;
@@ -58,6 +59,7 @@ public class MainCycle implements Observe {
         Person currentUser = null;
 
         while (repeat) {
+            MainView.showTitle();
             if (currentUser == null) {
                 currentUser = autorizationController.startForm();
             } else {
@@ -74,6 +76,7 @@ public class MainCycle implements Observe {
                 }
             }
         }
+        MainView.showFinal();
     }
 
     @Override

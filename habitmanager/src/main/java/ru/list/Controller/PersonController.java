@@ -6,11 +6,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import ru.list.Observe;
-import ru.list.In.PersonView;
 import ru.list.Model.Habit;
 import ru.list.Model.LogBook;
 import ru.list.Model.Period;
 import ru.list.Model.Person;
+import ru.list.Out.PersonView;
 import ru.list.Service.HabitService;
 import ru.list.Service.LogBookService;
 import ru.list.Service.PersonService;
@@ -87,8 +87,6 @@ public class PersonController implements ObserveController {
             default:
                 break;
         }
-        List<Habit> habits = habitService.getHabitsByPerson(currentPerson);
-        personView.showHabits(habits.stream().map(h -> String.format("%s - %s",h.getName(),h.getPeriod().name())).toList());
 
     }
 
@@ -120,7 +118,7 @@ public class PersonController implements ObserveController {
         habitData = personView.addHabitView();
         if (habitData.size() == 3) {
             int nomPeriod = Integer.parseInt(habitData.get(2));
-            Habit habit = new Habit(habitData.get(0), habitData.get(1), currentPerson, Period.values()[nomPeriod], LocalDate.now());
+            Habit habit = new Habit(habitData.get(0), habitData.get(1), currentPerson, Period.values()[nomPeriod - 1], LocalDate.now());
             habitService.addHabit(habit);
         }
     }

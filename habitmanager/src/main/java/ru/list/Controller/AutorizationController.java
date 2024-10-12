@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.list.Observe;
-import ru.list.In.AutorizateView;
 import ru.list.Model.Person;
+import ru.list.Out.AutorizateView;
 import ru.list.Service.AutorizationService;
 import ru.list.Service.PersonService;
 

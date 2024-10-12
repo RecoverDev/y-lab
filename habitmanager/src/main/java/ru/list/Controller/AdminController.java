@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.list.Observe;
-import ru.list.In.AdminView;
 import ru.list.Model.Person;
+import ru.list.Out.AdminView;
 import ru.list.Service.PersonService;
 
 public class AdminController implements ObserveController{

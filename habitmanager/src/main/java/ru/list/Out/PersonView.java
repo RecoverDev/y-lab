@@ -1,10 +1,12 @@
-package ru.list.In;
+package ru.list.Out;
 
 import static java.lang.System.out;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.list.In.Response;
 
 public class PersonView {
     Response response = new Response();
