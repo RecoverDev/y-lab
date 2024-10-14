@@ -14,6 +14,7 @@ import ru.list.Out.PersonView;
 import ru.list.Service.HabitService;
 import ru.list.Service.LogBookService;
 import ru.list.Service.PersonService;
+import ru.list.Service.StatisticService;
 
 /**
  * Контроллер описывает действия пользователя
@@ -31,11 +32,11 @@ public class PersonController implements ObserveController {
         this.currentPerson = currentPerson;
     }
 
-    public PersonController(PersonService personService, HabitService habitService, LogBookService logBookService){
+    public PersonController(PersonService personService, HabitService habitService, LogBookService logBookService, StatisticService statisticService){
         this.personService = personService;
         this.habitService = habitService;
         this.logBookService = logBookService;
-        this.statisticController = new StatisticController(currentPerson, habitService, logBookService);
+        this.statisticController = new StatisticController(currentPerson, statisticService);
     }
 
     /**
@@ -95,7 +96,7 @@ public class PersonController implements ObserveController {
 
         List<Habit> habits = habitService.getHabitsByPerson(currentPerson);
         List<Habit> habitByDate = habits.stream().filter(h -> h.getRegistration().equals(date)).toList();
-        List<String> strHabits = habitByDate.stream().map(h -> String.format("%s - %s",h.getName(),h.getPeriod().name())).toList();
+        List<String> strHabits = habitByDate.stream().map(h -> String.format("%s - %s",h.getName(),h.getPeriod().getDescription())).toList();
         personView.showHabits(strHabits);
     }
 
@@ -104,7 +105,7 @@ public class PersonController implements ObserveController {
         int nomPeriod = personView.choisePeriod(strPeriod);
         List<Habit> habits = habitService.getHabitsByPerson(currentPerson);
         List<Habit> habitByDate = habits.stream().filter(h -> h.getPeriod().equals(Period.values()[nomPeriod - 1])).toList();
-        List<String> strHabits = habitByDate.stream().map(h -> String.format("%s - %s",h.getName(),h.getPeriod().name())).toList();
+        List<String> strHabits = habitByDate.stream().map(h -> String.format("%s - %s",h.getName(),h.getPeriod().getDescription())).toList();
         personView.showHabits(strHabits);
     }
 
@@ -148,7 +149,7 @@ public class PersonController implements ObserveController {
         List<String> strHabits = new ArrayList<>();
         int i = 1;
         for (Habit habit : habits) {
-            strHabits.add(String.format("%d. %s - %s", i++, habit.getName(),habit.getPeriod().name()));
+            strHabits.add(String.format("%d. %s - %s", i++, habit.getName(),habit.getPeriod().getDescription()));
         }
         int position = personView.choiceHabit(strHabits);
 
@@ -173,6 +174,7 @@ public class PersonController implements ObserveController {
      * Отображение статистики
      */
     private void showStatistic() {
+        statisticController.setCurrentPerson(currentPerson);
         statisticController.showMenu();
     }
 

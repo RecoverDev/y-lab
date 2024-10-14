@@ -30,7 +30,7 @@ public class StatisticView {
     }
 
     public void showPercent(double percent) {
-        out.println(String.format("Процент успешного выполнения привычек: %d2\\%",percent));
+        out.println(String.format("Процент успешного выполнения привычек: %.2f процентов",percent));
         response.getSrting("Нажмите ENTER");
 
     }

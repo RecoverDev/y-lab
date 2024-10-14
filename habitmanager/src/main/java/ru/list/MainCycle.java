@@ -3,6 +3,7 @@ package ru.list;
 import ru.list.Controller.AdminController;
 import ru.list.Controller.AutorizationController;
 import ru.list.Controller.PersonController;
+import ru.list.Controller.StatisticController;
 import ru.list.Model.Person;
 import ru.list.Out.MainView;
 import ru.list.Repository.HabitRepository;
@@ -15,10 +16,12 @@ import ru.list.Service.AutorizationService;
 import ru.list.Service.HabitService;
 import ru.list.Service.LogBookService;
 import ru.list.Service.PersonService;
+import ru.list.Service.StatisticService;
 import ru.list.Service.Implementation.AutorizationServiceImplementation;
 import ru.list.Service.Implementation.HabitServiceImplementation;
 import ru.list.Service.Implementation.LogBookServiceImplementation;
 import ru.list.Service.Implementation.PersonServiceImplementation;
+import ru.list.Service.Implementation.StatisticServiceImplementation;
 
 /*
  * главный цикл программы
@@ -31,6 +34,7 @@ public class MainCycle implements Observe {
     private HabitService habitService = null;
     private LogBookService logBookService = null;
     private AutorizationService autorizationService = null;
+    private StatisticService statisticService = null;
     private AutorizationController autorizationController = null;
     private PersonController personController = null;
     private AdminController adminController = null;
@@ -45,9 +49,10 @@ public class MainCycle implements Observe {
         habitService = new HabitServiceImplementation(habitRepository, logBookRepository);
         autorizationService = new AutorizationServiceImplementation(personRepository);
         logBookService = new LogBookServiceImplementation(logBookRepository);
+        statisticService = new StatisticServiceImplementation(habitRepository, logBookRepository);
 
         autorizationController = new AutorizationController(autorizationService, personService);
-        personController = new PersonController(personService, habitService, logBookService);
+        personController = new PersonController(personService, habitService, logBookService, statisticService);
         adminController = new AdminController(personService);
         autorizationController.addListener(this);
         personController.addListener(this);
