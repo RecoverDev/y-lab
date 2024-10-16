@@ -3,7 +3,6 @@ package ru.list;
 import ru.list.Controller.AdminController;
 import ru.list.Controller.AutorizationController;
 import ru.list.Controller.PersonController;
-import ru.list.Controller.StatisticController;
 import ru.list.Model.Person;
 import ru.list.Out.MainView;
 import ru.list.Repository.HabitRepository;
