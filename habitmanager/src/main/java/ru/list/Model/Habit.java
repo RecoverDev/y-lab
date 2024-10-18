@@ -15,6 +15,10 @@ import lombok.NoArgsConstructor;
 public class Habit {
 
     /**
+     * идентификатор привычки
+     */
+    private int id;
+    /**
      * название привычки
      */
     private String name;

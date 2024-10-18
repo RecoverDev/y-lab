@@ -1,9 +1,7 @@
 package ru.list;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
 

@@ -12,7 +12,6 @@ import ru.list.Repository.PersonRepository;
 import ru.list.Repository.DBImplementation.PersonRepositoryDBImplementation;
 import ru.list.Repository.Implementation.HabitRepositoryImplementation;
 import ru.list.Repository.Implementation.LogBookRepositoryImplementation;
-import ru.list.Repository.Implementation.PersonRepositoryImplementation;
 import ru.list.Service.AutorizationService;
 import ru.list.Service.HabitService;
 import ru.list.Service.LogBookService;

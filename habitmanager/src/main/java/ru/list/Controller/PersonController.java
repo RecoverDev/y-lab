@@ -119,7 +119,7 @@ public class PersonController implements ObserveController {
         habitData = personView.addHabitView();
         if (habitData.size() == 3) {
             int nomPeriod = Integer.parseInt(habitData.get(2));
-            Habit habit = new Habit(habitData.get(0), habitData.get(1), currentPerson, Period.values()[nomPeriod - 1], LocalDate.now());
+            Habit habit = new Habit(0,habitData.get(0), habitData.get(1), currentPerson, Period.values()[nomPeriod - 1], LocalDate.now());
             habitService.addHabit(habit);
         }
     }

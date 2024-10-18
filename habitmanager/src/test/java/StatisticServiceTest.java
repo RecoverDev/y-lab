@@ -29,8 +29,8 @@ public class StatisticServiceTest {
     public void streakHabitsTest() {
         Person person = new Person(1,"Test User","user@server.com","password",0,true);
         
-        Habit habit1 = new Habit("Read book", "read book everyday",person,Period.daily,LocalDate.of(2024, 10,1));
-        Habit habit2 = new Habit("yoga", "yoga", person, Period.weekly, LocalDate.of(2024, 10,2));
+        Habit habit1 = new Habit(1,"Read book", "read book everyday",person,Period.daily,LocalDate.of(2024, 10,1));
+        Habit habit2 = new Habit(2,"yoga", "yoga", person, Period.weekly, LocalDate.of(2024, 10,2));
 
         LogBook logBook1 = new LogBook(LocalDate.of(2024, 10, 1), habit1);
         LogBook logBook2 = new LogBook(LocalDate.of(2024, 10, 2), habit1);
@@ -62,8 +62,8 @@ public class StatisticServiceTest {
     public void percentSuccessTest() {
         Person person = new Person(2,"Test User","user@server.com","password",0,true);
         
-        Habit habit1 = new Habit("Read book", "read book everyday",person,Period.daily,LocalDate.of(2024, 10,1));
-        Habit habit2 = new Habit("yoga", "yoga", person, Period.weekly, LocalDate.of(2024, 10,2));
+        Habit habit1 = new Habit(1,"Read book", "read book everyday",person,Period.daily,LocalDate.of(2024, 10,1));
+        Habit habit2 = new Habit(2,"yoga", "yoga", person, Period.weekly, LocalDate.of(2024, 10,2));
 
         LogBook logBook1 = new LogBook(LocalDate.of(2024, 10, 1), habit1);
         LogBook logBook2 = new LogBook(LocalDate.of(2024, 10, 2), habit1);
@@ -94,8 +94,8 @@ public class StatisticServiceTest {
     public void progressHabitTest() {
         Person person = new Person(1,"Test User","user@server.com","password",0,true);
         
-        Habit habit1 = new Habit("Read book", "read book everyday",person,Period.daily,LocalDate.of(2024, 10,1));
-        Habit habit2 = new Habit("yoga", "yoga", person, Period.weekly, LocalDate.of(2024, 10,2));
+        Habit habit1 = new Habit(1,"Read book", "read book everyday",person,Period.daily,LocalDate.of(2024, 10,1));
+        Habit habit2 = new Habit(2,"yoga", "yoga", person, Period.weekly, LocalDate.of(2024, 10,2));
 
         LogBook logBook1 = new LogBook(LocalDate.of(2024, 10, 1), habit1);
         LogBook logBook2 = new LogBook(LocalDate.of(2024, 10, 2), habit1);
