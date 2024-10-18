@@ -27,7 +27,7 @@ public class StatisticServiceTest {
     @Test
     @DisplayName("Получение непрерывной последовательности выполнения привычек")
     public void streakHabitsTest() {
-        Person person = new Person("Test User","user@server.com","password",0,true);
+        Person person = new Person(1,"Test User","user@server.com","password",0,true);
         
         Habit habit1 = new Habit("Read book", "read book everyday",person,Period.daily,LocalDate.of(2024, 10,1));
         Habit habit2 = new Habit("yoga", "yoga", person, Period.weekly, LocalDate.of(2024, 10,2));
@@ -60,7 +60,7 @@ public class StatisticServiceTest {
     @Test
     @DisplayName("Вычисление процента успешного выполнения привычки")
     public void percentSuccessTest() {
-        Person person = new Person("Test User","user@server.com","password",0,true);
+        Person person = new Person(2,"Test User","user@server.com","password",0,true);
         
         Habit habit1 = new Habit("Read book", "read book everyday",person,Period.daily,LocalDate.of(2024, 10,1));
         Habit habit2 = new Habit("yoga", "yoga", person, Period.weekly, LocalDate.of(2024, 10,2));
@@ -92,7 +92,7 @@ public class StatisticServiceTest {
     @Test
     @DisplayName("Прогресс выполнения")
     public void progressHabitTest() {
-        Person person = new Person("Test User","user@server.com","password",0,true);
+        Person person = new Person(1,"Test User","user@server.com","password",0,true);
         
         Habit habit1 = new Habit("Read book", "read book everyday",person,Period.daily,LocalDate.of(2024, 10,1));
         Habit habit2 = new Habit("yoga", "yoga", person, Period.weekly, LocalDate.of(2024, 10,2));

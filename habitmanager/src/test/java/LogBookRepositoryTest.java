@@ -19,7 +19,7 @@ public class LogBookRepositoryTest {
     public void LogBookRepositoryAddlogBook() {
         LogBookRepository repository = new LogBookRepositoryImplementation();
 
-        Person person1 = new Person("FirstPerson","email@server.ru","password",0,true);
+        Person person1 = new Person(1,"FirstPerson","email@server.ru","password",0,true);
         Habit habit1 = new Habit("Полезная привычка","Очень полезная привычка", person1, Period.daily,LocalDate.now());
 
         LogBook logBook = new LogBook(LocalDate.now(),habit1);
@@ -32,7 +32,7 @@ public class LogBookRepositoryTest {
     @DisplayName("Удаление записи о выполнгении привычки")
     public void LogBookRepositoryDeleteLogBook() {
         LogBookRepository repository = new LogBookRepositoryImplementation();
-        Person person = new Person("FirstPerson","email@server.ru","password",0,true);
+        Person person = new Person(1,"FirstPerson","email@server.ru","password",0,true);
         Habit habit1 = new Habit("Полезная привычка","Очень полезная привычка", person, Period.daily,LocalDate.now());
         Habit habit2 = new Habit("Вторая полезная привычка","Очень полезная привычка", person, Period.daily,LocalDate.now());
 
@@ -50,11 +50,11 @@ public class LogBookRepositoryTest {
     @DisplayName("Получение списка записей выполнения привычек пользователя")
     public void LogBookRepositoryByPerson() {
         LogBookRepository repository = new LogBookRepositoryImplementation();
-        Person person1 = new Person("FirstPerson","email@server.ru","password",0,true);
+        Person person1 = new Person(1,"FirstPerson","email@server.ru","password",0,true);
         Habit habit1 = new Habit("Первая полезная привычка","Очень полезная привычка", person1, Period.daily,LocalDate.now());
         Habit habit2 = new Habit("Вторая полезная привычка","Очень полезная привычка", person1, Period.daily,LocalDate.now());
 
-        Person person2 = new Person("SecondPerson","box@server.ru","word",0,true);
+        Person person2 = new Person(2,"SecondPerson","box@server.ru","word",0,true);
         Habit habit3 = new Habit("Третья полезная привычка","Очень полезная привычка", person2, Period.daily,LocalDate.now());
         Habit habit4 = new Habit("Четвертая полезная привычка","Очень полезная привычка", person2, Period.daily,LocalDate.now());
 
@@ -78,11 +78,11 @@ public class LogBookRepositoryTest {
     @DisplayName("Получение полного списка записей о выполнении привычек")
     public void LogBookRepositoryFindAll() {
         LogBookRepository repository = new LogBookRepositoryImplementation();
-        Person person1 = new Person("FirstPerson","email@server.ru","password",0,true);
+        Person person1 = new Person(1,"FirstPerson","email@server.ru","password",0,true);
         Habit habit1 = new Habit("Первая полезная привычка","Очень полезная привычка", person1, Period.daily,LocalDate.now());
         Habit habit2 = new Habit("Вторая полезная привычка","Очень полезная привычка", person1, Period.daily,LocalDate.now());
 
-        Person person2 = new Person("SecondPerson","box@server.ru","word",0,true);
+        Person person2 = new Person(2,"SecondPerson","box@server.ru","word",0,true);
         Habit habit3 = new Habit("Третья полезная привычка","Очень полезная привычка", person2, Period.daily,LocalDate.now());
         Habit habit4 = new Habit("Четвертая полезная привычка","Очень полезная привычка", person2, Period.daily,LocalDate.now());
 

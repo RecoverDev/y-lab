@@ -13,6 +13,10 @@ import lombok.NoArgsConstructor;
 public class Person {
 
     /**
+     * идентификатор пользователя в базе
+     */
+    int id;
+    /**
      * имя пользователя
      */
     private String name;

@@ -20,7 +20,7 @@ public class AutorizationServiceTest {
     @DisplayName("Авторизация пользователя")
     public void autorizateTest() {
         personRepositoryMockito = Mockito.mock(PersonRepository.class);
-        Mockito.when(personRepositoryMockito.findByEmailAndPassword("user@server.com","password")).thenReturn(new Person("Test User","user@server.com","password",0,true));
+        Mockito.when(personRepositoryMockito.findByEmailAndPassword("user@server.com","password")).thenReturn(new Person(1,"Test User","user@server.com","password",0,true));
 
         AutorizationService autorizationService = new AutorizationServiceImplementation(personRepositoryMockito);
 

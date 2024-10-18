@@ -34,7 +34,7 @@ public class AutorizationController implements ObserveController{
             case 2:
                 personalData = autorizateView.RegistrationView();
                 if (personalData.size() == 4) {
-                    Person newPerson = new Person(personalData.get(0), personalData.get(1), personalData.get(2), Integer.parseInt(personalData.get(3)),true);
+                    Person newPerson = new Person(0,personalData.get(0), personalData.get(1), personalData.get(2), Integer.parseInt(personalData.get(3)),true);
                     personService.addPerson(newPerson);
                 }
                 break;

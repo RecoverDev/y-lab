@@ -12,7 +12,7 @@ public class PersonRepositoryTest {
     @DisplayName("Добавление нового пользователя")
     public void PersonRepositoryAddPerson() {
         PersonRepository repository = new PersonRepositoryImplementation();
-        Person person = new Person("FirstPerson","email@server.ru","password",0,true);
+        Person person = new Person(1,"FirstPerson","email@server.ru","password",0,true);
         
         Assertions.assertTrue(repository.save(person));
         Assertions.assertEquals(1, repository.findAll().size());
@@ -22,8 +22,8 @@ public class PersonRepositoryTest {
     @DisplayName("Попытка добавить двух пользователей с одинаковыми E-Mail-ом и паролем")
     public void PersonRepositoryAddDublicate() {
         PersonRepository repository = new PersonRepositoryImplementation();
-        Person person1 = new Person("FirstPerson","email@server.ru","password",0,true);
-        Person person2 = new Person("SecondPerson","email@server.ru","password",1,true);
+        Person person1 = new Person(1,"FirstPerson","email@server.ru","password",0,true);
+        Person person2 = new Person(2,"SecondPerson","email@server.ru","password",1,true);
 
         repository.save(person1);
         repository.save(person2);
@@ -36,7 +36,7 @@ public class PersonRepositoryTest {
     @DisplayName("Попытка получить несуществующего пользователя (ожидаем null)")
     public void PersonRepositoryGetNull() {
         PersonRepository repository = new PersonRepositoryImplementation();
-        Person person1 = new Person("FirstPerson","email@server.ru","password",0,true);
+        Person person1 = new Person(1,"FirstPerson","email@server.ru","password",0,true);
         repository.save(person1);
 
         Assertions.assertNull(repository.findByEmailAndPassword("fantom@server.ru", "empty"));
@@ -46,8 +46,8 @@ public class PersonRepositoryTest {
     @DisplayName("Удаление пользователя")
     public void PersonRepositoryDeletePerson() {
         PersonRepository repository = new PersonRepositoryImplementation();
-        Person person1 = new Person("FirstPerson","email@server.ru","password",0,true);
-        Person person2 = new Person("SecondPerson","second@server.ru","word",1,true);
+        Person person1 = new Person(1,"FirstPerson","email@server.ru","password",0,true);
+        Person person2 = new Person(2,"SecondPerson","second@server.ru","word",1,true);
 
         repository.save(person1);
         repository.save(person2);
@@ -61,9 +61,9 @@ public class PersonRepositoryTest {
     @DisplayName("Проверка наличия пользователя в хранилище")
     public void PersonRepositoryExistPerson() {
         PersonRepository repository = new PersonRepositoryImplementation();
-        Person person1 = new Person("FirstPerson","email@server.ru","password",0,true);
-        Person person2 = new Person("SecondPerson","second@server.ru","word",1,true);
-        Person person3 = new Person("ThirdPerson","third@server.ru","key",0,true);
+        Person person1 = new Person(1,"FirstPerson","email@server.ru","password",0,true);
+        Person person2 = new Person(2,"SecondPerson","second@server.ru","word",1,true);
+        Person person3 = new Person(3,"ThirdPerson","third@server.ru","key",0,true);
 
         repository.save(person1);
         repository.save(person2);
@@ -77,8 +77,8 @@ public class PersonRepositoryTest {
     @DisplayName("Получение пользователя по паролю")
     public void PersonRepositoryFindByPassword() {
         PersonRepository repository = new PersonRepositoryImplementation();
-        Person person1 = new Person("FirstPerson","email@server.ru","password",0,true);
-        Person person2 = new Person("SecondPerson","second@server.ru","word",1,true);
+        Person person1 = new Person(1,"FirstPerson","email@server.ru","password",0,true);
+        Person person2 = new Person(2,"SecondPerson","second@server.ru","word",1,true);
 
         repository.save(person1);
         repository.save(person2);

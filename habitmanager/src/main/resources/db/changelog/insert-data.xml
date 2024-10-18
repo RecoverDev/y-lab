@@ -1,0 +1,83 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+   <changeSet id="1" author="recover">
+    <insert schemaName="habit" tableName="person">
+         <column name="username" value="First User"/>
+         <column name="email" value="first@server.com"/>
+         <column name="password" value="111"/>
+         <column name="role" value="0"/>
+         <column name="blocked" valueBoolean="true"/>
+    </insert>
+    <insert schemaName="habit" tableName="person">
+         <column name="username" value="Second User"/>
+         <column name="email" value="second@server.com"/>
+         <column name="password" value="222"/>
+         <column name="role" value="0"/>
+         <column name="blocked" valueBoolean="true"/>
+    </insert>
+    <insert schemaName="habit" tableName="habit">
+         <column name="name_habit" value="read book"/>
+         <column name="description" value="read book every day"/>
+         <column name="person_id" valueNumeric="1"/>
+         <column name="period_id" valueNumeric="0"/>
+         <column name="registration" valueDate="2024-10-10"/>
+    </insert>
+    <insert schemaName="habit" tableName="habit">
+         <column name="name_habit" value="morning fitness"/>
+         <column name="description" value="weekly fitness"/>
+         <column name="person_id" valueNumeric="1"/>
+         <column name="period_id" valueNumeric="1"/>
+         <column name="registration" valueDate="2024-10-11"/>
+    </insert>
+    <insert schemaName="habit" tableName="habit">
+         <column name="name_habit" value="evening walk"/>
+         <column name="description" value="evening walk every day"/>
+         <column name="person_id" valueNumeric="2"/>
+         <column name="period_id" valueNumeric="0"/>
+         <column name="registration" valueDate="2024-10-12"/>
+    </insert>
+    <insert schemaName="habit" tableName="habit">
+         <column name="name_habit" value="watching a movie"/>
+         <column name="description" value="weekly watching a movie"/>
+         <column name="person_id" valueNumeric="2"/>
+         <column name="period_id" valueNumeric="1"/>
+         <column name="registration" valueDate="2024-10-09"/>
+    </insert>
+    <insert schemaName="habit" tableName="logbook">
+        <column name="habit_id" valueNumeric="1"/>
+        <column name="date" valueDate="2024-10-10"/>
+    </insert>
+    <insert schemaName="habit" tableName="logbook">
+        <column name="habit_id" valueNumeric="1"/>
+        <column name="date" valueDate="2024-10-11"/>
+    </insert>
+    <insert schemaName="habit" tableName="logbook">
+        <column name="habit_id" valueNumeric="1"/>
+        <column name="date" valueDate="2024-10-12"/>
+    </insert>
+    <insert schemaName="habit" tableName="logbook">
+        <column name="habit_id" valueNumeric="1"/>
+        <column name="date" valueDate="2024-10-13"/>
+    </insert>
+    <insert schemaName="habit" tableName="logbook">
+        <column name="habit_id" valueNumeric="2"/>
+        <column name="date" valueDate="2024-10-11"/>
+    </insert>
+    <insert schemaName="habit" tableName="logbook">
+        <column name="habit_id" valueNumeric="2"/>
+        <column name="date" valueDate="2024-10-18"/>
+    </insert>
+    <insert schemaName="habit" tableName="logbook">
+        <column name="habit_id" valueNumeric="4"/>
+        <column name="date" valueDate="2024-10-12"/>
+    </insert>
+    <insert schemaName="habit" tableName="logbook">
+        <column name="habit_id" valueNumeric="4"/>
+        <column name="date" valueDate="2024-10-19"/>
+    </insert>
+   </changeSet>
+</databaseChangeLog>

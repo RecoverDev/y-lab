@@ -1,0 +1,36 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+   <changeSet id="1" author="recover">
+     <createTable schemaName="habit" tableName="person">
+         <column name="id" type="BIGINT" autoIncrement="true" >
+            <constraints primaryKey="true" nullable="false" />
+         </column>
+         <column name="username" type="VARCHAR(255)"/>
+         <column name="email" type="VARCHAR(255)"/>
+         <column name="password" type="VARCHAR(255)"/>
+         <column name="role" type="BIGINT"/> 
+         <column name="blocked" type="BOOLEAN"/>
+     </createTable>
+     <createTable schemaName="habit" tableName="habit">
+         <column name="id" type="BIGINT" autoIncrement="true">
+            <constraints primaryKey="true" nullable="false"/>
+         </column>
+         <column name="name_habit" type="VARCHAR(255)"/>
+         <column name="description" type="VARCHAR(255)"/>
+         <column name="person_id" type="BIGINT"/>
+         <column name="period_id" type="BIGINT"/>
+         <column name="registration" type="DATE"/>
+     </createTable>
+     <createTable schemaName="habit" tableName="logbook">
+         <column name="id" type="BIGINT" autoIncrement="true">
+            <constraints primaryKey="true" nullable="false"/>
+         </column>
+         <column name="habit_id" type="BIGINT"/>
+         <column name="date" type="DATE"/>
+     </createTable>
+   </changeSet>   
+</databaseChangeLog>

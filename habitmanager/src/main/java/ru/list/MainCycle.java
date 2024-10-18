@@ -3,11 +3,13 @@ package ru.list;
 import ru.list.Controller.AdminController;
 import ru.list.Controller.AutorizationController;
 import ru.list.Controller.PersonController;
+import ru.list.Db.DBConnection;
 import ru.list.Model.Person;
 import ru.list.Out.MainView;
 import ru.list.Repository.HabitRepository;
 import ru.list.Repository.LogBookRepository;
 import ru.list.Repository.PersonRepository;
+import ru.list.Repository.DBImplementation.PersonRepositoryDBImplementation;
 import ru.list.Repository.Implementation.HabitRepositoryImplementation;
 import ru.list.Repository.Implementation.LogBookRepositoryImplementation;
 import ru.list.Repository.Implementation.PersonRepositoryImplementation;
@@ -39,8 +41,8 @@ public class MainCycle implements Observe {
     private AdminController adminController = null;
     private boolean repeat = true;
 
-    public MainCycle() {
-        personRepository = new PersonRepositoryImplementation();
+    public MainCycle(DBConnection connection) {
+        personRepository = new PersonRepositoryDBImplementation(connection.getConnection());
         habitRepository = new HabitRepositoryImplementation();
         logBookRepository = new LogBookRepositoryImplementation();
 

@@ -19,7 +19,7 @@ public class PersonServiceTest {
     @Test
     @DisplayName("Добавление пользователя")
     public void addPersonTest() {
-        Person person = new Person("Test User","user@server.com","password",0,true);
+        Person person = new Person(1,"Test User","user@server.com","password",0,true);
         personRepositoryMockito = Mockito.mock(PersonRepository.class);
         Mockito.when(personRepositoryMockito.save(person)).thenReturn(true);
         Mockito.when(personRepositoryMockito.findByPassword("password")).thenReturn(null);
@@ -32,7 +32,7 @@ public class PersonServiceTest {
     @Test
     @DisplayName("Удаление пользователя")
     public void deletePersonTest() {
-        Person person = new Person("Test User","user@server.com","password",0,true);
+        Person person = new Person(1,"Test User","user@server.com","password",0,true);
         personRepositoryMockito = Mockito.mock(PersonRepository.class);
         Mockito.when(personRepositoryMockito.delete(person)).thenReturn(true);
 
@@ -44,8 +44,8 @@ public class PersonServiceTest {
     @Test
     @DisplayName("Получение списка пользователей")
     public void editPersonTest() {
-        Person person1 = new Person("Test User1","user1@server.com","password",0,true);
-        Person person2 = new Person("Test User2","user2@server.com","password",0,true);
+        Person person1 = new Person(1,"Test User1","user1@server.com","password",0,true);
+        Person person2 = new Person(2,"Test User2","user2@server.com","password",0,true);
         personRepositoryMockito = Mockito.mock(PersonRepository.class);
         Mockito.when(personRepositoryMockito.findAll()).thenReturn(List.of(person1,person2));
 
