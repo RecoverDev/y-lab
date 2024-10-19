@@ -32,20 +32,10 @@ public class StatisticController {
         int answer = statisticView.showMenu();
 
         switch (answer) {
-            case 1: //текущая серия выполнения привычек
-                streakHabits();
-                break;
-            case 2: //процент успешного выполнения привычек
-                percentSuccess();
-                break;
-            case 3: //процент успешного выполнения привычек
-                progressHabit();
-                break;
-            case 4: //статистика выполнения привычки
-                executionHabit();
-                break;
-            default:
-                break;
+            case 1 -> streakHabits();
+            case 2 -> percentSuccess();
+            case 3 -> progressHabit();
+            case 4 -> executionHabit();
         }
     }
 

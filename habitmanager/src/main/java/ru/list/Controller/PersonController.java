@@ -79,14 +79,8 @@ public class PersonController implements ObserveController {
         int answer = personView.selectFilterView();
 
         switch (answer) {
-            case 1: //список привычек по дате регистрации
-                showHabitsByDate();
-                break;
-            case 2: //список привычек по статусу (периоду повторения)
-                showHabitsByPeriod();
-                break;
-            default:
-                break;
+            case 1 -> showHabitsByDate();
+            case 2 -> showHabitsByPeriod();
         }
 
     }
