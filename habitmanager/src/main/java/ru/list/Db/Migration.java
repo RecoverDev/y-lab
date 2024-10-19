@@ -18,11 +18,14 @@ public class Migration {
     }
 
 
-    public boolean migrate() {
+    public boolean migrate(String changelogFile) {
         boolean result = false;
+        if (changelogFile.length() == 0) {
+            changelogFile = "db/changelog/changelog.xml";
+        }
         try {
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-            Liquibase liquibase = new Liquibase("db/changelog/changelog.xml", new ClassLoaderResourceAccessor(), database);
+            Liquibase liquibase = new Liquibase(changelogFile, new ClassLoaderResourceAccessor(), database);
             liquibase.update();
             liquibase.close();
             result = true;

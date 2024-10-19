@@ -9,6 +9,7 @@ public class HabitProperties {
     private String url;
     private String user;
     private String password;
+    private String changelogFile;
 
     private String fileName;
 
@@ -25,6 +26,7 @@ public class HabitProperties {
             url = properties.getProperty("db.url");
             user = properties.getProperty("db.user");
             password = properties.getProperty("db.password");
+            changelogFile = properties.getProperty("liquibase.changelog");
             result = true;
 
         } catch (IOException | URISyntaxException e ) {
@@ -46,7 +48,9 @@ public class HabitProperties {
         return password;
     }
 
-    
+    public String getChangelogFile() {
+        return changelogFile;
+    }
 
 
 }

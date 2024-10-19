@@ -12,7 +12,7 @@ public class Main {
         connection.connect();
         
         Migration migration = new Migration(connection.getConnection());
-        boolean resultMigration = migration.migrate();
+        boolean resultMigration = migration.migrate(properties.getChangelogFile());
 
         if (resultMigration) {
             MainCycle mainCycle = new MainCycle(connection);

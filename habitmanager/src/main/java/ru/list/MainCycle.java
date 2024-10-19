@@ -10,8 +10,8 @@ import ru.list.Repository.HabitRepository;
 import ru.list.Repository.LogBookRepository;
 import ru.list.Repository.PersonRepository;
 import ru.list.Repository.DBImplementation.HabitRepositoryDBImplementation;
+import ru.list.Repository.DBImplementation.LogBookRepositoryDBImplementation;
 import ru.list.Repository.DBImplementation.PersonRepositoryDBImplementation;
-import ru.list.Repository.Implementation.LogBookRepositoryImplementation;
 import ru.list.Service.AutorizationService;
 import ru.list.Service.HabitService;
 import ru.list.Service.LogBookService;
@@ -44,7 +44,7 @@ public class MainCycle implements Observe {
         connection.connect();
         personRepository = new PersonRepositoryDBImplementation(connection.getConnection());
         habitRepository = new HabitRepositoryDBImplementation(connection.getConnection());
-        logBookRepository = new LogBookRepositoryImplementation();
+        logBookRepository = new LogBookRepositoryDBImplementation(connection.getConnection());
 
         personService = new PersonServiceImplementation(personRepository);
         habitService = new HabitServiceImplementation(habitRepository, logBookRepository);
