@@ -82,7 +82,7 @@ public class HabitRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat(2).isEqualTo(habits.size());
+        assertThat(habits.size()).isEqualTo(2);
     }
 
     @Test
@@ -98,7 +98,7 @@ public class HabitRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat(4).isEqualTo(habits.size());
+        assertThat(habits.size()).isEqualTo(4);
 
     }
 

@@ -87,7 +87,7 @@ public class LogBookRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat(7).isEqualTo(logBooks.size());
+        assertThat(logBooks.size()).isEqualTo(7);
     }
 
     @Test
@@ -103,7 +103,7 @@ public class LogBookRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat(12).isEqualTo(logBooks.size());
+        assertThat(logBooks.size()).isEqualTo(12);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class LogBookRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat(2).isEqualTo(logBooks.size());
+        assertThat(logBooks.size()).isEqualTo(2);
     }
 
 }
