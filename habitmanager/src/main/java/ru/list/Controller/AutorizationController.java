@@ -27,19 +27,17 @@ public class AutorizationController implements ObserveController{
         int result = autorizateView.StartView();
 
         switch (result) {
-            case 1:
+            case 1 -> {
                 personalData = autorizateView.LoginView();
                 person = autorizationService.autorizate(personalData.get(0), personalData.get(1));
-                break;
-            case 2:
+            }
+            case 2 -> {
                 personalData = autorizateView.RegistrationView();
                 if (personalData.size() == 4) {
                     Person newPerson = new Person(0,personalData.get(0), personalData.get(1), personalData.get(2), Integer.parseInt(personalData.get(3)),true);
                     personService.addPerson(newPerson);
                 }
-                break;
-            default:
-                break;
+            }
         }
         this.observe(result);
         return person;

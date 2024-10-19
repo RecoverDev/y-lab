@@ -47,26 +47,12 @@ public class PersonController implements ObserveController {
         int answer = personView.ShowMenu();
 
         switch (answer) {
-            case 1: //выводит список привычек пользователя
-                showHabits();
-                break;
-            case 2: //добавляет новую привычку
-                addHabit();
-                break;
-            case 3: //удаляет привычку
-                deleteHabit();
-                break;
-            case 4: //добавляет запись о выполнении привычки
-                addLogBook();
-                break;
-            case 5: //статиска выполнения привычек
-                showStatistic();
-                break;
-            case 6: //личные данные
-                personalAccount();
-                break;
-            default:
-                break;
+            case 1 ->  showHabits();
+            case 2 -> addHabit();
+            case 3 -> deleteHabit();
+            case 4 -> addLogBook();
+            case 5 -> showStatistic();
+            case 6 -> personalAccount();
         }
         this.observe(answer);
 
