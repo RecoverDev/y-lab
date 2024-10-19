@@ -13,8 +13,8 @@ public class MainView {
     public static void showTitle() {
         String txtTitle = """
             \033[H\033[J
-            Программа \"Habit Manager\"
-            для выхода нажмите \"0\"
+            Программа Habit Manager
+            для выхода нажмите 0
 
                 """;
         out.print(txtTitle);

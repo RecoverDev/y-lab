@@ -91,7 +91,7 @@ public class HabitServiceImplementation implements HabitService {
     public boolean addHabitFromString(Person person, List<String> data) {
         if (data.size() == 3) {
             int nomPeriod = Integer.parseInt(data.get(2));
-            Habit habit = new Habit(data.get(0), data.get(1), person, Period.values()[nomPeriod - 1], LocalDate.now());
+            Habit habit = new Habit(0,data.get(0), data.get(1), person, Period.values()[nomPeriod - 1], LocalDate.now());
             return this.addHabit(habit);
         }
         return false;
