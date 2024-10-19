@@ -13,15 +13,18 @@ public class PersonView {
 
     public int ShowMenu() {
 
-        out.println("1. Мои привычки");
-        out.println("2. Новая привычка");
-        out.println("3. Удалить привычку");
-        out.println("4. Добавить выполнение привычки");
-        out.println("5. Статистика выполнения привычек");
-        out.println("==============");
-        out.println("6. Личные данные");
-        out.println("0. Завершить работу");
-        out.println("");
+        String testMenu = """
+            1. Мои привычки
+            2. Новая привычка
+            3. Удалить привычку
+            4. Добавить выполнение привычки
+            5. Статистика выполнения привычек
+            ==============
+            6. Личные данные
+            0. Завершить работу
+
+                """; 
+        out.println(testMenu);
 
         return response.getInt("Введите номер пункта меню: ");
     }
@@ -31,11 +34,15 @@ public class PersonView {
 
         String name = response.getSrting("Наименование привычки: ");
         String descr = response.getSrting("Описание привычки: ");
-        out.println("Введите период повторения привычки:");
-        out.println("1. Ежедневно");
-        out.println("2. Еженедельно");
-        out.println("3. Ежемесячно");
-        out.println("4. Ежегодно");
+        String strPeriod = """
+            Введите период повторения привычки:
+            1. Ежедневно
+            2. Еженедельно
+            3. Ежемесячно
+            4. Ежегодно
+
+                """;
+        out.println(strPeriod);
         int nomPeriod = response.getInt("Введите номер периода: ");
 
         result.add(name);
@@ -71,8 +78,12 @@ public class PersonView {
     }
 
     public int selectFilterView() {
-        out.println("1. Фильтр по дате создания");
-        out.println("2. Фильтр по статусу");
+        String strFilter = """
+            1. Фильтр по дате создания
+            2. Фильтр по статусу
+
+                """;
+        out.println(strFilter);
         return response.getInt("Выберете фильтр: ");
     }
 

@@ -10,12 +10,15 @@ public class AdminView {
     Response response = new Response();
 
     public int showMenu() {
-        out.println("1. Список пользователей");
-        out.println("2. Удалить пользователя");
-        out.println("3. Заблокировать пользователя");
-        out.println("");
-        out.println("0. Завершить работу");
-        out.println("");
+        String txtMenu = """
+            1. Список пользователей
+            2. Удалить пользователя
+            3. Заблокировать пользователя
+
+            0. Завершить работу
+
+                """;
+        out.println(txtMenu);
 
         return response.getInt("Введите номер пункта меню: ");
     }
