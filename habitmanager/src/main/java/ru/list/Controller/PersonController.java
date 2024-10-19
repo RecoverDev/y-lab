@@ -154,7 +154,7 @@ public class PersonController implements ObserveController {
         int position = personView.choiceHabit(strHabits);
 
         if (position > 0 & position <= habits.size()) {
-            LogBook logBook = new LogBook(LocalDate.now(), habits.get(position - 1));
+            LogBook logBook = new LogBook(0,LocalDate.now(), habits.get(position - 1));
             logBookService.addLogBook(logBook);
         }
     }

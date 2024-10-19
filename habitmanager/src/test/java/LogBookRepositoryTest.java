@@ -22,7 +22,7 @@ public class LogBookRepositoryTest {
         Person person1 = new Person(1,"FirstPerson","email@server.ru","password",0,true);
         Habit habit1 = new Habit(1,"Полезная привычка","Очень полезная привычка", person1, Period.daily,LocalDate.now());
 
-        LogBook logBook = new LogBook(LocalDate.now(),habit1);
+        LogBook logBook = new LogBook(1,LocalDate.now(),habit1);
 
         Assertions.assertTrue(repository.save(logBook));
         Assertions.assertEquals(1, repository.findAll().size());
@@ -36,8 +36,8 @@ public class LogBookRepositoryTest {
         Habit habit1 = new Habit(1,"Полезная привычка","Очень полезная привычка", person, Period.daily,LocalDate.now());
         Habit habit2 = new Habit(2,"Вторая полезная привычка","Очень полезная привычка", person, Period.daily,LocalDate.now());
 
-        LogBook logBook1 = new LogBook(LocalDate.now(),habit1);
-        LogBook logBook2 = new LogBook(LocalDate.now(),habit2);
+        LogBook logBook1 = new LogBook(1,LocalDate.now(),habit1);
+        LogBook logBook2 = new LogBook(2,LocalDate.now(),habit2);
 
         repository.save(logBook1);
         repository.save(logBook2);
@@ -58,10 +58,10 @@ public class LogBookRepositoryTest {
         Habit habit3 = new Habit(3,"Третья полезная привычка","Очень полезная привычка", person2, Period.daily,LocalDate.now());
         Habit habit4 = new Habit(4,"Четвертая полезная привычка","Очень полезная привычка", person2, Period.daily,LocalDate.now());
 
-        LogBook logBook1 = new LogBook(LocalDate.now(),habit1);
-        LogBook logBook2 = new LogBook(LocalDate.now(),habit2);
-        LogBook logBook3 = new LogBook(LocalDate.now(),habit3);
-        LogBook logBook4 = new LogBook(LocalDate.now(),habit4);
+        LogBook logBook1 = new LogBook(1,LocalDate.now(),habit1);
+        LogBook logBook2 = new LogBook(2,LocalDate.now(),habit2);
+        LogBook logBook3 = new LogBook(3,LocalDate.now(),habit3);
+        LogBook logBook4 = new LogBook(4,LocalDate.now(),habit4);
 
         repository.save(logBook1);
         repository.save(logBook2);
@@ -86,10 +86,10 @@ public class LogBookRepositoryTest {
         Habit habit3 = new Habit(3,"Третья полезная привычка","Очень полезная привычка", person2, Period.daily,LocalDate.now());
         Habit habit4 = new Habit(4,"Четвертая полезная привычка","Очень полезная привычка", person2, Period.daily,LocalDate.now());
 
-        LogBook logBook1 = new LogBook(LocalDate.now(),habit1);
-        LogBook logBook2 = new LogBook(LocalDate.now(),habit2);
-        LogBook logBook3 = new LogBook(LocalDate.now(),habit3);
-        LogBook logBook4 = new LogBook(LocalDate.now(),habit4);
+        LogBook logBook1 = new LogBook(1,LocalDate.now(),habit1);
+        LogBook logBook2 = new LogBook(2,LocalDate.now(),habit2);
+        LogBook logBook3 = new LogBook(3,LocalDate.now(),habit3);
+        LogBook logBook4 = new LogBook(4,LocalDate.now(),habit4);
 
         repository.save(logBook1);
         repository.save(logBook2);

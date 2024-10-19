@@ -8,17 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.list.Model.Habit;
+import ru.list.Model.LogBook;
 import ru.list.Model.Period;
 import ru.list.Model.Person;
-import ru.list.Repository.HabitRepository;
+import ru.list.Repository.LogBookRepository;
 
-public class HabitRepositoryDBImplementation implements HabitRepository {
-    private String nameTable = "habit";
+public class LogBookRepositoryDBImplementation implements LogBookRepository {
+    private String nameTable = "logbook";
     private String nameSchema = "habit";
     private Connection connection = null;
-    private String nameSerialID = "habit_id_seq";
+    private String nameSerialID = "logbook_id_seq";
 
-    public HabitRepositoryDBImplementation(Connection connection) {
+    public LogBookRepositoryDBImplementation(Connection connection) {
         this.connection = connection;
         if (nameSchema.length() > 0) {
             nameTable = nameSchema + "." + nameTable;
@@ -26,18 +27,16 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
         }
     }
 
+
     @Override
-    public boolean save(Habit habit) {
+    public boolean save(LogBook logBook) {
         boolean result;
-        String sql = String.format("INSERT INTO %s (id, name_habit, description, person_id, period_id, registration) VALUES (nextval('%s'), ?, ?, ?, ?, ?)", nameTable,nameSerialID);
+        String sql = String.format("INSERT INTO %s (id, habit_id, date) VALUES (nextval('%s'), ?, ?)", nameTable,nameSerialID);
         try {
             connection.setAutoCommit(false);
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, habit.getName());
-            statement.setString(2, habit.getDescription());
-            statement.setInt(3, habit.getPerson().getId());
-            statement.setInt(4, habit.getPeriod().ordinal());
-            statement.setDate(5, java.sql.Date.valueOf(habit.getRegistration()));
+            statement.setInt(1, logBook.getHabit().getId());
+            statement.setDate(2, java.sql.Date.valueOf(logBook.getDate()));
             int count = statement.executeUpdate();
             result = (count == 1);
             if (result) {
@@ -56,12 +55,12 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
     }
 
     @Override
-    public boolean delete(Habit habit) {
+    public boolean delete(LogBook logBook) {
         boolean result;
         String sql = "DELETE FROM " + nameTable + " WHERE id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, habit.getId());
+            statement.setInt(1, logBook.getId());
             int count = statement.executeUpdate();
             result = (count == 1);
         } catch(SQLException e) {
@@ -72,34 +71,36 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
     }
 
     @Override
-    public List<Habit> findByPerson(Person person) {
-        List<Habit> habits = new ArrayList<>();
-        String sql = "SELECT * FROM " + nameTable + " WHERE person_id = ?";
+    public List<LogBook> findByPerson(Person person) {
+        List<LogBook> logBooks = new ArrayList<>();
+        String habitTable = "habit.habit";
+        String sql = String.format("SELECT * FROM %s l JOIN %s h ON l.habit_id = h.id WHERE h.person_id = ? ",nameTable,habitTable);
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, person.getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Habit habit = new Habit(resultSet.getInt("id"), 
-                                        resultSet.getString("name_habit"),
-                                        resultSet.getString("description"),
-                                        person, 
-                                        Period.values()[resultSet.getInt("period_id")],
-                                        resultSet.getDate("registration").toLocalDate());
-                habits.add(habit);
+                Habit habit = new Habit(resultSet.getInt("habit_id"), 
+                                resultSet.getString("name_habit"),
+                                resultSet.getString("description"),
+                                person, 
+                                Period.values()[resultSet.getInt("period_id")],
+                                resultSet.getDate("registration").toLocalDate());
+                LogBook logBook = new LogBook(resultSet.getInt("id"), resultSet.getDate("date").toLocalDate(), habit);
+                logBooks.add(logBook);
             }
         } catch (SQLException e) {
             System.out.println("Ошибка подключения к БД: " + e.getMessage());
-        } 
-        return habits;  
+        }
+        return logBooks;
     }
 
     @Override
-    public List<Habit> findAll() {
-        List<Habit> habits = new ArrayList<>();
-
+    public List<LogBook> findAll() {
+        List<LogBook> logBooks = new ArrayList<>();
+        String habitTable = "habit.habit";
         String personTable = "habit.person";
-        String sql = String.format("SELECT * FROM %s h JOIN %s p ON h.person_id = p.id",nameTable,personTable);
+        String sql = String.format("SELECT * FROM %s l JOIN %s h ON l.habit_id = h.id JOIN %s p ON h.person_id = p.id",nameTable,habitTable,personTable);
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
@@ -110,37 +111,37 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
                                 resultSet.getString("password"),
                                 resultSet.getInt("role"),
                                 resultSet.getBoolean("blocked"));
-                Habit habit = new Habit(resultSet.getInt("id"), 
+                Habit habit = new Habit(resultSet.getInt("habit_id"), 
                                 resultSet.getString("name_habit"),
                                 resultSet.getString("description"),
                                 person, 
                                 Period.values()[resultSet.getInt("period_id")],
                                 resultSet.getDate("registration").toLocalDate());
-                habits.add(habit);
+                LogBook logBook = new LogBook(resultSet.getInt("id"), resultSet.getDate("date").toLocalDate(), habit);
+                logBooks.add(logBook);
             }
         } catch (SQLException e) {
             System.out.println("Ошибка подключения к БД: " + e.getMessage());
         }
-
-        return habits;
+        return logBooks;
     }
 
     @Override
-    public boolean exist(Habit habit) {
-        boolean result = false;
-        String sql = String.format("SELECT COUNT(*) FROM %s WHERE id = ?",nameTable);
+    public List<LogBook> findByHabit(Habit habit) {
+        List<LogBook> logBooks = new ArrayList<>();
+        String sql = String.format("SELECT * FROM %s WHERE habit_id = ? ",nameTable);
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, habit.getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                result = resultSet.getInt("COUNT") > 0;
+                LogBook logBook = new LogBook(resultSet.getInt("id"), resultSet.getDate("date").toLocalDate(), habit);
+                logBooks.add(logBook);
             }
-        } catch(SQLException e) {
-            result = false;
+        } catch (SQLException e) {
+            System.out.println("Ошибка подключения к БД: " + e.getMessage());
         }
-
-        return result;
+        return logBooks;
     }
 
 }

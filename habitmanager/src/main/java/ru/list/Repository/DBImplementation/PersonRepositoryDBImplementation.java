@@ -45,7 +45,7 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
             try {
                 connection.rollback();
             } catch(SQLException ex) {
-
+                System.out.println("Ошибка подключения к БД: " + ex.getMessage());
             }
             result = false;
         } 
@@ -133,7 +133,7 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
                 result.add(person);
             }
         } catch(SQLException e) {
-
+            System.out.println("Ошибка подключения к БД: " + e.getMessage());
         }
 
         return result;

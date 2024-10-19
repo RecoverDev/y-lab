@@ -15,6 +15,10 @@ import lombok.NoArgsConstructor;
 public class LogBook {
 
     /**
+     * идентификатор записи
+     */
+    int id;
+    /**
      * дата выполнения привычки
      */
     private LocalDate date;
