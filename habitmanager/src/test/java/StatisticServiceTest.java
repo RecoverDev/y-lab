@@ -1,7 +1,8 @@
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.time.LocalDate;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -54,7 +55,7 @@ public class StatisticServiceTest {
 
         StatisticService statisticService = new StatisticServiceImplementation(habitRepositoryMockito, logBookRepositoryMockito);
 
-        Assertions.assertEquals(4, statisticService.streakHabits(person).size());
+        assertThat(4).isEqualTo(statisticService.streakHabits(person).size());
     }
 
     @Test
@@ -86,7 +87,8 @@ public class StatisticServiceTest {
                .thenReturn(List.of(logBook1, logBook2, logBook3, logBook4, logBook5, logBook6, logBook7, logBook8, logBook9, logBook10, logBook11));
 
         StatisticService statisticService = new StatisticServiceImplementation(habitRepositoryMockito, logBookRepositoryMockito);
-        Assertions.assertEquals(79, Math.ceil(statisticService.percentSuccess(person)));
+
+        assertThat(79).isEqualTo(Math.ceil(statisticService.percentSuccess(person)));
     }
 
     @Test
@@ -118,8 +120,8 @@ public class StatisticServiceTest {
                .thenReturn(List.of(logBook1, logBook2, logBook3, logBook4, logBook5, logBook6, logBook7, logBook8, logBook9, logBook10, logBook11));
 
         StatisticService statisticService = new StatisticServiceImplementation(habitRepositoryMockito, logBookRepositoryMockito);
-        Assertions.assertEquals(9, statisticService.progressHabit(person).get(habit1));
-        
+
+        assertThat(9).isEqualTo(statisticService.progressHabit(person).get(habit1));
     }
 
 

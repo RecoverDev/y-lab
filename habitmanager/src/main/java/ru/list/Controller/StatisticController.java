@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import ru.list.Model.Habit;
-import ru.list.Model.LogBook;
 import ru.list.Model.Person;
 import ru.list.Out.StatisticView;
 import ru.list.Service.StatisticService;
@@ -22,8 +21,6 @@ public class StatisticController {
 
     public StatisticController(Person person, StatisticService statisticService) {
         this.currentPerson = person;
-        // this.habitService = habitService;
-        // this.logBookService = logBookService;
         this.statisticService = statisticService;
         statisticView = new StatisticView();
     }
@@ -32,20 +29,10 @@ public class StatisticController {
         int answer = statisticView.showMenu();
 
         switch (answer) {
-            case 1: //текущая серия выполнения привычек
-                streakHabits();
-                break;
-            case 2: //процент успешного выполнения привычек
-                percentSuccess();
-                break;
-            case 3: //процент успешного выполнения привычек
-                progressHabit();
-                break;
-            case 4: //статистика выполнения привычки
-                executionHabit();
-                break;
-            default:
-                break;
+            case 1 -> streakHabits();
+            case 2 -> percentSuccess();
+            case 3 -> progressHabit();
+            case 4 -> executionHabit();
         }
     }
 
@@ -53,12 +40,7 @@ public class StatisticController {
      * Streak
      */
     private void streakHabits() {
-        List<LogBook> result = statisticService.streakHabits(currentPerson);
-        List<String> strResult = result.stream()
-                                       .sorted((l1,l2) -> l1.getDate().compareTo(l2.getDate()))
-                                       .map(l -> String.format("%s - %s", l.getHabit().getName(),l.getDate().toString()))
-                                       .toList();
-        statisticView.showStatistic(strResult);
+        statisticView.showStatistic(statisticService.streakHabitsByString(currentPerson));
     }
 
     /**

@@ -21,17 +21,9 @@ public class AdminController implements ObserveController{
         int answer = adminView.showMenu();
 
         switch (answer) {
-            case 1: //список пользователей
-                showPersons();
-                break;
-            case 2: //удалить пользователя
-                deletePerson();
-                break;
-            case 3: //блокировка пользователя
-                blockedPerson();
-                break;
-            default:
-                break;
+            case 1 -> showPersons();
+            case 2 -> deletePerson();
+            case 3 -> blockedPerson();
         }
         this.observe(answer);
     }

@@ -11,12 +11,14 @@ public class StatisticView {
     Response response = new Response();
 
     public int showMenu() {
-        out.println("1. Текущая серия выполнения привычек");
-        out.println("2. Процент успешного выполнения привычек");
-        out.println("3. Прогресс выполнения привычки");
-        out.println("4. Статискина выполнения привычки");
+        String strMenu = """
+            1. Текущая серия выполнения привычек
+            2. Процент успешного выполнения привычек
+            3. Прогресс выполнения привычки
+            4. Статистика выполнения привычки
 
-        out.println("");
+                """;
+        out.println(strMenu);
 
         return response.getInt("Введите номер пункта меню: ");
     }

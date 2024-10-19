@@ -1,4 +1,5 @@
-import org.junit.jupiter.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +15,8 @@ public class PersonRepositoryTest {
         PersonRepository repository = new PersonRepositoryImplementation();
         Person person = new Person(1,"FirstPerson","email@server.ru","password",0,true);
         
-        Assertions.assertTrue(repository.save(person));
-        Assertions.assertEquals(1, repository.findAll().size());
+        assertThat(repository.save(person)).isTrue();
+        assertThat(1).isEqualTo(repository.findAll().size());
     }
 
     @Test
@@ -28,8 +29,8 @@ public class PersonRepositoryTest {
         repository.save(person1);
         repository.save(person2);
 
-        Assertions.assertEquals(1, repository.findAll().size());
-        Assertions.assertEquals(person1, repository.findByEmailAndPassword(person1.getEmail(), person1.getPassword()));
+        assertThat(1).isEqualTo(repository.findAll().size());
+        assertThat(person1).isEqualTo(repository.findByEmailAndPassword(person1.getEmail(), person1.getPassword()));
     }
 
     @Test
@@ -39,7 +40,7 @@ public class PersonRepositoryTest {
         Person person1 = new Person(1,"FirstPerson","email@server.ru","password",0,true);
         repository.save(person1);
 
-        Assertions.assertNull(repository.findByEmailAndPassword("fantom@server.ru", "empty"));
+        assertThat(repository.findByEmailAndPassword("fantom@server.ru", "empty")).isNull();
     }
 
     @Test
@@ -52,9 +53,9 @@ public class PersonRepositoryTest {
         repository.save(person1);
         repository.save(person2);
 
-        Assertions.assertTrue(repository.delete(person1));
-        Assertions.assertEquals(1, repository.findAll().size());
-        Assertions.assertEquals(person2, repository.findByEmailAndPassword(person2.getEmail(), person2.getPassword()));
+        assertThat(repository.delete(person1)).isTrue();
+        assertThat(1).isEqualTo(repository.findAll().size());
+        assertThat(person2).isEqualTo(repository.findByEmailAndPassword(person2.getEmail(), person2.getPassword()));
     }
 
     @Test
@@ -68,9 +69,8 @@ public class PersonRepositoryTest {
         repository.save(person1);
         repository.save(person2);
 
-        Assertions.assertTrue(repository.exist(person2));
-        Assertions.assertFalse(repository.exist(person3));
-
+        assertThat(repository.exist(person2)).isTrue();
+        assertThat(repository.exist(person3)).isFalse();
     }
 
     @Test
@@ -83,8 +83,8 @@ public class PersonRepositoryTest {
         repository.save(person1);
         repository.save(person2);
 
-        Assertions.assertEquals(person1, repository.findByPassword("password"));
-        Assertions.assertNull(repository.findByPassword("key"));
+        assertThat(person1).isEqualTo(repository.findByPassword("password"));
+        assertThat(repository.findByPassword("key")).isNull();
     }
 
 }

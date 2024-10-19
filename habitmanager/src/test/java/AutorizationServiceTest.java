@@ -1,5 +1,6 @@
 
-import org.junit.jupiter.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -26,9 +27,7 @@ public class AutorizationServiceTest {
 
         Person person = autorizationService.autorizate("user@server.com", "password");
 
-        Assertions.assertEquals("Test User", person.getName());
-
-
+        assertThat("Test User").isEqualTo(person.getName());
     }
 
 }

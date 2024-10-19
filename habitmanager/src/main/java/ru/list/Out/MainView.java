@@ -11,10 +11,13 @@ public class MainView {
      * выводит заголовок программы
      */
     public static void showTitle() {
-        out.print("\033[H\033[J");
-        out.println("Программа \"Habit Manager\"");
-        out.println("для выхода нажмите \"0\"");
-        out.println();
+        String txtTitle = """
+            \033[H\033[J
+            Программа \"Habit Manager\"
+            для выхода нажмите \"0\"
+
+                """;
+        out.print(txtTitle);
     }
 
     /**

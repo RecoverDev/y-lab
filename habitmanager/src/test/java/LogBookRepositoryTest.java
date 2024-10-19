@@ -1,7 +1,8 @@
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.time.LocalDate;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +25,8 @@ public class LogBookRepositoryTest {
 
         LogBook logBook = new LogBook(1,LocalDate.now(),habit1);
 
-        Assertions.assertTrue(repository.save(logBook));
-        Assertions.assertEquals(1, repository.findAll().size());
+        assertThat(repository.save(logBook)).isTrue();
+        assertThat(1).isEqualTo(repository.findAll().size());
     }
 
     @Test
@@ -42,8 +43,8 @@ public class LogBookRepositoryTest {
         repository.save(logBook1);
         repository.save(logBook2);
 
-        Assertions.assertTrue(repository.delete(logBook1));
-        Assertions.assertEquals(1, repository.findAll().size());
+        assertThat(repository.delete(logBook1)).isTrue();
+        assertThat(1).isEqualTo(repository.findAll().size());
     }
 
     @Test
@@ -70,8 +71,8 @@ public class LogBookRepositoryTest {
 
         List<LogBook> logBooks = repository.findByPerson(person2);
 
-        Assertions.assertEquals(2, logBooks.size());
-        Assertions.assertEquals("Третья полезная привычка", logBooks.get(0).getHabit().getName());
+        assertThat(2).isEqualTo(logBooks.size());
+        assertThat("Третья полезная привычка").isEqualTo(logBooks.get(0).getHabit().getName());
     }
 
     @Test
@@ -97,7 +98,8 @@ public class LogBookRepositoryTest {
         repository.save(logBook4);
 
         List<LogBook> logBooks = repository.findAll();
-        Assertions.assertEquals(4, logBooks.size());
+
+        assertThat(4).isEqualTo(logBooks.size());
     }
 
 }

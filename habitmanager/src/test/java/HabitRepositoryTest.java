@@ -1,7 +1,8 @@
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.time.LocalDate;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +21,8 @@ public class HabitRepositoryTest {
         Person person = new Person(1,"FirstPerson","email@server.ru","password",0,true);
         Habit habit = new Habit(1,"Полезная привычка","Очень полезная привычка", person, Period.daily,LocalDate.now());
 
-        Assertions.assertTrue(repository.save(habit));
-        Assertions.assertEquals(1, repository.findAll().size());
+        assertThat(repository.save(habit)).isTrue();
+        assertThat(repository.findAll().size()).isEqualTo(1);
     }
 
     @Test
@@ -35,8 +36,8 @@ public class HabitRepositoryTest {
         repository.save(habit1);
         repository.save(habit2);
 
-        Assertions.assertTrue(repository.delete(habit1));
-        Assertions.assertEquals(1, repository.findAll().size());
+        assertThat(repository.delete(habit1)).isTrue();
+        assertThat(repository.findAll().size()).isEqualTo(1);
     }
 
     @Test
@@ -59,7 +60,7 @@ public class HabitRepositoryTest {
 
         List<Habit> habits = repository.findByPerson(person1);
 
-        Assertions.assertEquals(2, habits.size());
+        assertThat(2).isEqualTo(habits.size());
     }
 
     @Test
@@ -80,8 +81,7 @@ public class HabitRepositoryTest {
         repository.save(habit3);
         repository.save(habit4);
 
-        Assertions.assertEquals(4, repository.findAll().size());
-
+        assertThat(4).isEqualTo(repository.findAll().size());
     }
 
 }

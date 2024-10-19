@@ -19,11 +19,14 @@ public class AutorizateView {
      * @return - номер пункта меню
      */
     public int StartView() {
-        out.println("1. Вход");
-        out.println("2. Регистрация");
-        out.println();
-        out.println("0. Завершить работу");
-        out.println();
+        String txtMenu = """
+            1. Вход
+            2. Регистрация
+
+            0. Завершить работу
+
+                """;
+        out.println(txtMenu);
 
         return response.getInt("Введите номер пункта меню: ");
     }

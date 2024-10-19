@@ -1,14 +1,15 @@
 package ru.list.Repository.Implementation;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ru.list.Model.Habit;
 import ru.list.Model.Person;
 import ru.list.Repository.HabitRepository;
 
 public class HabitRepositoryImplementation implements HabitRepository {
-    private List<Habit> repository = new ArrayList<>();
+    private Set<Habit> repository = new HashSet<>();
 
     @Override
     public boolean save(Habit habit) {
@@ -27,7 +28,7 @@ public class HabitRepositoryImplementation implements HabitRepository {
 
     @Override
     public List<Habit> findAll() {
-        return repository;
+        return repository.stream().toList();
     }
 
     @Override
