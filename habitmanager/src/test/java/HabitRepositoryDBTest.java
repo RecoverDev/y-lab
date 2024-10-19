@@ -22,6 +22,7 @@ import org.testcontainers.junit.jupiter.Container;
 @Testcontainers
 public class HabitRepositoryDBTest {
 
+    @SuppressWarnings("resource")
     @Container
     private static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:14")
                     .withDatabaseName("habit_test")

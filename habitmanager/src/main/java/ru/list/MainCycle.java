@@ -41,6 +41,7 @@ public class MainCycle implements Observe {
     private boolean repeat = true;
 
     public MainCycle(DBConnection connection) {
+        connection.connect();
         personRepository = new PersonRepositoryDBImplementation(connection.getConnection());
         habitRepository = new HabitRepositoryDBImplementation(connection.getConnection());
         logBookRepository = new LogBookRepositoryImplementation();
@@ -83,6 +84,7 @@ public class MainCycle implements Observe {
         }
         MainView.showFinal();
     }
+    
 
     @Override
     public void observe(Object o) {

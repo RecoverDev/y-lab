@@ -22,6 +22,7 @@ import ru.list.Repository.DBImplementation.LogBookRepositoryDBImplementation;
 @Testcontainers
 public class LogBookRepositoryDBTest {
 
+    @SuppressWarnings("resource")
     @Container
     private static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:14")
                     .withDatabaseName("habit_test")
