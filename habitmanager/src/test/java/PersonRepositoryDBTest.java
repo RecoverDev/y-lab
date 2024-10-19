@@ -79,7 +79,7 @@ public class PersonRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat("Test User3").hasToString(person.getName());
+        assertThat(person.getName()).hasToString("Test User3");
     }
 
     @Test
@@ -95,7 +95,7 @@ public class PersonRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat("Test User").hasToString(person.getName());
+        assertThat(person.getName()).hasToString("Test User");
     }
 
     @Test
@@ -111,7 +111,7 @@ public class PersonRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat(3).isEqualTo(persons.size());
+        assertThat(persons.size()).isEqualTo(3);
     }
 
     @Test
