@@ -41,4 +41,14 @@ public class PersonServiceImplementation implements PersonService {
         return repository.findAll();
     }
 
+    @Override
+    public void editPersonFromString(Person person, List<String> data) {
+        if (data.size() == 3) {
+            person.setName(data.get(0));
+            person.setEmail(data.get(1));
+            person.setPassword(data.get(2));
+            this.editPerson(person);
+        }
+    }
+
 }

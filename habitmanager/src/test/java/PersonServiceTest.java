@@ -1,6 +1,7 @@
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -26,7 +27,7 @@ public class PersonServiceTest {
 
         PersonService personService = new PersonServiceImplementation(personRepositoryMockito);
 
-        Assertions.assertTrue(personService.addPerson(person));
+        assertThat(personService.addPerson(person)).isTrue();
     }
 
     @Test
@@ -38,7 +39,7 @@ public class PersonServiceTest {
 
         PersonService personService = new PersonServiceImplementation(personRepositoryMockito);
 
-        Assertions.assertTrue(personService.deletePerson(person));
+        assertThat(personService.deletePerson(person)).isTrue();
     }
 
     @Test
@@ -51,9 +52,7 @@ public class PersonServiceTest {
 
         PersonService personService = new PersonServiceImplementation(personRepositoryMockito);
 
-        Assertions.assertEquals(2, personService.getPersons().size());
-
-
+        assertThat(2).isEqualTo(personService.getPersons().size());
     }
 
 }

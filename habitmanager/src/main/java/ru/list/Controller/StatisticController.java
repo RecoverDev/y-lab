@@ -22,8 +22,6 @@ public class StatisticController {
 
     public StatisticController(Person person, StatisticService statisticService) {
         this.currentPerson = person;
-        // this.habitService = habitService;
-        // this.logBookService = logBookService;
         this.statisticService = statisticService;
         statisticView = new StatisticView();
     }
@@ -43,12 +41,7 @@ public class StatisticController {
      * Streak
      */
     private void streakHabits() {
-        List<LogBook> result = statisticService.streakHabits(currentPerson);
-        List<String> strResult = result.stream()
-                                       .sorted((l1,l2) -> l1.getDate().compareTo(l2.getDate()))
-                                       .map(l -> String.format("%s - %s", l.getHabit().getName(),l.getDate().toString()))
-                                       .toList();
-        statisticView.showStatistic(strResult);
+        statisticView.showStatistic(statisticService.streakHabitsByString(currentPerson));
     }
 
     /**

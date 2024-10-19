@@ -19,6 +19,12 @@ public interface StatisticService {
      */
     public List<LogBook> streakHabits(Person person);
     /**
+     * получение непрерывной последовательности выполнения привычек в виде строк
+     * @param person - пользователь, по которому получается последовательность
+     * @return List<String>
+     */
+    public List<String> streakHabitsByString(Person person);
+    /**
      * получение процента успешного выполнения привычек
      * @param person  - пользователь, по которому получается последовательность
      * @return - процент

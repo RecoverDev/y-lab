@@ -27,6 +27,12 @@ public interface PersonService {
      */
     void editPerson(Person person);
     /**
+     * Изменение пользователя по строковым данным
+     * @param person - пользователь
+     * @param data - данные для изменения
+     */
+    void editPersonFromString(Person person, List<String> data);
+    /**
      * Возвращает список всех пользователей
      * @return List<Person> 
      */

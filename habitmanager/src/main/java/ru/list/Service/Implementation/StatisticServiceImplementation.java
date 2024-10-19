@@ -89,4 +89,13 @@ public class StatisticServiceImplementation implements StatisticService {
         return result;
     }
 
+    @Override
+    public List<String> streakHabitsByString(Person person) {
+        List<LogBook> result = this.streakHabits(person);
+        return result.stream()
+                     .sorted((l1,l2) -> l1.getDate().compareTo(l2.getDate()))
+                     .map(l -> String.format("%s - %s", l.getHabit().getName(),l.getDate().toString()))
+                     .toList();
+    }
+
 }

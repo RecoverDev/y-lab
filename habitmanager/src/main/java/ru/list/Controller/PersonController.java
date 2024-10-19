@@ -111,46 +111,23 @@ public class PersonController implements ObserveController {
         List<String> habitData;
 
         habitData = personView.addHabitView();
-        if (habitData.size() == 3) {
-            int nomPeriod = Integer.parseInt(habitData.get(2));
-            Habit habit = new Habit(habitData.get(0), habitData.get(1), currentPerson, Period.values()[nomPeriod - 1], LocalDate.now());
-            habitService.addHabit(habit);
-        }
+        habitService.addHabitFromString(currentPerson, habitData);
     }
 
     /**
      * удаление привычки пользователя
      */
     private void deleteHabit() {
-        List<Habit> habits = habitService.getHabitsByPerson(currentPerson);
-        List<String> strHabits = new ArrayList<>();
-        int i = 1;
-        for (Habit habit : habits) {
-            strHabits.add(String.format("%d. %s - %s", i++, habit.getName(),habit.getPeriod().name()));
-        }
-        int position = personView.choiceHabit(strHabits);
-
-        if (position > 0 & position <= habits.size()) {
-            habitService.deleteHabit(habits.get(position - 1));
-        }
+        int position = personView.choiceHabit(habitService.getHabitByPersonAsString(currentPerson));
+        habitService.deleteHabitByPosition(currentPerson, position);
     }
 
     /**
      * Добавление новой записи о выполнении привычки
      */
     private void addLogBook() {
-        List<Habit> habits = habitService.getHabitsByPerson(currentPerson);
-        List<String> strHabits = new ArrayList<>();
-        int i = 1;
-        for (Habit habit : habits) {
-            strHabits.add(String.format("%d. %s - %s", i++, habit.getName(),habit.getPeriod().getDescription()));
-        }
-        int position = personView.choiceHabit(strHabits);
-
-        if (position > 0 & position <= habits.size()) {
-            LogBook logBook = new LogBook(LocalDate.now(), habits.get(position - 1));
-            logBookService.addLogBook(logBook);
-        }
+        int position = personView.choiceHabit(habitService.getHabitByPersonAsString(currentPerson));
+        logBookService.addLogBook(new LogBook(LocalDate.now(), habitService.getHAbitByPosition(currentPerson, position)));
     }
 
     private void personalAccount() {
