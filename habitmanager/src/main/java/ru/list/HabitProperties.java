@@ -17,7 +17,7 @@ public class HabitProperties {
         url = reader.readProperty("db.url");
         user = reader.readProperty("db.user");
         password = reader.readProperty("db.password");
-        changelogFile = reader.readProperty("liquibae.changelog");
+        changelogFile = reader.readProperty("liquibase.changelog");
     }
 
     public String getUrl() {

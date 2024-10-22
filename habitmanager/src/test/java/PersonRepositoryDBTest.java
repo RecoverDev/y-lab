@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -37,14 +36,12 @@ public class PersonRepositoryDBTest {
                     .withDatabaseName("habit_test")
                     .withUsername("postgres")
                     .withPassword("password");
-                    //.withInitScript("PersonTestData.sql");
 
     static {
         database.start();
         InitializateBase();
     }
 
-    
     private static void InitializateBase() {
         try (Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
