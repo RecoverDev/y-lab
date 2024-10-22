@@ -12,7 +12,7 @@ public class Main {
         HabitProperties properties = new HabitProperties("application.properties");
         properties.load();
 
-        DBConnection connection = new DBConnection(properties);
+        DBConnection connection = new DBConnection(properties, logger);
         connection.connect();
         
         Migration migration = new Migration(connection.getConnection());

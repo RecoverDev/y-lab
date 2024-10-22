@@ -6,12 +6,19 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.LiquibaseException;
+import liquibase.resource.ClassLoaderResourceAccessor;
 import ru.list.Db.DBConnection;
 import ru.list.Model.Person;
 import ru.list.Repository.PersonRepository;
@@ -29,11 +36,24 @@ public class PersonRepositoryDBTest {
     private static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:14")
                     .withDatabaseName("habit_test")
                     .withUsername("postgres")
-                    .withPassword("password")
-                    .withInitScript("PersonTestData.sql");
+                    .withPassword("password");
+                    //.withInitScript("PersonTestData.sql");
 
     static {
-        database.start();;
+        database.start();
+        InitializateBase();
+    }
+
+    
+    private static void InitializateBase() {
+        try (Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
+            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+            Liquibase liquibase = new Liquibase("db/changelog/changelog.xml", new ClassLoaderResourceAccessor(), database);
+            liquibase.update();
+            liquibase.close();
+        } catch (SQLException | LiquibaseException e) {
+            System.out.println("Ошибка миграции при создании контейнера");
+        }
     }
 
     @Mock
@@ -50,6 +70,7 @@ public class PersonRepositoryDBTest {
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
             dbConnectionMockito = Mockito.mock(DBConnection.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
             PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito,loggerMockito);
             Person person = new Person(0,"Test User4", "user4@server.com", "222", 0, true);

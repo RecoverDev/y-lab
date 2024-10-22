@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import ru.list.HabitProperties;
+import ru.list.logger.Logger;
 
 /**
  * класс создает соедитение с базой данных
@@ -14,8 +15,10 @@ public class DBConnection {
     private String password;
     private String url;
     private Connection connection = null;
+    private Logger logger = null;
 
-    public DBConnection(HabitProperties properties) {
+    public DBConnection(HabitProperties properties, Logger logger) {
+        this.logger = logger;
         this.userName = properties.getUser();
         this.password = properties.getPassword();
         this.url = properties.getUrl();
@@ -32,6 +35,7 @@ public class DBConnection {
             connection = DriverManager.getConnection(url, userName, password);
             result = true;
         } catch(SQLException e) {
+            logger.addRecord("Ошибка подключении к БД при миграции: ", false);
         }
 
         return result;
@@ -52,7 +56,7 @@ public class DBConnection {
         try {
             connection.close();
         } catch(SQLException e) {
-
+            logger.addRecord("Ошибка закрытия соединения с БД при миграции", false);
         }
     }
 }

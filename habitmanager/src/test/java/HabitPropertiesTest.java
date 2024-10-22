@@ -7,16 +7,6 @@ import ru.list.HabitProperties;
 
 public class HabitPropertiesTest {
 
-    @Test
-    @DisplayName("Загрузка файла")
-    public void habitPropertiesOpenFile() {
-        String nameFile = "application.properties";
-        HabitProperties properties = new HabitProperties(nameFile);
-
-        boolean result = properties.load();
-
-        assertThat(result).isTrue();
-    }
 
     @Test
     @DisplayName("Получение значений")

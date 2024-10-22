@@ -1,39 +1,23 @@
 package ru.list;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Properties;
-
 public class HabitProperties {
     private String url;
     private String user;
     private String password;
     private String changelogFile;
 
-    private String fileName;
+    private PropertiesReader reader = null;
 
     public HabitProperties(String fileName) {
-        this.fileName = fileName;
+        this.reader = new PropertiesReader(fileName);
     }
 
-    public boolean load() {
-        Properties properties = new Properties();
-        boolean result = false;
+    public void load() {
 
-        try (FileReader reader =  new FileReader(getClass().getResource("/" + fileName).toURI().getPath())) {
-            properties.load(reader);
-            url = properties.getProperty("db.url");
-            user = properties.getProperty("db.user");
-            password = properties.getProperty("db.password");
-            changelogFile = properties.getProperty("liquibase.changelog");
-            result = true;
-
-        } catch (IOException | URISyntaxException e ) {
-            
-        }
-
-        return result;
+        url = reader.readProperty("db.url");
+        user = reader.readProperty("db.user");
+        password = reader.readProperty("db.password");
+        changelogFile = reader.readProperty("liquibae.changelog");
     }
 
     public String getUrl() {

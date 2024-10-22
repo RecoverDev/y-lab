@@ -13,6 +13,12 @@ import org.mockito.Mockito;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.LiquibaseException;
+import liquibase.resource.ClassLoaderResourceAccessor;
 import ru.list.Db.DBConnection;
 import ru.list.Model.Habit;
 import ru.list.Model.Period;
@@ -31,12 +37,24 @@ public class HabitRepositoryDBTest {
     private static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:14")
                     .withDatabaseName("habit_test")
                     .withUsername("postgres")
-                    .withPassword("password")
-                    .withInitScript("HabitTestData.sql");
+                    .withPassword("password");
 
     static {
-        database.start();;
+        database.start();
+        InitializateBase();
     }
+
+    private static void InitializateBase() {
+        try (Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
+            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+            Liquibase liquibase = new Liquibase("db/changelog/changelog.xml", new ClassLoaderResourceAccessor(), database);
+            liquibase.update();
+            liquibase.close();
+        } catch (SQLException | LiquibaseException e) {
+            System.out.println("Ошибка миграции при создании контейнера");
+        }
+    }
+
 
     @Mock
     DBConnection dbConnectionMockito;
