@@ -7,12 +7,16 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import ru.list.Db.DBConnection;
 import ru.list.Model.Person;
 import ru.list.Repository.PersonRepository;
 import ru.list.Repository.DBImplementation.PersonRepositoryDBImplementation;
+import ru.list.logger.Logger;
 
 import org.testcontainers.junit.jupiter.Container;
 
@@ -32,13 +36,22 @@ public class PersonRepositoryDBTest {
         database.start();;
     }
 
+    @Mock
+    DBConnection dbConnectionMockito;
+
+    @Mock
+    Logger loggerMockito;
+
     @Test
     @DisplayName("Добавление пользователя")
     public void PersonRepositoryAddPerson() throws SQLException {
         boolean result = false;
         
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            PersonRepository repository = new PersonRepositoryDBImplementation(connection);
+            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito,loggerMockito);
             Person person = new Person(0,"Test User4", "user4@server.com", "222", 0, true);
     
             result = repository.save(person);
@@ -55,7 +68,10 @@ public class PersonRepositoryDBTest {
         boolean result = false;
         
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            PersonRepository repository = new PersonRepositoryDBImplementation(connection);
+            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
             Person person = new Person(2,"Test User2", "user2@server.com", "222", 0, true);
     
             result = repository.delete(person);
@@ -72,7 +88,10 @@ public class PersonRepositoryDBTest {
         Person person = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            PersonRepository repository = new PersonRepositoryDBImplementation(connection);
+            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
     
             person = repository.findByEmailAndPassword("admin@server.com", "1234");
         }  catch (SQLException e) {
@@ -88,7 +107,10 @@ public class PersonRepositoryDBTest {
         Person person = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            PersonRepository repository = new PersonRepositoryDBImplementation(connection);
+            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
     
             person = repository.findByPassword("111");
         }  catch (SQLException e) {
@@ -104,7 +126,10 @@ public class PersonRepositoryDBTest {
         List<Person> persons = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            PersonRepository repository = new PersonRepositoryDBImplementation(connection);
+            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
     
             persons = repository.findAll();
         }  catch (SQLException e) {
@@ -120,7 +145,10 @@ public class PersonRepositoryDBTest {
         boolean result = false;
         
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            PersonRepository repository = new PersonRepositoryDBImplementation(connection);
+            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
             Person person = new Person(2,"Test User2", "user2@server.com", "222", 0, true);
     
             result = repository.exist(person);

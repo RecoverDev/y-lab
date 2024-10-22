@@ -8,14 +8,18 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import ru.list.Db.DBConnection;
 import ru.list.Model.Habit;
 import ru.list.Model.Period;
 import ru.list.Model.Person;
 import ru.list.Repository.HabitRepository;
 import ru.list.Repository.DBImplementation.HabitRepositoryDBImplementation;
+import ru.list.logger.Logger;
 
 import org.testcontainers.junit.jupiter.Container;
 
@@ -34,12 +38,23 @@ public class HabitRepositoryDBTest {
         database.start();;
     }
 
+    @Mock
+    DBConnection dbConnectionMockito;
+
+    @Mock
+    Logger loggerMockito;
+
+
     @Test
     @DisplayName("Добавляем новую привычку")
     public void HabitRepositoryAddHabitTest() {
         boolean result = false;
+
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            HabitRepository repository = new HabitRepositoryDBImplementation(connection);
+            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
             Person person = new Person(2,"Test User2", "user2@server.com", "222", 0, true);
             Habit habit = new Habit(0,"good habit", "very good habit", person,Period.daily,LocalDate.now());
     
@@ -56,7 +71,10 @@ public class HabitRepositoryDBTest {
     public void HabitRepositoryDeleteHabitTest() {
         boolean result = false;
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            HabitRepository repository = new HabitRepositoryDBImplementation(connection);
+            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
             Habit habit = new Habit(2,"call mom","call mom every day",person,Period.daily,LocalDate.of(2014,10,01));
     
@@ -74,7 +92,10 @@ public class HabitRepositoryDBTest {
         List<Habit> habits = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            HabitRepository repository = new HabitRepositoryDBImplementation(connection);
+            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            
+            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito,loggerMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
     
             habits = repository.findByPerson(person);
@@ -91,7 +112,10 @@ public class HabitRepositoryDBTest {
         List<Habit> habits = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            HabitRepository repository = new HabitRepositoryDBImplementation(connection);
+            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            
+            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
     
             habits = repository.findAll();
         }  catch (SQLException e) {
@@ -107,7 +131,10 @@ public class HabitRepositoryDBTest {
     public void HabitRepositoryExistHabitTest() {
         boolean result = false;
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            HabitRepository repository = new HabitRepositoryDBImplementation(connection);
+            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
             Habit habit = new Habit(2,"call mom","call mom every day",person,Period.daily,LocalDate.of(2014,10,01));
     

@@ -22,6 +22,7 @@ import ru.list.Service.Implementation.HabitServiceImplementation;
 import ru.list.Service.Implementation.LogBookServiceImplementation;
 import ru.list.Service.Implementation.PersonServiceImplementation;
 import ru.list.Service.Implementation.StatisticServiceImplementation;
+import ru.list.logger.Logger;
 
 /*
  * главный цикл программы
@@ -38,13 +39,13 @@ public class MainCycle implements Observe {
     private AutorizationController autorizationController = null;
     private PersonController personController = null;
     private AdminController adminController = null;
+
     private boolean repeat = true;
 
-    public MainCycle(DBConnection connection) {
-        connection.connect();
-        personRepository = new PersonRepositoryDBImplementation(connection.getConnection());
-        habitRepository = new HabitRepositoryDBImplementation(connection.getConnection());
-        logBookRepository = new LogBookRepositoryDBImplementation(connection.getConnection());
+    public MainCycle(DBConnection connection, Logger logger) {
+        personRepository = new PersonRepositoryDBImplementation(connection, logger);
+        habitRepository = new HabitRepositoryDBImplementation(connection, logger);
+        logBookRepository = new LogBookRepositoryDBImplementation(connection, logger);
 
         personService = new PersonServiceImplementation(personRepository);
         habitService = new HabitServiceImplementation(habitRepository, logBookRepository);
