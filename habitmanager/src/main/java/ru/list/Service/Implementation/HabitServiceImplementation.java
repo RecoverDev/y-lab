@@ -98,4 +98,10 @@ public class HabitServiceImplementation implements HabitService {
         return false;
     }
 
+
+    @Override
+    public Habit getById(int id) {
+        return repository.findById(id);
+    }
+
 }

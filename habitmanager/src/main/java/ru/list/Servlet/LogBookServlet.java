@@ -9,20 +9,32 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.list.ApplicationData;
-import ru.list.Controller.HabitController;
+import ru.list.Controller.LogBookController;
 
-@WebServlet("/habits")
-public class HabitServlet extends HttpServlet {
+@WebServlet("/logbooks")
+public class LogBookServlet extends HttpServlet {
     ApplicationData applicationData = null;
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         applicationData = ApplicationData.getInstance();
-        HabitController habitController = applicationData.getHabitController();
-        String response = habitController.getHabits();
+        LogBookController logbookController = applicationData.getLogBookController();
+
+        String strId = req.getParameter("id");
+        String response = "";
+
+        if (strId != null) {
+            int id = Integer.parseInt(strId);
+            response = logbookController.getLogBooks(id);
+        }
+
 
         PrintWriter out = resp.getWriter();
-        resp.setStatus(200);
+        if (response.isEmpty()) {
+            resp.setStatus(204); // NO CONTENT
+        } else {
+            resp.setStatus(200); // OK
+        }
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         out.print(response);
@@ -32,11 +44,11 @@ public class HabitServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         applicationData = ApplicationData.getInstance();
-        HabitController habitController = applicationData.getHabitController();
-        String jsonHabit = req.getParameter("habit");
+        LogBookController logbookController = applicationData.getLogBookController();
+        String jsonLogbook = req.getParameter("logbook");
         boolean result = false;
-        if (jsonHabit != null) {
-            result = habitController.addHabit(jsonHabit);
+        if (jsonLogbook != null) {
+            result = logbookController.addLogbook(jsonLogbook);
         }
 
         if (result) {
@@ -46,23 +58,6 @@ public class HabitServlet extends HttpServlet {
         }
     }
 
-    @Override
-    public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        applicationData = ApplicationData.getInstance();
-        HabitController habitController = applicationData.getHabitController();
-        String strId = req.getParameter("id");
-        boolean result = false;
-
-        if (strId != null) {
-            int id = Integer.parseInt(strId);
-            result = habitController.deleteHabit(id);
-        }
-        
-        if (result) {
-            resp.setStatus(200); //OK
-        } else {
-            resp.setStatus(304); //NOT MODIFIED
-        }
-    }
-
 }
+
+

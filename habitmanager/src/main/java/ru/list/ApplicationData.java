@@ -3,6 +3,7 @@ package ru.list;
 import ru.list.Controller.AdminController;
 import ru.list.Controller.AutorizationController;
 import ru.list.Controller.HabitController;
+import ru.list.Controller.LogBookController;
 import ru.list.Controller.PersonController;
 import ru.list.Controller.StatisticController;
 import ru.list.Db.DBConnection;
@@ -52,6 +53,7 @@ public class ApplicationData implements Observe{
     PersonController personController = null;
     StatisticController statisticController = null;
     HabitController habitController = null;
+    LogBookController logBookController = null;
 
     private final static ApplicationData application = new ApplicationData();
 
@@ -78,11 +80,14 @@ public class ApplicationData implements Observe{
             autorizationService = new AutorizationServiceImplementation(personRepository);
 
             adminController = new AdminController(personService);
-            autorizationController = new AutorizationController(autorizationService, personService);
+            autorizationController = new AutorizationController(personService);
             autorizationController.addListener(this);
             personController = new PersonController(personService, habitService, logBookService, statisticService);
             statisticController = new StatisticController(null, statisticService);
             habitController = new HabitController(habitService, personService, logger);
+            habitController.addListener(this);
+            logBookController = new LogBookController(logBookService, habitService);
+            logBookController.addListener(this);
         } else {
             logger.addRecord("Ошибка миграции", false);
         }
@@ -111,8 +116,12 @@ public class ApplicationData implements Observe{
         return statisticController;
     }
 
-    public HabitController gHabitController() {
+    public HabitController getHabitController() {
         return habitController;
+    }
+
+    public LogBookController getLogBookController() {
+        return logBookController;
     }
 
     @Override
@@ -120,6 +129,7 @@ public class ApplicationData implements Observe{
         if (o instanceof Person person) {
             statisticController.setCurrentPerson(person);
             habitController.setCurrentPerson(person);
+            logBookController.setCurrentPerson(person);
         }
     }
 

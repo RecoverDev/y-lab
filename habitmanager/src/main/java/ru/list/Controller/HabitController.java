@@ -6,7 +6,7 @@ import java.util.List;
 import ru.list.Observe;
 import ru.list.DTO.HabitResponse;
 import ru.list.DTO.JsonConverter;
-import ru.list.Mapper.HabitMaper;
+import ru.list.Mapper.HabitMapper;
 import ru.list.Model.Habit;
 import ru.list.Model.Person;
 import ru.list.Service.HabitService;
@@ -18,7 +18,7 @@ public class HabitController implements ObserveController{
     private List<Observe> listener = new ArrayList<>();
     private HabitService habitService = null;
     private PersonService personService = null;
-    private HabitMaper mapper = HabitMaper.INSTANCE;
+    private HabitMapper mapper = HabitMapper.INSTANCE;
     private Logger logger = null;
 
     public HabitController(HabitService habitService, PersonService personService, Logger logger) {

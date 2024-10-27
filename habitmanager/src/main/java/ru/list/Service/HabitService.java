@@ -60,5 +60,11 @@ public interface HabitService {
      * @return - привычка
      */
     Habit getHAbitByPosition(Person person, int position);
+    /**
+     * Получение привычки по id
+     * @param id - идентификатор привычки
+     * @return - Habit
+     */
+    Habit getById(int id);
 
 }

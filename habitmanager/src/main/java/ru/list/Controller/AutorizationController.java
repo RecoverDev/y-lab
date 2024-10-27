@@ -5,22 +5,23 @@ import java.util.List;
 
 import ru.list.Observe;
 import ru.list.Model.Person;
-import ru.list.Out.AutorizateView;
-import ru.list.Service.AutorizationService;
 import ru.list.Service.PersonService;
 
 public class AutorizationController implements ObserveController{
-    private AutorizationService autorizationService = null;
     private PersonService personService = null;
-    private AutorizateView autorizateView = new AutorizateView();
 
-    public AutorizationController(AutorizationService autorizationService, PersonService personService) {
-        this.autorizationService = autorizationService;
+    public AutorizationController(PersonService personService) {
         this.personService = personService;
     }
 
     private List<Observe> listener = new ArrayList<>();
 
+    /**
+     * Авторизация пользователя
+     * @param email - E-mail пользователя
+     * @param password - пароль пользователя
+     * @return - результат добавления (true - успех/false - не успех)
+     */
     public boolean login(String email, String password) {
         if (email == null) {
             return false;
@@ -41,26 +42,11 @@ public class AutorizationController implements ObserveController{
 
     }
 
-    public Person startForm() {
-        List<String> personalData = new ArrayList<>();
-        Person person = null;
-        int result = autorizateView.StartView();
-
-        switch (result) {
-            case 1 -> {
-                personalData = autorizateView.LoginView();
-                person = autorizationService.autorizate(personalData.get(0), personalData.get(1));
-            }
-            case 2 -> {
-                personalData = autorizateView.RegistrationView();
-                if (personalData.size() == 4) {
-                    Person newPerson = new Person(0,personalData.get(0), personalData.get(1), personalData.get(2), Integer.parseInt(personalData.get(3)),true);
-                    personService.addPerson(newPerson);
-                }
-            }
-        }
-        this.observe(result);
-        return person;
+    /**
+     * выход пользователя из системы
+     */
+    public void logout() {
+        observe(null);
     }
 
     @Override

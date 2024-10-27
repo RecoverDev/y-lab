@@ -10,9 +10,9 @@ import ru.list.DTO.HabitResponse;
 import ru.list.Model.Habit;
 
 @Mapper
-public interface HabitMaper {
+public interface HabitMapper {
 
-    HabitMaper INSTANCE = Mappers.getMapper(HabitMaper.class);
+    HabitMapper INSTANCE = Mappers.getMapper(HabitMapper.class);
 
     @Mapping(target = "period_id", expression = "java(habit.getPeriod().ordinal())")
     @Mapping(target = "person_id", expression = "java(habit.getPerson().getId())")
@@ -24,5 +24,5 @@ public interface HabitMaper {
     @Mapping(target = "person", expression = "java(null)")
     Habit toHabit(HabitResponse habitResponse);
 
-
+    List<Habit> toListHabit(List<HabitResponse> habitResponses);
 }
