@@ -104,32 +104,59 @@
             <version>6.1.10</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.9.5</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>hm</finalName>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.11.0</version>
+            <configuration>
+                <annotationProcessorPaths>
+                    <path>
+                        <groupId>org.mapstruct</groupId>
+                        <artifactId>mapstruct-processor</artifactId>
+                        <version>${org.mapstruct.version}</version>
+                    </path>
+                    <path>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                    <version>${lombok.version}</version>
+                    </path>
+                    <path>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok-mapstruct-binding</artifactId>
+                    <version>${lombok.version}</version>
+                    </path>
+                </annotationProcessorPaths>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>aspectj-maven-plugin</artifactId>
+            <version>1.7</version>
+            <configuration>
+            <complianceLevel>1.8</complianceLevel>
+            <source>1.8</source>
+            <target>1.8</target>
+            <showWeaveInfo>true</showWeaveInfo>
+            <verbose>true</verbose>
+            <Xlint>ignore</Xlint>
+            <encoding>UTF-8</encoding>
+            </configuration>
+            <executions>
+            <execution>
+                <goals>
+                    <goal>compile</goal>
+                    <goal>test-compile</goal>
+                </goals>
+            </execution>
+            </executions>
+        </plugin>        
     </build>
-    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
-        <configuration>
-            <annotationProcessorPaths>
-                <path>
-                    <groupId>org.mapstruct</groupId>
-                    <artifactId>mapstruct-processor</artifactId>
-                    <version>${org.mapstruct.version}</version>
-                </path>
-                <path>
-                    <groupId>org.projectlombok</groupId>
-                    <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-                </path>
-                <path>
-                    <groupId>org.projectlombok</groupId>
-                    <artifactId>lombok-mapstruct-binding</artifactId>
-                <version>${lombok.version}</version>
-                </path>
-            </annotationProcessorPaths>
-        </configuration>
-    </plugin>    
 </project>
