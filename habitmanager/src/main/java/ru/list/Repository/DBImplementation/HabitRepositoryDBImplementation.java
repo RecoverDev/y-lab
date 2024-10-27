@@ -228,4 +228,48 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
         return result;
     }
 
+    @Override
+    public Habit findById(int id) {
+        Habit habit = null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String sql = String.format("SELECT * FROM %s h JOIN %s p ON h.person_id = p.id WHERE h.id = ?",nameTable,personTable);
+        if (!dbConnection.connect()) {
+            logger.addRecord("Ошибка подключения к базе при получении привычки", false);
+            return habit;
+        }
+        try {
+            connection = dbConnection.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Person person = new Person(resultSet.getInt("person_id"),
+                                resultSet.getString("username"),
+                                resultSet.getString("email"),
+                                resultSet.getString("password"),
+                                resultSet.getInt("role"),
+                                resultSet.getBoolean("blocked"));
+                habit = new Habit(resultSet.getInt("id"), 
+                                resultSet.getString("name_habit"),
+                                resultSet.getString("description"),
+                                person, 
+                                Period.values()[resultSet.getInt("period_id")],
+                                resultSet.getDate("registration").toLocalDate());
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            logger.addRecord("Ошибка получения списка привычек: " + e.getMessage(),false);
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
+            }
+        }
+
+        dbConnection.closeConnection();
+        return habit;  
+    }
+
 }

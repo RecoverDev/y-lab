@@ -28,7 +28,7 @@ public interface HabitService {
      * @param habit - удаляемая привычка
      * @return - результат операции (true - успех/false - неуспех)
      */
-    boolean deleteHabit(Habit habit);
+    boolean deleteHabit(int id);
     /**
      * Удаление привычки по номеру позиции
      * @param person - пользователь

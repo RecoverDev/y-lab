@@ -32,7 +32,6 @@ public class JsonConverter<T> {
             logger.addRecord("Ошибка получения объекта из JSON: " + e.getMessage(), false);
         } 
         return result;
-
     }
 
 }

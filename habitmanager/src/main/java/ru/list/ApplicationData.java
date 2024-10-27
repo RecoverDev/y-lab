@@ -2,6 +2,7 @@ package ru.list;
 
 import ru.list.Controller.AdminController;
 import ru.list.Controller.AutorizationController;
+import ru.list.Controller.HabitController;
 import ru.list.Controller.PersonController;
 import ru.list.Controller.StatisticController;
 import ru.list.Db.DBConnection;
@@ -50,6 +51,7 @@ public class ApplicationData implements Observe{
     AutorizationController autorizationController = null;
     PersonController personController = null;
     StatisticController statisticController = null;
+    HabitController habitController = null;
 
     private final static ApplicationData application = new ApplicationData();
 
@@ -80,6 +82,7 @@ public class ApplicationData implements Observe{
             autorizationController.addListener(this);
             personController = new PersonController(personService, habitService, logBookService, statisticService);
             statisticController = new StatisticController(null, statisticService);
+            habitController = new HabitController(habitService, personService, logger);
         } else {
             logger.addRecord("Ошибка миграции", false);
         }
@@ -108,11 +111,15 @@ public class ApplicationData implements Observe{
         return statisticController;
     }
 
+    public HabitController gHabitController() {
+        return habitController;
+    }
+
     @Override
     public void observe(Object o) {
         if (o instanceof Person person) {
-            personController.setCurrentPerson(person, logger);
             statisticController.setCurrentPerson(person);
+            habitController.setCurrentPerson(person);
         }
     }
 

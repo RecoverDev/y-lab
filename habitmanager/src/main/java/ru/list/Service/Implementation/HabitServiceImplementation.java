@@ -28,8 +28,9 @@ public class HabitServiceImplementation implements HabitService {
     }
 
     @Override
-    public boolean deleteHabit(Habit habit) {
+    public boolean deleteHabit(int id) {
 
+        Habit habit = repository.findById(id);
         List<LogBook> records = logBookRepository.findByHabit(habit);
         for (LogBook logBook : records) {
             if (!logBookRepository.delete(logBook)) {
