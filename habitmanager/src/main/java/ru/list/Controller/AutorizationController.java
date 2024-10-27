@@ -21,6 +21,26 @@ public class AutorizationController implements ObserveController{
 
     private List<Observe> listener = new ArrayList<>();
 
+    public boolean login(String email, String password) {
+        if (email == null) {
+            return false;
+        }
+        if (email.isEmpty()) {
+            return false;
+        }
+        if (password == null) {
+            return false;
+        }
+
+        Person person = personService.getPersonByEmailAndPassword(email, password);
+        if (person == null) {
+            return false;
+        }
+        observe(person);
+        return true;
+
+    }
+
     public Person startForm() {
         List<String> personalData = new ArrayList<>();
         Person person = null;

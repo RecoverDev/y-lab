@@ -17,10 +17,10 @@ public interface PersonService {
     boolean addPerson(Person person);
     /**
      * Удаление пользователя
-     * @param person - удаляемый пользователь
+     * @param id - идентификатор удаляемого пользователя
      * @return - результат операции (true - успех/false - неуспех)
      */
-    boolean deletePerson(Person person);
+    boolean deletePerson(int id);
     /**
      * Изменение пользователя
      * @param person - измененный пользователь
@@ -37,5 +37,18 @@ public interface PersonService {
      * @return List<Person> 
      */
     List<Person> getPersons();
+    /**
+     * получение пользователя по ID
+     * @param id - ID пользователя
+     * @return - Person
+     */
+    Person getPersonById(int id);
+    /**
+     * получение пользователя по логину и паролю
+     * @param email - E-mail
+     * @param password - пароль
+     * @return - пользователь
+     */
+    Person getPersonByEmailAndPassword(String email, String password);
 
 }

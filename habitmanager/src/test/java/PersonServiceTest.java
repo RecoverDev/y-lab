@@ -35,11 +35,11 @@ public class PersonServiceTest {
     public void deletePersonTest() {
         Person person = new Person(1,"Test User","user@server.com","password",0,true);
         personRepositoryMockito = Mockito.mock(PersonRepository.class);
-        Mockito.when(personRepositoryMockito.delete(person)).thenReturn(true);
+        Mockito.when(personRepositoryMockito.delete(person.getId())).thenReturn(true);
 
         PersonService personService = new PersonServiceImplementation(personRepositoryMockito);
 
-        assertThat(personService.deletePerson(person)).isTrue();
+        assertThat(personService.deletePerson(person.getId())).isTrue();
     }
 
     @Test

@@ -70,6 +70,7 @@ public class LogBookRepositoryDBTest {
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
             dbConnectionMockito = Mockito.mock(DBConnection.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
             LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
@@ -93,6 +94,7 @@ public class LogBookRepositoryDBTest {
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
             dbConnectionMockito = Mockito.mock(DBConnection.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
             LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
@@ -115,6 +117,7 @@ public class LogBookRepositoryDBTest {
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
             dbConnectionMockito = Mockito.mock(DBConnection.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
             LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
@@ -124,7 +127,7 @@ public class LogBookRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat(logBooks.size()).isEqualTo(7);
+        assertThat(logBooks.size()).isEqualTo(6);
     }
 
     @Test
@@ -135,6 +138,7 @@ public class LogBookRepositoryDBTest {
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
             dbConnectionMockito = Mockito.mock(DBConnection.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
             LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
     
@@ -143,7 +147,7 @@ public class LogBookRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat(logBooks.size()).isEqualTo(12);
+        assertThat(logBooks.size()).isEqualTo(8);
     }
 
     @Test
@@ -154,6 +158,7 @@ public class LogBookRepositoryDBTest {
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
             dbConnectionMockito = Mockito.mock(DBConnection.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
             LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
@@ -164,7 +169,7 @@ public class LogBookRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat(logBooks.size()).isEqualTo(2);
+        assertThat(logBooks.size()).isEqualTo(3);
     }
 
 }

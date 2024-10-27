@@ -68,7 +68,7 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
     }
 
     @Override
-    public boolean delete(Person person) {
+    public boolean delete(int id) {
         boolean result = false;
         Connection connection = null;
         PreparedStatement statement = null;
@@ -81,7 +81,7 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
             connection = dbConnection.getConnection();
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, person.getId());
+            statement.setInt(1, id);
             int count = statement.executeUpdate();
             result = (count == 1);
             if (result) {

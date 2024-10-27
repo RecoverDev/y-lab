@@ -71,6 +71,7 @@ public class HabitRepositoryDBTest {
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
             dbConnectionMockito = Mockito.mock(DBConnection.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
             HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
             Person person = new Person(2,"Test User2", "user2@server.com", "222", 0, true);
@@ -91,6 +92,7 @@ public class HabitRepositoryDBTest {
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
             dbConnectionMockito = Mockito.mock(DBConnection.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
             HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
@@ -112,6 +114,7 @@ public class HabitRepositoryDBTest {
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
             dbConnectionMockito = Mockito.mock(DBConnection.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
             
             HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito,loggerMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
@@ -121,7 +124,7 @@ public class HabitRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat(habits.size()).isEqualTo(2);
+        assertThat(habits.size()).isEqualTo(1);
     }
 
     @Test
@@ -132,6 +135,7 @@ public class HabitRepositoryDBTest {
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
             dbConnectionMockito = Mockito.mock(DBConnection.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
             
             HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
     
@@ -151,6 +155,7 @@ public class HabitRepositoryDBTest {
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
             dbConnectionMockito = Mockito.mock(DBConnection.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
             HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);

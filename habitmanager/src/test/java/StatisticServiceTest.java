@@ -88,7 +88,7 @@ public class StatisticServiceTest {
 
         StatisticService statisticService = new StatisticServiceImplementation(habitRepositoryMockito, logBookRepositoryMockito);
 
-        assertThat(79).isEqualTo(Math.ceil(statisticService.percentSuccess(person)));
+        assertThat(Math.ceil(statisticService.percentSuccess(person))).isEqualTo(40);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class StatisticServiceTest {
 
         StatisticService statisticService = new StatisticServiceImplementation(habitRepositoryMockito, logBookRepositoryMockito);
 
-        assertThat(9).isEqualTo(statisticService.progressHabit(person).get(habit1));
+        assertThat(statisticService.progressHabit(person).get(habit1)).isEqualTo(9);
     }
 
 

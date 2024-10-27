@@ -45,7 +45,7 @@ public class AdminController implements ObserveController{
         List<String> result = persons.stream().map(p -> String.format("%s - %s",p.getName(),p.isBlocked() ? "доступ открыт" : "заблокирован")).toList();
         int answer = adminView.choicePerson(result);
         if (answer > 0 & answer <= result.size()) {
-            personService.deletePerson(persons.get(answer - 1));
+            personService.deletePerson(persons.get(answer - 1).getId());
         }
     }
 

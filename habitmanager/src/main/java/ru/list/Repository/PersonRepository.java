@@ -17,10 +17,10 @@ public interface PersonRepository {
     boolean save(Person person);
     /**
      * удаление пользователя
-     * @param person - пользователь 
+     * @param id - идетнтификатор пользователя
      * @return - результат операции (true - успех/false - неуспех)
      */
-    boolean delete(Person person);
+    boolean delete(int id);
     /**
      * поиск пользователя по E-Mail и паролю
      * @param email - E-Mail

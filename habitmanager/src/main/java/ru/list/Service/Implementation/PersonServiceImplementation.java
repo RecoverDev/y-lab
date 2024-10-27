@@ -23,14 +23,14 @@ public class PersonServiceImplementation implements PersonService {
     }
 
     @Override
-    public boolean deletePerson(Person person) {
-        return repository.delete(person);
+    public boolean deletePerson(int id) {
+        return repository.delete(id);
     }
 
     @Override
     public void editPerson(Person person) {
         if (repository.exist(person)) {
-            repository.delete(person);
+            repository.delete(person.getId());
         }
         repository.save(person);
     }
@@ -49,6 +49,21 @@ public class PersonServiceImplementation implements PersonService {
             person.setPassword(data.get(2));
             this.editPerson(person);
         }
+    }
+
+    @Override
+    public Person getPersonById(int id) {
+        List<Person> result =  repository.findAll().stream().filter(p -> p.getId() == id).toList();
+        if (result.size() > 0) {
+            return result.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Person getPersonByEmailAndPassword(String email, String password) {
+        return repository.findByEmailAndPassword(email, password);
     }
 
 }

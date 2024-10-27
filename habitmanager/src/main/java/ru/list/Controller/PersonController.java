@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import ru.list.Observe;
+import ru.list.DTO.JsonConverter;
+import ru.list.DTO.PersonResponse;
+import ru.list.Mapper.PersonMapper;
 import ru.list.Model.Habit;
 import ru.list.Model.LogBook;
 import ru.list.Model.Period;
@@ -15,6 +18,7 @@ import ru.list.Service.HabitService;
 import ru.list.Service.LogBookService;
 import ru.list.Service.PersonService;
 import ru.list.Service.StatisticService;
+import ru.list.logger.Logger;
 
 /**
  * Контроллер описывает действия пользователя
@@ -27,8 +31,10 @@ public class PersonController implements ObserveController {
     private PersonView personView = new PersonView();
     private Person currentPerson = null;
     private StatisticController statisticController = null;
+    private Logger logger = null;
+    private final PersonMapper personMapper = PersonMapper.INSTANCE;
 
-    public void setCurrentPerson(Person currentPerson) {
+    public void setCurrentPerson(Person currentPerson, Logger logger) {
         this.currentPerson = currentPerson;
     }
 
@@ -37,26 +43,51 @@ public class PersonController implements ObserveController {
         this.habitService = habitService;
         this.logBookService = logBookService;
         this.statisticController = new StatisticController(currentPerson, statisticService);
+        this.logger = logger;
     }
 
     /**
-     * Выводит список возможных действий
+     * получение пользователя по ID
+     * @param id - идентификатор пользователя
+     * @return - пользователь в формате JSON
      */
-    public void showMenu() {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public String getPersonById(int id) {
+        Person person = personService.getPersonById(id);
+        JsonConverter converter = new JsonConverter<Person>(logger);
 
-        int answer = personView.ShowMenu();
-
-        switch (answer) {
-            case 1 ->  showHabits();
-            case 2 -> addHabit();
-            case 3 -> deleteHabit();
-            case 4 -> addLogBook();
-            case 5 -> showStatistic();
-            case 6 -> personalAccount();
-        }
-        this.observe(answer);
-
+        return converter.fromObject(personMapper.toPersonResponse(person));
     }
+
+    /**
+     * Получение списка пользователей
+     * @return - список пользователей в формате JSON
+     */
+    @SuppressWarnings("unchecked")
+    public String getPersons() {
+        List<Person> persons = personService.getPersons();
+        @SuppressWarnings("rawtypes")
+        JsonConverter converter = new JsonConverter<Person>(logger);
+        return converter.fromObject(personMapper.toListPersonResponse(persons));
+    }
+
+    /**
+     * Добавление пользователя
+     * @param personJson - добавляемый пользователь в формате JSON
+     * @return - результат добавления (true - успех/false - не успех)
+     */
+    @SuppressWarnings("rawtypes")
+    public boolean addPerson(String personJson) {
+        JsonConverter converter = new JsonConverter<Person>(logger);
+        @SuppressWarnings("unchecked")
+        Person person = (Person) converter.toObject(personJson, Person.class);
+        return personService.addPerson(person);
+    }
+
+    public boolean deletePerson(int id) {
+        return personService.deletePerson(id);
+    }
+
 
     /**
      * Выводит список привычек пользователя
