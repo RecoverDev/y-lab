@@ -31,6 +31,7 @@ public class SaveToFileTest {
         Path path = Paths.get("log_" +LocalDateTime.now().format(formatter)+".log");
         assertThat(Files.exists(path)).isTrue();
         assertThat(Files.readAllLines(path).size()).isEqualTo(3);
+        Files.delete(path);
     }
 
 }

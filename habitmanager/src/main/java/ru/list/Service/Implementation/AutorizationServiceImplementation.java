@@ -1,5 +1,6 @@
 package ru.list.Service.Implementation;
 
+import ru.list.Annotation.Audit;
 import ru.list.Model.Person;
 import ru.list.Repository.PersonRepository;
 import ru.list.Service.AutorizationService;
@@ -11,6 +12,7 @@ public class AutorizationServiceImplementation implements AutorizationService {
         this.repository = repository;
     }
 
+    @Audit
     @Override
     public Person autorizate(String login, String password) {
         Person person = repository.findByEmailAndPassword(login, password);

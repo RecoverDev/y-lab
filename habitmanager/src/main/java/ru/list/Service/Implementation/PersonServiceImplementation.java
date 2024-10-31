@@ -2,6 +2,7 @@ package ru.list.Service.Implementation;
 
 import java.util.List;
 
+import ru.list.Annotation.Audit;
 import ru.list.Model.Person;
 import ru.list.Repository.PersonRepository;
 import ru.list.Service.PersonService;
@@ -13,6 +14,7 @@ public class PersonServiceImplementation implements PersonService {
         this.repository = repository;
     }
 
+    @Audit
     @Override
     public boolean addPerson(Person person) {
         if (repository.findByPassword(person.getPassword()) == null) {
@@ -22,11 +24,13 @@ public class PersonServiceImplementation implements PersonService {
 
     }
 
+    @Audit
     @Override
     public boolean deletePerson(int id) {
         return repository.delete(id);
     }
 
+    @Audit
     @Override
     public void editPerson(Person person) {
         if (repository.exist(person)) {
@@ -36,11 +40,13 @@ public class PersonServiceImplementation implements PersonService {
     }
 
 
+    @Audit
     @Override
     public List<Person> getPersons() {
         return repository.findAll();
     }
 
+    @Audit
     @Override
     public void editPersonFromString(Person person, List<String> data) {
         if (data.size() == 3) {
@@ -51,6 +57,7 @@ public class PersonServiceImplementation implements PersonService {
         }
     }
 
+    @Audit
     @Override
     public Person getPersonById(int id) {
         List<Person> result =  repository.findAll().stream().filter(p -> p.getId() == id).toList();
@@ -61,6 +68,7 @@ public class PersonServiceImplementation implements PersonService {
         }
     }
 
+    @Audit
     @Override
     public Person getPersonByEmailAndPassword(String email, String password) {
         return repository.findByEmailAndPassword(email, password);

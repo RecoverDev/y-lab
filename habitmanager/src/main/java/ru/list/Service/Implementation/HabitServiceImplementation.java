@@ -1,12 +1,10 @@
 package ru.list.Service.Implementation;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
+import ru.list.Annotation.Audit;
 import ru.list.Model.Habit;
 import ru.list.Model.LogBook;
-import ru.list.Model.Period;
 import ru.list.Model.Person;
 import ru.list.Repository.HabitRepository;
 import ru.list.Repository.LogBookRepository;
@@ -21,12 +19,13 @@ public class HabitServiceImplementation implements HabitService {
         this.logBookRepository = logBookRepository;
     }
 
-
+    @Audit
     @Override
     public boolean addHabit(Habit habit) {
         return repository.save(habit);
     }
 
+    @Audit
     @Override
     public boolean deleteHabit(int id) {
 
@@ -40,6 +39,7 @@ public class HabitServiceImplementation implements HabitService {
         return repository.delete(habit);
     }
 
+    @Audit
     @Override
     public void editHabit(Habit habit) {
         if (repository.exist(habit)) {
@@ -48,26 +48,13 @@ public class HabitServiceImplementation implements HabitService {
         repository.save(habit);
     }
 
-
+    @Audit
     @Override
     public List<Habit> getHabitsByPerson(Person person) {
         return repository.findByPerson(person);
     }
 
-
-    @Override
-    public List<String> getHabitByPersonAsString(Person person) {
-        List<Habit> habits = this.getHabitsByPerson(person);
-        List<String> strHabits = new ArrayList<>();
-        int i = 1;
-        for (Habit habit : habits) {
-            strHabits.add(String.format("%d. %s - %s", i++, habit.getName(),habit.getPeriod().getDescription()));
-        }
-
-        return strHabits;
-    }
-
-
+    @Audit
     @Override
     public boolean deleteHabitByPosition(Person person, int position) {
         List<Habit> habits= repository.findByPerson(person);
@@ -77,7 +64,7 @@ public class HabitServiceImplementation implements HabitService {
         return false;
     }
 
-
+    @Audit
     @Override
     public Habit getHAbitByPosition(Person person, int position) {
         List<Habit> habits= repository.findByPerson(person);
@@ -87,21 +74,9 @@ public class HabitServiceImplementation implements HabitService {
         return null;
     }
 
-
-    @Override
-    public boolean addHabitFromString(Person person, List<String> data) {
-        if (data.size() == 3) {
-            int nomPeriod = Integer.parseInt(data.get(2));
-            Habit habit = new Habit(0,data.get(0), data.get(1), person, Period.values()[nomPeriod - 1], LocalDate.now());
-            return this.addHabit(habit);
-        }
-        return false;
-    }
-
-
+    @Audit
     @Override
     public Habit getById(int id) {
         return repository.findById(id);
     }
-
 }
