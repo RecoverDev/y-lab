@@ -11,6 +11,7 @@ import jakarta.servlet.ServletRegistration;
 
 public class WebApplicationInitialization implements WebApplicationInitializer{
 
+    @SuppressWarnings("null")
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();

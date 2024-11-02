@@ -35,7 +35,7 @@ public class HabitRestController {
         this.currentPerson = principal.getCurrentPerson();
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<HabitResponse>> getHabitByPerson() {
         if (currentPerson == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

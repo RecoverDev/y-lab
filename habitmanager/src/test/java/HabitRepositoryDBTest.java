@@ -144,6 +144,7 @@ public class HabitRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
+        assertThat(habits).isNotNull();
         assertThat(habits.size()).isEqualTo(4);
 
     }
