@@ -2,12 +2,15 @@ package ru.list.Service.Implementation;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import ru.list.Model.Habit;
 import ru.list.Model.LogBook;
 import ru.list.Model.Person;
 import ru.list.Repository.LogBookRepository;
 import ru.list.Service.LogBookService;
 
+@Service
 public class LogBookServiceImplementation implements LogBookService {
     private LogBookRepository repository = null;
 

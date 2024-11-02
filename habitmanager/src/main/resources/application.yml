@@ -1,0 +1,6 @@
+db:
+  url: "jdbc:postgresql://localhost:5432/habitbase"
+  user: "postgres"
+  password: "password"
+liquibase:
+  changelog: "db/changelog/changelog.xml"

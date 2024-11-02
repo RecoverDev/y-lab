@@ -2,11 +2,14 @@ package ru.list.Service.Implementation;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import ru.list.Annotation.Audit;
 import ru.list.Model.Person;
 import ru.list.Repository.PersonRepository;
 import ru.list.Service.PersonService;
 
+@Service
 public class PersonServiceImplementation implements PersonService {
     private PersonRepository repository = null;
 

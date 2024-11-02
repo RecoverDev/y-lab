@@ -4,15 +4,12 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import ru.list.DTO.HabitResponse;
 import ru.list.Model.Habit;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface HabitMapper {
-
-    HabitMapper INSTANCE = Mappers.getMapper(HabitMapper.class);
 
     @Mapping(target = "period_id", expression = "java(habit.getPeriod().ordinal())")
     @Mapping(target = "person_id", expression = "java(habit.getPerson().getId())")

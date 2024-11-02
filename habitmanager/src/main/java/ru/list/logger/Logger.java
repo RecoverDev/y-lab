@@ -4,10 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * класс реализует журналирование
- * реализован шаблон Синглтон
- */
 public class Logger {
     private List<Record> log;
 

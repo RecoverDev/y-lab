@@ -1,10 +1,13 @@
 package ru.list.Service.Implementation;
 
+import org.springframework.stereotype.Service;
+
 import ru.list.Annotation.Audit;
 import ru.list.Model.Person;
 import ru.list.Repository.PersonRepository;
 import ru.list.Service.AutorizationService;
 
+@Service
 public class AutorizationServiceImplementation implements AutorizationService {
     private PersonRepository repository = null;
 

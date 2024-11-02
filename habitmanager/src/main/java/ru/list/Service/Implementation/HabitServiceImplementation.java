@@ -2,6 +2,8 @@ package ru.list.Service.Implementation;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import ru.list.Annotation.Audit;
 import ru.list.Model.Habit;
 import ru.list.Model.LogBook;
@@ -10,6 +12,7 @@ import ru.list.Repository.HabitRepository;
 import ru.list.Repository.LogBookRepository;
 import ru.list.Service.HabitService;
 
+@Service
 public class HabitServiceImplementation implements HabitService {
     private HabitRepository repository = null;
     private LogBookRepository logBookRepository = null;
