@@ -1,6 +1,9 @@
 package ru.list.Configuration;
 
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import liquibase.integration.spring.SpringLiquibase;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +25,7 @@ import ru.list.logger.Logger;
 public class DBConfiguration {
 
     @Autowired
-    private Environment environment;
+    public Environment environment;
 
     @Bean
     public DBConnection dbConnection(@Value("#{logger}")Logger logger) {
@@ -33,6 +36,20 @@ public class DBConfiguration {
         return connection;
 
     }
+
+    @SuppressWarnings("null")
+    @Bean
+    public SpringLiquibase liquibaseUpdate() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        String url = environment.getProperty("db.url",String.class);
+        String user = environment.getProperty("db.user",String.class);
+        String password = environment.getProperty("db.password",String.class);
+        DriverManagerDataSource dataSource = new DriverManagerDataSource(url, user, password);
+        liquibase.setDataSource(dataSource);
+        liquibase.setChangeLog(environment.getProperty("liquibase.changelog",String.class));
+        return liquibase;
+    }
+
 
     @Bean
     public PersonRepository personRepository(@Value("#{dbConnection}") DBConnection dbConnection, @Value("#{logger}")Logger logger) {
