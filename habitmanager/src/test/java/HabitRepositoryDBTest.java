@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.mockito.Mock;
@@ -19,13 +21,11 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import ru.list.Db.DBConnection;
 import ru.list.Model.Habit;
 import ru.list.Model.Period;
 import ru.list.Model.Person;
 import ru.list.Repository.HabitRepository;
 import ru.list.Repository.DBImplementation.HabitRepositoryDBImplementation;
-import ru.list.logger.Logger;
 
 import org.testcontainers.junit.jupiter.Container;
 
@@ -57,11 +57,7 @@ public class HabitRepositoryDBTest {
 
 
     @Mock
-    DBConnection dbConnectionMockito;
-
-    @Mock
-    Logger loggerMockito;
-
+    DataSource dbConnectionMockito;
 
     @Test
     @DisplayName("Добавляем новую привычку")
@@ -69,11 +65,10 @@ public class HabitRepositoryDBTest {
         boolean result = false;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(2,"Test User2", "user2@server.com", "222", 0, true);
             Habit habit = new Habit(0,"good habit", "very good habit", person,Period.daily,LocalDate.now());
     
@@ -90,11 +85,10 @@ public class HabitRepositoryDBTest {
     public void HabitRepositoryDeleteHabitTest() {
         boolean result = false;
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
             Habit habit = new Habit(2,"call mom","call mom every day",person,Period.daily,LocalDate.of(2014,10,01));
     
@@ -106,17 +100,17 @@ public class HabitRepositoryDBTest {
         assertThat(result).isTrue();
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Получение привычек пользователя")
     public void HabitRepositoryFindPersonHabitsTest() {
         List<Habit> habits = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
             
-            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito,loggerMockito);
+            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
     
             habits = repository.findByPerson(person);
@@ -127,17 +121,17 @@ public class HabitRepositoryDBTest {
         assertThat(habits.size()).isEqualTo(1);
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Получить полный список привычек")
     public void HabitRepositoryFindAllTest() {
         List<Habit> habits = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
             
-            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito);
     
             habits = repository.findAll();
         }  catch (SQLException e) {
@@ -154,11 +148,10 @@ public class HabitRepositoryDBTest {
     public void HabitRepositoryExistHabitTest() {
         boolean result = false;
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
             Habit habit = new Habit(2,"call mom","call mom every day",person,Period.daily,LocalDate.of(2014,10,01));
     

@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.mockito.Mock;
@@ -18,11 +20,9 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import ru.list.Db.DBConnection;
 import ru.list.Model.Person;
 import ru.list.Repository.PersonRepository;
 import ru.list.Repository.DBImplementation.PersonRepositoryDBImplementation;
-import ru.list.logger.Logger;
 
 import org.testcontainers.junit.jupiter.Container;
 
@@ -54,10 +54,7 @@ public class PersonRepositoryDBTest {
     }
 
     @Mock
-    DBConnection dbConnectionMockito;
-
-    @Mock
-    Logger loggerMockito;
+    DataSource dbConnectionMockito;
 
     @Test
     @DisplayName("Добавление пользователя")
@@ -65,11 +62,10 @@ public class PersonRepositoryDBTest {
         boolean result = false;
         
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito,loggerMockito);
+            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(0,"Test User4", "user4@server.com", "222", 0, true);
     
             result = repository.save(person);
@@ -86,11 +82,10 @@ public class PersonRepositoryDBTest {
         boolean result = false;
         
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(2,"Second User", "second@server.com", "222", 0, true);
     
             result = repository.delete(person.getId());
@@ -101,17 +96,17 @@ public class PersonRepositoryDBTest {
         assertThat(result).isTrue();
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Получение пользователя по E-mail и паролю")
     public void PersonRepositoryFindByEmailAndPasswordTest() {
         Person person = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito);
     
             person = repository.findByEmailAndPassword("second@server.com", "222");
         }  catch (SQLException e) {
@@ -121,17 +116,17 @@ public class PersonRepositoryDBTest {
         assertThat(person.getName()).hasToString("Second User");
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Поиск пользователя по паролю")
     public void PersonRepositoryFindByPasswordTest() {
         Person person = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito);
     
             person = repository.findByPassword("111");
         }  catch (SQLException e) {
@@ -141,17 +136,17 @@ public class PersonRepositoryDBTest {
         assertThat(person.getName()).hasToString("First User");
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Получение полного списка пользователей")
     public void PersonRepositoryFindAllTest() {
         List<Person> persons = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito);
     
             persons = repository.findAll();
         }  catch (SQLException e) {
@@ -167,11 +162,10 @@ public class PersonRepositoryDBTest {
         boolean result = false;
         
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(1,"First User", "first@server.com", "111", 0, true);
     
             result = repository.exist(person);

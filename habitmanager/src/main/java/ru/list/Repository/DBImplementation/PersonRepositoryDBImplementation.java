@@ -7,34 +7,35 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.list.Db.DBConnection;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import ru.list.Model.Person;
 import ru.list.Repository.PersonRepository;
-import ru.list.logger.Logger;
 
+
+@Component
 public class PersonRepositoryDBImplementation implements PersonRepository {
     private static final String nameTable = "habit.person";
     private static final String nameSerialID = "habit.person_id_seq";
-    private DBConnection dbConnection = null;
-    private Logger logger = null;
+    private DataSource dbConnection = null;
 
-    public PersonRepositoryDBImplementation(DBConnection dbConnection, Logger logger) {
+    @Autowired
+    Logger log;
+
+    public PersonRepositoryDBImplementation(DataSource dbConnection) {
         this.dbConnection = dbConnection;
-        this.logger = logger;
     }
 
     @Override
     public boolean save(Person person) {
         boolean result = false;
-        Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при добавлении пользователя", result);
-            return result;
-        }
         String sql = String.format("INSERT INTO %s (id, username, email, password, role, blocked) VALUES (nextval('%s'), ?, ?, ?, ?, ?)", nameTable,nameSerialID);
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
             statement.setString(1, person.getName());
@@ -48,37 +49,25 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
                 connection.commit();
             }
         } catch(SQLException e) {
-            try {
-                connection.rollback();
-            } catch(SQLException ex) {
-                logger.addRecord("Ошибка rollback: " + ex.getMessage(), result);
-            }
-            logger.addRecord(" Ошибка выполенения запроса: " + e.getMessage(), result);
+            log.error(" Ошибка выполенения запроса: " + e.getMessage(), result);
             result = false;
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), result);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), result);
             }
         }
 
-        dbConnection.closeConnection();
         return result;
     }
 
     @Override
     public boolean delete(int id) {
         boolean result = false;
-        Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при удалении пользователя", result);
-            return result;
-        }
         String sql = "DELETE FROM " + nameTable + " WHERE id = ?";
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
@@ -88,37 +77,25 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
                 connection.commit();
             }
         } catch(SQLException e) {
-            try {
-                connection.rollback();
-            } catch(SQLException ex) {
-                logger.addRecord("Ошибка rollback: " + ex.getMessage(), result);
-            }
-            logger.addRecord(" Ошибка выполенения запроса: " + e.getMessage(), result);
+            log.error(" Ошибка выполенения запроса: " + e.getMessage(), result);
             result = false;
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), result);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), result);
             }
         }
 
-        dbConnection.closeConnection();
         return result;
     }
 
     @Override
     public Person findByEmailAndPassword(String email, String password) {
         Person result = null;
-        Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при поиске пользователя", false);
-            return result;
-        }
         String sql = String.format("SELECT * FROM %s WHERE email = ? AND password = ?",nameTable);
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             statement.setString(2, password);
@@ -133,31 +110,24 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
             }
             resultSet.close();
         } catch (SQLException e) {
-            logger.addRecord("Ошибка получения пользователя: " + e.getMessage(),false);
+            log.error("Ошибка получения пользователя: " + e.getMessage(),false);
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
             }
         }
 
-        dbConnection.closeConnection();
         return result;
     }
 
     @Override
     public Person findByPassword(String password) {
         Person result = null;
-        Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при поиске пользователя", false);
-            return result;
-        }
         String sql = String.format("SELECT * FROM %s WHERE password = ?",nameTable);
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
             statement.setString(1, password);
             ResultSet resultSet = statement.executeQuery();
@@ -171,31 +141,24 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
             }
             resultSet.close();
         } catch(SQLException e) {
-            logger.addRecord("Ошибка получения пользователя: " + e.getMessage(),false);
+            log.error("Ошибка получения пользователя: " + e.getMessage(),false);
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
             }
         }
 
-        dbConnection.closeConnection();
         return result;
     }
 
     @Override
     public List<Person> findAll() {
         List<Person> result = new ArrayList<>();
-        Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при получении списка пользователей", false);
-            return result;
-        }
         String sql = "SELECT * FROM " + nameTable;
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -209,31 +172,24 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
             }
             resultSet.close();
         } catch(SQLException e) {
-            logger.addRecord("Ошибка получения списка пользователей: " + e.getMessage(),false);
+            log.error("Ошибка получения списка пользователей: " + e.getMessage(),false);
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
             }
         }
 
-        dbConnection.closeConnection();
         return result;
     }
 
     @Override
     public boolean exist(Person person) {
         boolean result = false;
-        Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при поиске пользователя", false);
-            return result;
-        }
         String sql = String.format("SELECT COUNT(*) FROM %s WHERE id = ?",nameTable);
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
             statement.setInt(1, person.getId());
             ResultSet resultSet = statement.executeQuery();
@@ -242,16 +198,15 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
             }
             resultSet.close();
         } catch(SQLException e) {
-            logger.addRecord("Ошибка поиска пользователя: " + e.getMessage(),false);
+            log.error("Ошибка поиска пользователя: " + e.getMessage(),false);
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
             }
         }
 
-        dbConnection.closeConnection();
         return result;
     }
 

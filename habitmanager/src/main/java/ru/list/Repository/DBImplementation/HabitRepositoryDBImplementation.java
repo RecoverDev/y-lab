@@ -7,37 +7,38 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.list.Db.DBConnection;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import ru.list.Model.Habit;
 import ru.list.Model.Period;
 import ru.list.Model.Person;
 import ru.list.Repository.HabitRepository;
-import ru.list.logger.Logger;
 
+
+@Component
 public class HabitRepositoryDBImplementation implements HabitRepository {
     private static final String nameTable = "habit.habit";
     private static final String personTable = "habit.person";
     private static final String nameSerialID = "habit.habit_id_seq";
-    private DBConnection dbConnection = null;
-    private Logger logger = null;
+    private DataSource dbConnection = null;
 
-    public HabitRepositoryDBImplementation(DBConnection dbConnection, Logger logger) {
+    @Autowired
+    Logger log;
+
+    public HabitRepositoryDBImplementation(DataSource dbConnection) {
         this.dbConnection = dbConnection;
-        this.logger = logger;
     }
 
     @Override
     public boolean save(Habit habit) {
-        boolean result = false;;
-        Connection connection = null;
+        boolean result = false;
         PreparedStatement statement = null;
         String sql = String.format("INSERT INTO %s (id, name_habit, description, person_id, period_id, registration) VALUES (nextval('%s'), ?, ?, ?, ?, ?)", nameTable,nameSerialID);
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при добавлении привычки", result);
-            return result;
-        }
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
             statement.setString(1, habit.getName());
@@ -51,37 +52,24 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
                 connection.commit();
             }
         } catch(SQLException e) {
-            try {
-                connection.rollback();
-            } catch(SQLException ex) {
-                logger.addRecord("Ошибка rollback: " + ex.getMessage(), result);
-            }
-            logger.addRecord(" Ошибка выполенения запроса: " + e.getMessage(), result);
+            log.error(" Ошибка выполенения запроса: ", e);
             result = false;
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), result);
+                log.error(" Ошибка закрытия PreparedStatement: ",e.getMessage());
             }
         }
-
-        dbConnection.closeConnection();
         return result;
     }
 
     @Override
     public boolean delete(Habit habit) {
-        boolean result = false;;
-        Connection connection = null;
+        boolean result = false;
         PreparedStatement statement = null;
         String sql = "DELETE FROM " + nameTable + " WHERE id = ?";
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при удалении привычки", result);
-            return result;
-        }
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
             statement.setInt(1, habit.getId());
@@ -91,37 +79,25 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
                 connection.commit();
             }
         } catch(SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException ex) {
-                logger.addRecord("Ошибка rollback при удалении Habit: " + ex.getMessage(), result);
-            }
-            logger.addRecord(" Ошибка соединения с БД: " + e.getMessage(), result);
+            log.error(" Ошибка соединения с БД: " + e.getMessage(), result);
             result = false;
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), result);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), result);
             }
         }
 
-        dbConnection.closeConnection();
         return result;
     }
 
     @Override
     public List<Habit> findByPerson(Person person) {
         List<Habit> habits = new ArrayList<>();
-        Connection connection = null;
         PreparedStatement statement = null;
         String sql = "SELECT * FROM " + nameTable + " WHERE person_id = ?";
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при получении списка привычек", false);
-            return habits;
-        }
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
             statement.setInt(1, person.getId());
             ResultSet resultSet = statement.executeQuery();
@@ -136,32 +112,25 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
             }
             resultSet.close();
         } catch (SQLException e) {
-            logger.addRecord("Ошибка получения списка привычек: " + e.getMessage(),false);
+            log.error("Ошибка получения списка привычек: " + e.getMessage(),false);
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
             }
         }
 
-        dbConnection.closeConnection();
         return habits;  
     }
 
     @Override
     public List<Habit> findAll() {
         List<Habit> habits = new ArrayList<>();
-        Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при получении полного списка привычек", false);
-            return habits;
-        }
 
         String sql = String.format("SELECT * FROM %s h JOIN %s p ON h.person_id = p.id",nameTable,personTable);
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -186,26 +155,19 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
             }
         }
 
-        dbConnection.closeConnection();
         return habits;
     }
 
     @Override
     public boolean exist(Habit habit) {
         boolean result = false;
-        Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при определении наличия привычки", false);
-            return false;
-        }
         String sql = String.format("SELECT COUNT(*) FROM %s WHERE id = ?",nameTable);
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
             statement.setInt(1, habit.getId());
             ResultSet resultSet = statement.executeQuery();
@@ -214,32 +176,25 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
             }
             resultSet.close();
         } catch(SQLException e) {
-            logger.addRecord("Ошибка подключения к БД", result);
+            log.error("Ошибка подключения к БД", result);
             result = false;
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
             }
         }
 
-        dbConnection.closeConnection();
         return result;
     }
 
     @Override
     public Habit findById(int id) {
         Habit habit = null;
-        Connection connection = null;
         PreparedStatement statement = null;
         String sql = String.format("SELECT * FROM %s h JOIN %s p ON h.person_id = p.id WHERE h.id = ?",nameTable,personTable);
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при получении привычки", false);
-            return habit;
-        }
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -259,16 +214,15 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
             }
             resultSet.close();
         } catch (SQLException e) {
-            logger.addRecord("Ошибка получения списка привычек: " + e.getMessage(),false);
+            log.error("Ошибка получения списка привычек: " + e.getMessage(),false);
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
             }
         }
 
-        dbConnection.closeConnection();
         return habit;  
     }
 

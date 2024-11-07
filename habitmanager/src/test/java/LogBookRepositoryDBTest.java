@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.mockito.Mock;
@@ -20,14 +22,12 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import ru.list.Db.DBConnection;
 import ru.list.Model.Habit;
 import ru.list.Model.LogBook;
 import ru.list.Model.Period;
 import ru.list.Model.Person;
 import ru.list.Repository.LogBookRepository;
 import ru.list.Repository.DBImplementation.LogBookRepositoryDBImplementation;
-import ru.list.logger.Logger;
 
 @Testcontainers
 public class LogBookRepositoryDBTest {
@@ -57,10 +57,7 @@ public class LogBookRepositoryDBTest {
 
 
     @Mock
-    DBConnection dbConnectionMockito;
-
-    @Mock
-    Logger loggerMockito;
+    DataSource dbConnectionMockito;
 
     @Test
     @DisplayName("Добавление новой записи в журнал")
@@ -68,11 +65,10 @@ public class LogBookRepositoryDBTest {
         boolean result = false;
         
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
             Habit habit = new Habit(2,"call mom","call mom every day",person,Period.daily,LocalDate.of(2014,10,01));
             LogBook logBook = new LogBook(0,LocalDate.now(),habit);
@@ -92,11 +88,10 @@ public class LogBookRepositoryDBTest {
         boolean result = false;
         
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
             Habit habit = new Habit(2,"call mom","call mom every day",person,Period.daily,LocalDate.of(2014,10,01));
             LogBook logBook = new LogBook(6,LocalDate.now(),habit);
@@ -109,17 +104,17 @@ public class LogBookRepositoryDBTest {
         assertThat(result).isTrue();
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Получение записей пользователя")
     public void LogBookRepositoryFindByPersonTest() {
         List<LogBook> logBooks = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
     
             logBooks = repository.findByPerson(person);
@@ -130,17 +125,17 @@ public class LogBookRepositoryDBTest {
         assertThat(logBooks.size()).isEqualTo(6);
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Получение всех записей журнала")
     public void LogBookRepositoryFindAllTest() {
         List<LogBook> logBooks = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito);
     
             logBooks = repository.findAll();
         }  catch (SQLException e) {
@@ -150,17 +145,17 @@ public class LogBookRepositoryDBTest {
         assertThat(logBooks.size()).isEqualTo(8);
     }
 
+    @SuppressWarnings("null")
     @Test
     @DisplayName("Получение записей определенной привычки")
     public void LogBookRepositoryFindByHabitTest() {
         List<LogBook> logBooks = null;
 
         try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
-            dbConnectionMockito = Mockito.mock(DBConnection.class);
+            dbConnectionMockito = Mockito.mock(DataSource.class);
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
-            Mockito.when(dbConnectionMockito.connect()).thenReturn(true);
 
-            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito, loggerMockito);
+            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", 0, true);
             Habit habit = new Habit(2,"call mom","call mom every day",person,Period.daily,LocalDate.of(2014,10,01));
     

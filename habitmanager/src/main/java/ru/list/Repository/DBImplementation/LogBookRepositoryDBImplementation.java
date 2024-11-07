@@ -7,40 +7,42 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.list.Db.DBConnection;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import ru.list.Model.Habit;
 import ru.list.Model.LogBook;
 import ru.list.Model.Period;
 import ru.list.Model.Person;
 import ru.list.Repository.LogBookRepository;
-import ru.list.logger.Logger;
 
+
+@Component
 public class LogBookRepositoryDBImplementation implements LogBookRepository {
     private static final String nameTable = "habit.logbook";
     private static final String habitTable = "habit.habit";
     private static final String personTable = "habit.person";
     private static final String nameSerialID = "habit.logbook_id_seq";
-    private DBConnection dbConnection = null;
-    private Logger logger = null;
+    private  DataSource dbConnection;
 
-    public LogBookRepositoryDBImplementation(DBConnection dbConnection, Logger logger) {
+    @Autowired
+    Logger log;
+
+    public LogBookRepositoryDBImplementation(DataSource dbConnection) {
         this.dbConnection = dbConnection;
-        this.logger = logger;
     }
 
 
     @Override
     public boolean save(LogBook logBook) {
         boolean result = false;
-        Connection connection = null;
+        //Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при добавлении записи в журнал", result);
-            return result;
-        }
         String sql = String.format("INSERT INTO %s (id, habit_id, date) VALUES (nextval('%s'), ?, ?)", nameTable,nameSerialID);
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()){
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
             statement.setInt(1, logBook.getHabit().getId());
@@ -51,74 +53,50 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
                 connection.commit();
             }
         } catch(SQLException e) {
-            try {
-                connection.rollback();
-            } catch(SQLException ex) {
-                logger.addRecord("Ошибка rollback: " + ex.getMessage(), result);
-            }
-            logger.addRecord(" Ошибка выполенения запроса: " + e.getMessage(), result);
+            log.error(" Ошибка выполенения запроса: " + e.getMessage(), result);
             result = false;
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), result);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), result);
             }
         }
 
-        dbConnection.closeConnection();
         return result;
     }
 
     @Override
     public boolean delete(LogBook logBook) {
         boolean result = false;
-        Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при удалении записи в журнал", result);
-            return result;
-        }
         String sql = "DELETE FROM " + nameTable + " WHERE id = ?";
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
             statement.setInt(1, logBook.getId());
             int count = statement.executeUpdate();
             result = (count == 1);
         } catch(SQLException e) {
-            try {
-                connection.rollback();
-            } catch(SQLException ex) {
-                logger.addRecord("Ошибка rollback: " + ex.getMessage(), result);
-            }
-            logger.addRecord(" Ошибка выполенения запроса: " + e.getMessage(), result);
+            log.error(" Ошибка выполенения запроса: " + e.getMessage(), result);
             result = false;
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), result);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), result);
             }
         }
 
-        dbConnection.closeConnection();
         return result;
     }
 
     @Override
     public List<LogBook> findByPerson(Person person) {
         List<LogBook> logBooks = new ArrayList<>();
-        Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при поиске записей в журнале", false);
-            return logBooks;
-        }
         String sql = String.format("SELECT * FROM %s l JOIN %s h ON l.habit_id = h.id WHERE h.person_id = ? ",nameTable,habitTable);
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
             statement.setInt(1, person.getId());
             ResultSet resultSet = statement.executeQuery();
@@ -134,30 +112,23 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
             }
             resultSet.close();
         } catch (SQLException e) {
-            logger.addRecord("Ошибка получения списка привычек: " + e.getMessage(),false);
+            log.error("Ошибка получения списка привычек: " + e.getMessage(),false);
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
             }
         }
-        dbConnection.closeConnection();
         return logBooks;
     }
 
     @Override
     public List<LogBook> findAll() {
         List<LogBook> logBooks = new ArrayList<>();
-        Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при поиске записей в журнале", false);
-            return logBooks;
-        }
         String sql = String.format("SELECT * FROM %s l JOIN %s h ON l.habit_id = h.id JOIN %s p ON h.person_id = p.id",nameTable,habitTable,personTable);
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -178,30 +149,23 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
             }
             resultSet.close();
         } catch (SQLException e) {
-            logger.addRecord("Ошибка получения списка привычек: " + e.getMessage(),false);
+            log.error("Ошибка получения списка привычек: " + e.getMessage(),false);
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
             }
         }
-        dbConnection.closeConnection();
         return logBooks;
     }
 
     @Override
     public List<LogBook> findByHabit(Habit habit) {
         List<LogBook> logBooks = new ArrayList<>();
-        Connection connection = null;
         PreparedStatement statement = null;
-        if (!dbConnection.connect()) {
-            logger.addRecord("Ошибка подключения к базе при поиске записей в журнале", false);
-            return logBooks;
-        }
         String sql = String.format("SELECT * FROM %s WHERE habit_id = ? ",nameTable);
-        try {
-            connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
             statement.setInt(1, habit.getId());
             ResultSet resultSet = statement.executeQuery();
@@ -210,15 +174,14 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
                 logBooks.add(logBook);
             }
         } catch (SQLException e) {
-            logger.addRecord("Ошибка получения списка привычек: " + e.getMessage(),false);
+            log.error("Ошибка получения списка привычек: " + e.getMessage(),false);
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.addRecord(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
+                log.error(" Ошибка закрытия PreparedStatement: " + e.getMessage(), false);
             }
         }
-        dbConnection.closeConnection();
         return logBooks;
     }
 
