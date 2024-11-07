@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import ru.list.Model.Habit;
 import ru.list.Model.LogBook;
@@ -20,7 +20,7 @@ import ru.list.Model.Person;
 import ru.list.Repository.LogBookRepository;
 
 
-@Component
+@Repository
 public class LogBookRepositoryDBImplementation implements LogBookRepository {
     private static final String nameTable = "habit.logbook";
     private static final String habitTable = "habit.habit";

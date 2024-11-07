@@ -11,13 +11,13 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import ru.list.Model.Person;
 import ru.list.Repository.PersonRepository;
 
 
-@Component
+@Repository
 public class PersonRepositoryDBImplementation implements PersonRepository {
     private static final String nameTable = "habit.person";
     private static final String nameSerialID = "habit.person_id_seq";

@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import ru.list.Model.Habit;
 import ru.list.Model.Period;
@@ -19,7 +19,7 @@ import ru.list.Model.Person;
 import ru.list.Repository.HabitRepository;
 
 
-@Component
+@Repository
 public class HabitRepositoryDBImplementation implements HabitRepository {
     private static final String nameTable = "habit.habit";
     private static final String personTable = "habit.person";
