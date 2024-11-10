@@ -1,6 +1,13 @@
-db:
-  url: "jdbc:postgresql://localhost:5432/habitbase"
-  user: "postgres"
-  password: "password"
-liquibase:
-  changelog: "db/changelog/changelog.xml"
+spring:
+  application:
+    name: HabitManager
+  datasource:
+    url: jdbc:postgresql://localhost:5432/habitbase
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    generate-ddl: false
+  liquibase:
+    change-log: db/changelog/changelog.xml
+    enabled: true

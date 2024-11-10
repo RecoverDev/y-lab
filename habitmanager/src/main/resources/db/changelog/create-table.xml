@@ -12,7 +12,7 @@
          <column name="username" type="VARCHAR(255)"/>
          <column name="email" type="VARCHAR(255)"/>
          <column name="password" type="VARCHAR(255)"/>
-         <column name="role" type="BIGINT"/> 
+         <column name="role" type="VARCHAR(255)"/> 
          <column name="blocked" type="BOOLEAN"/>
      </createTable>
      <createTable schemaName="habit" tableName="habit">
@@ -22,7 +22,7 @@
          <column name="name_habit" type="VARCHAR(255)"/>
          <column name="description" type="VARCHAR(255)"/>
          <column name="person_id" type="BIGINT"/>
-         <column name="period_id" type="BIGINT"/>
+         <column name="period" type="SMALLINT"/>
          <column name="registration" type="DATE"/>
      </createTable>
      <createTable schemaName="habit" tableName="logbook">

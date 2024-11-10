@@ -1,0 +1,50 @@
+package ru.list.habitmanager.Service;
+
+import java.util.List;
+
+import ru.list.habitmanager.Model.Habit;
+import ru.list.habitmanager.Model.Person;
+
+/**
+ * сервис управления привычками
+ */
+public interface HabitService {
+
+    /**
+     * Добавление новой привычки
+     * @param habit - новая привычка
+     * @return - результат операции (true - успех/false - неуспех)
+     */
+    boolean addHabit(Habit habit);
+    /**
+     * Удаление привычки
+     * @param habit - удаляемая привычка
+     * @return - результат операции (true - успех/false - неуспех)
+     */
+    boolean deleteHabit(int id);
+    /**
+     * Редактирование привычки
+     * @param habit - редактируемая привычка
+     */
+    void editHabit(Habit habit);
+    /**
+     * Получение списка привычек пользователя
+     * @param person - пользователь
+     * @return List<Habit>
+     */
+    List<Habit> getHabitsByPerson(Person person);
+    /**
+     * Получение привычки по номеру
+     * @param person - пользователь
+     * @param position - номер позиции
+     * @return - привычка
+     */
+    Habit getHAbitByPosition(Person person, int position);
+    /**
+     * Получение привычки по id
+     * @param id - идентификатор привычки
+     * @return - Habit
+     */
+    Habit getById(int id);
+
+}

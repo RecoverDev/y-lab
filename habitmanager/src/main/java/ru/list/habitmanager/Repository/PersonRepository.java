@@ -1,0 +1,55 @@
+package ru.list.habitmanager.Repository;
+
+import java.util.List;
+
+import ru.list.habitmanager.Model.Person;
+
+/**
+ * хранилище записей пользователей
+ */
+public interface PersonRepository {
+    
+    /**
+     * сохранение пользователя
+     * @param person - пользователь 
+     * @return - результат операции (true - успех/false - неуспех)
+     */
+    boolean save(Person person);
+    /**
+     * удаление пользователя
+     * @param id - идетнтификатор пользователя
+     * @return - результат операции (true - успех/false - неуспех)
+     */
+    boolean delete(int id);
+    /**
+     * поиск пользователя по E-Mail и паролю
+     * @param email - E-Mail
+     * @param password - пароль
+     * @return - объект класса Person или null
+     */
+    Person findByEmailAndPassword(String email, String password);
+    /**
+     * вщзвращает пользователя по паролю
+     * @param password - пароль пользователя
+     * @return - объкт класса Person
+     */
+    Person findByPassword(String password);
+    /**
+     * возвращает список всех зарегистрированных пользователей
+     * @return List<Person>
+     */
+    List<Person> findAll();
+    /**
+     * возвращает пользователя по идентификатору
+     * @param id - идентификатор
+     * @return - Person
+     */
+    Person findById(int id);
+    /**
+     * сообщает есть ли такой пользователь в хранилище
+     * @param person - пользователь
+     * @return true - есть такой пользователь, false - нет
+     */
+    boolean exist(Person person);
+
+}
