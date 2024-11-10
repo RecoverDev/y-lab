@@ -1,3 +1,5 @@
+package ru.list.habitmanager;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.sql.Connection;
@@ -8,6 +10,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -20,6 +23,9 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import ru.list.habitmanager.Model.Person;
+import ru.list.habitmanager.Model.Role;
+import ru.list.habitmanager.Repository.PersonRepository;
+import ru.list.habitmanager.Repository.DBImplementation.PersonRepositoryDBImplementation;
 
 import org.testcontainers.junit.jupiter.Container;
 
@@ -63,7 +69,7 @@ public class PersonRepositoryDBTest {
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
 
             PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito);
-            Person person = new Person(0,"Test User4", "user4@server.com", "222", 0, true);
+            Person person = new Person(0,"Test User4", "user4@server.com", "222", Role.ROLE_USER, true);
     
             result = repository.save(person);
         }  catch (SQLException e) {
@@ -83,7 +89,7 @@ public class PersonRepositoryDBTest {
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
 
             PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito);
-            Person person = new Person(2,"Second User", "second@server.com", "222", 0, true);
+            Person person = new Person(2,"Second User", "second@server.com", "222", Role.ROLE_USER, true);
     
             result = repository.delete(person.getId());
         }  catch (SQLException e) {
@@ -110,7 +116,7 @@ public class PersonRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat(person.getName()).hasToString("Second User");
+        assertThat(person.getUsername()).hasToString("Second User");
     }
 
     @SuppressWarnings("null")
@@ -130,7 +136,7 @@ public class PersonRepositoryDBTest {
             System.out.println("Ошибка создания подключения к БД");
         }
 
-        assertThat(person.getName()).hasToString("First User");
+        assertThat(person.getUsername()).hasToString("First User");
     }
 
     @SuppressWarnings("null")
@@ -163,7 +169,7 @@ public class PersonRepositoryDBTest {
             Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
 
             PersonRepository repository = new PersonRepositoryDBImplementation(dbConnectionMockito);
-            Person person = new Person(1,"First User", "first@server.com", "111", 0, true);
+            Person person = new Person(1,"First User", "first@server.com", "111", Role.ROLE_USER, true);
     
             result = repository.exist(person);
         }  catch (SQLException e) {

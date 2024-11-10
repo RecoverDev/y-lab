@@ -38,7 +38,7 @@ public class PersonServiceTest {
     public void deletePersonTest() {
         Person person = new Person(1,"Test User","user@server.com","password", Role.ROLE_USER,true);
         personRepositoryMockito = Mockito.mock(PersonRepository.class);
-        Mockito.when(personRepositoryMockito.exist(person)).thenReturn(false);
+        Mockito.when(personRepositoryMockito.delete(1)).thenReturn(true);
 
         PersonService personService = new PersonServiceImplementation(personRepositoryMockito);
 

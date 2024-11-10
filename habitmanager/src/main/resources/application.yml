@@ -2,9 +2,9 @@ spring:
   application:
     name: HabitManager
   datasource:
-    url: jdbc:postgresql://localhost:5432/habitbase
-    username: postgres
-    password: password
+    url: jdbc:postgresql://${PG_HOST}:5432/${PG_HOST}
+    username: ${PG_USER}
+    password: ${PG_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     generate-ddl: false

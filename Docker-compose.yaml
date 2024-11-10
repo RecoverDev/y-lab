@@ -15,5 +15,19 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
+  backend:
+    build:
+      context: habitmanager/
+    environment:
+      PG_USER: postgres
+      PG_PASSWORD: password
+      PG_HOST: database
+      PG_DB: habitbase
+    ports:
+      - 8080:8080
+    depends_on:
+      database:
+        condition: service_healthy
+
 volumes:
   postgres:   
