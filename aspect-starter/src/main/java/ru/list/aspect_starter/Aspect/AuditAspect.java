@@ -20,7 +20,6 @@ public class AuditAspect {
     @Before("auditPersonAction()") 
     public void aroundAuditEvent(ProceedingJoinPoint joinPoint) {
 
-        //System.out.println(String.format("Пользователь выполнил функцию [%s]",joinPoint.getSignature()));
         log.info(String.format("Пользователь выполнил функцию [%s]",joinPoint.getSignature()));
     }
 }

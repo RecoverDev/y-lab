@@ -2,11 +2,13 @@ package ru.list.habitmanager.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class PersonResponse {
     /**
      * идентификатор пользователя в базе

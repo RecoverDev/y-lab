@@ -10,7 +10,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import ru.list.habitmanager.Model.Person;
@@ -23,14 +23,14 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
     private static final String nameTable = "habit.person";
     private static final String nameSerialID = "habit.person_id_seq";
     private DataSource dbConnection = null;
+    private Logger log = LoggerFactory.getLogger(PersonRepositoryDBImplementation.class);
 
-    @Autowired
-    Logger log;
 
     public PersonRepositoryDBImplementation(DataSource dbConnection) {
         this.dbConnection = dbConnection;
     }
 
+    @SuppressWarnings("null")
     @Override
     public boolean save(Person person) {
         boolean result = false;
@@ -63,6 +63,7 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
         return result;
     }
 
+    @SuppressWarnings("null")
     @Override
     public boolean delete(int id) {
         boolean result = false;
@@ -91,6 +92,7 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
         return result;
     }
 
+    @SuppressWarnings("null")
     @Override
     public Person findByEmailAndPassword(String email, String password) {
         Person result = null;
@@ -123,6 +125,7 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
         return result;
     }
 
+    @SuppressWarnings("null")
     @Override
     public Person findByPassword(String password) {
         Person result = null;
@@ -154,6 +157,7 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
         return result;
     }
 
+    @SuppressWarnings("null")
     @Override
     public List<Person> findAll() {
         List<Person> result = new ArrayList<>();
@@ -185,6 +189,7 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
         return result;
     }
 
+    @SuppressWarnings("null")
     @Override
     public boolean exist(Person person) {
         boolean result = false;
@@ -211,6 +216,7 @@ public class PersonRepositoryDBImplementation implements PersonRepository {
         return result;
     }
 
+    @SuppressWarnings("null")
     @Override
     public Person findById(int id) {
         Person result = null;

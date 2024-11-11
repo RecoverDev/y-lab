@@ -23,12 +23,10 @@ public class LoggerAspect {
             result = joinPoint.proceed();
         } catch (Throwable e) {
             log.error("Ошибка выполнения функции [" + joinPoint.getSignature() + "]");
-            //System.out.println("Ошибка выполнения функции [" + joinPoint.getSignature() + "]");
         }
 
         long leadTime = System.currentTimeMillis() - beginJob;
         log.info(String.format("Время выполнения функции [%s] - %d ms",joinPoint.getSignature(), leadTime));
-        //System.out.println( String.format("Время выполнения функции [%s] - %d ms",joinPoint.getSignature(), leadTime));
         return result;
     }
 

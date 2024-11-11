@@ -10,7 +10,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import ru.list.habitmanager.Model.Habit;
@@ -28,14 +28,14 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
     private static final String nameSerialID = "habit.logbook_id_seq";
     private  DataSource dbConnection;
 
-    @Autowired
-    Logger log;
+    private Logger log = LoggerFactory.getLogger(LogBookRepositoryDBImplementation.class);
 
     public LogBookRepositoryDBImplementation(DataSource dbConnection) {
         this.dbConnection = dbConnection;
     }
 
 
+    @SuppressWarnings("null")
     @Override
     public boolean save(LogBook logBook) {
         boolean result = false;
@@ -66,6 +66,7 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
         return result;
     }
 
+    @SuppressWarnings("null")
     @Override
     public boolean delete(int id) {
         boolean result = false;
@@ -91,6 +92,7 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
         return result;
     }
 
+    @SuppressWarnings("null")
     @Override
     public List<LogBook> findByPerson(Person person) {
         List<LogBook> logBooks = new ArrayList<>();
@@ -105,7 +107,7 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
                                 resultSet.getString("name_habit"),
                                 resultSet.getString("description"),
                                 person, 
-                                Period.values()[resultSet.getInt("period_id")],
+                                Period.values()[resultSet.getInt("period")],
                                 resultSet.getDate("registration").toLocalDate());
                 LogBook logBook = new LogBook(resultSet.getInt("id"), resultSet.getDate("date").toLocalDate(), habit);
                 logBooks.add(logBook);
@@ -123,6 +125,7 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
         return logBooks;
     }
 
+    @SuppressWarnings("null")
     @Override
     public List<LogBook> findAll() {
         List<LogBook> logBooks = new ArrayList<>();
@@ -142,7 +145,7 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
                                 resultSet.getString("name_habit"),
                                 resultSet.getString("description"),
                                 person, 
-                                Period.values()[resultSet.getInt("period_id")],
+                                Period.values()[resultSet.getInt("period")],
                                 resultSet.getDate("registration").toLocalDate());
                 LogBook logBook = new LogBook(resultSet.getInt("id"), resultSet.getDate("date").toLocalDate(), habit);
                 logBooks.add(logBook);
@@ -160,6 +163,7 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
         return logBooks;
     }
 
+    @SuppressWarnings("null")
     @Override
     public List<LogBook> findByHabit(Habit habit) {
         List<LogBook> logBooks = new ArrayList<>();
@@ -186,6 +190,7 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
     }
 
 
+    @SuppressWarnings("null")
     @Override
     public LogBook findById(int id) {
         LogBook logBook = null;
@@ -206,7 +211,7 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
                                 resultSet.getString("name_habit"),
                                 resultSet.getString("description"),
                                 person, 
-                                Period.values()[resultSet.getInt("period_id")],
+                                Period.values()[resultSet.getInt("period")],
                                 resultSet.getDate("registration").toLocalDate());
                 logBook = new LogBook(resultSet.getInt("id"), resultSet.getDate("date").toLocalDate(), habit);
             }

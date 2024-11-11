@@ -1,0 +1,173 @@
+package ru.list.habitmanager;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.LiquibaseException;
+import liquibase.resource.ClassLoaderResourceAccessor;
+import ru.list.habitmanager.Model.Habit;
+import ru.list.habitmanager.Model.LogBook;
+import ru.list.habitmanager.Model.Period;
+import ru.list.habitmanager.Model.Person;
+import ru.list.habitmanager.Model.Role;
+import ru.list.habitmanager.Repository.LogBookRepository;
+import ru.list.habitmanager.Repository.DBImplementation.LogBookRepositoryDBImplementation;
+
+@Testcontainers
+public class LogBookRepositoryDBTest {
+
+    @SuppressWarnings("resource")
+    @Container
+    private static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:14")
+                    .withDatabaseName("habit_test")
+                    .withUsername("postgres")
+                    .withPassword("password");
+
+    static {
+        database.start();
+        InitializateBase();
+    }
+
+    private static void InitializateBase() {
+        try (Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
+            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+            Liquibase liquibase = new Liquibase("db/changelog/changelog.xml", new ClassLoaderResourceAccessor(), database);
+            liquibase.update();
+            liquibase.close();
+        } catch (SQLException | LiquibaseException e) {
+            System.out.println("Ошибка миграции при создании контейнера");
+        }
+    }
+
+
+    @Mock
+    DataSource dbConnectionMockito;
+
+    @Test
+    @DisplayName("Добавление новой записи в журнал")
+    public void LogBookRepositoryAddlogBookTest() {
+        boolean result = false;
+        
+        try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
+            dbConnectionMockito = Mockito.mock(DataSource.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito);
+            Person person = new Person(1,"Test User", "user1@server.com", "111", Role.ROLE_USER, true);
+            Habit habit = new Habit(2,"call mom","call mom every day",person,Period.daily,LocalDate.of(2014,10,01));
+            LogBook logBook = new LogBook(0,LocalDate.now(),habit);
+    
+            result = repository.save(logBook);
+        }  catch (SQLException e) {
+            System.out.println("Ошибка создания подключения к БД");
+        }
+
+        assertThat(result).isTrue();
+
+    }
+
+    @Test
+    @DisplayName("Удаление записи из журнала")
+    public void LogBookRepositoryDeleteLogBookTest() {
+        boolean result = false;
+        
+        try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
+            dbConnectionMockito = Mockito.mock(DataSource.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito);
+            Person person = new Person(1,"Test User", "user1@server.com", "111", Role.ROLE_USER, true);
+            Habit habit = new Habit(2,"call mom","call mom every day",person,Period.daily,LocalDate.of(2014,10,01));
+            LogBook logBook = new LogBook(6,LocalDate.now(),habit);
+    
+            result = repository.delete(logBook.getId());
+        }  catch (SQLException e) {
+            System.out.println("Ошибка создания подключения к БД");
+        }
+
+        assertThat(result).isTrue();
+    }
+
+    @SuppressWarnings("null")
+    @Test
+    @DisplayName("Получение записей пользователя")
+    public void LogBookRepositoryFindByPersonTest() {
+        List<LogBook> logBooks = null;
+
+        try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
+            dbConnectionMockito = Mockito.mock(DataSource.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito);
+            Person person = new Person(1,"Test User", "user1@server.com", "111", Role.ROLE_USER, true);
+    
+            logBooks = repository.findByPerson(person);
+        }  catch (SQLException e) {
+            System.out.println("Ошибка создания подключения к БД");
+        }
+
+        assertThat(logBooks.size()).isEqualTo(6);
+    }
+
+    @SuppressWarnings("null")
+    @Test
+    @DisplayName("Получение всех записей журнала")
+    public void LogBookRepositoryFindAllTest() {
+        List<LogBook> logBooks = null;
+
+        try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
+            dbConnectionMockito = Mockito.mock(DataSource.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito);
+    
+            logBooks = repository.findAll();
+        }  catch (SQLException e) {
+            System.out.println("Ошибка создания подключения к БД");
+        }
+
+        assertThat(logBooks.size()).isEqualTo(8);
+    }
+
+    @SuppressWarnings("null")
+    @Test
+    @DisplayName("Получение записей определенной привычки")
+    public void LogBookRepositoryFindByHabitTest() {
+        List<LogBook> logBooks = null;
+
+        try(Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword())) {
+            dbConnectionMockito = Mockito.mock(DataSource.class);
+            Mockito.when(dbConnectionMockito.getConnection()).thenReturn(connection);
+
+            LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito);
+            Person person = new Person(1,"Test User", "user1@server.com", "111", Role.ROLE_USER, true);
+            Habit habit = new Habit(2,"call mom","call mom every day",person,Period.daily,LocalDate.of(2014,10,01));
+    
+            logBooks = repository.findByHabit(habit);
+        }  catch (SQLException e) {
+            System.out.println("Ошибка создания подключения к БД");
+        }
+
+        assertThat(logBooks.size()).isEqualTo(3);
+    }
+
+}

@@ -10,7 +10,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import ru.list.habitmanager.Model.Habit;
@@ -28,18 +28,18 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
     private static final String nameSerialID = "habit.habit_id_seq";
     private final DataSource dbConnection;
 
-    @Autowired
-    Logger log;
+    private Logger log = LoggerFactory.getLogger(HabitRepositoryDBImplementation.class);
 
     public HabitRepositoryDBImplementation(DataSource dbConnection) {
         this.dbConnection = dbConnection;
     }
 
+    @SuppressWarnings("null")
     @Override
     public boolean save(Habit habit) {
         boolean result = false;
         PreparedStatement statement = null;
-        String sql = String.format("INSERT INTO %s (id, name_habit, description, person_id, period_id, registration) VALUES (nextval('%s'), ?, ?, ?, ?, ?)", nameTable,nameSerialID);
+        String sql = String.format("INSERT INTO %s (id, name_habit, description, person_id, period, registration) VALUES (nextval('%s'), ?, ?, ?, ?, ?)", nameTable,nameSerialID);
         try (Connection connection = dbConnection.getConnection()) {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
@@ -66,6 +66,7 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
         return result;
     }
 
+    @SuppressWarnings("null")
     @Override
     public boolean delete(Habit habit) {
         boolean result = false;
@@ -94,6 +95,7 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
         return result;
     }
 
+    @SuppressWarnings("null")
     @Override
     public List<Habit> findByPerson(Person person) {
         List<Habit> habits = new ArrayList<>();
@@ -108,7 +110,7 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
                                         resultSet.getString("name_habit"),
                                         resultSet.getString("description"),
                                         person, 
-                                        Period.values()[resultSet.getInt("period_id")],
+                                        Period.values()[resultSet.getInt("period")],
                                         resultSet.getDate("registration").toLocalDate());
                 habits.add(habit);
             }
@@ -126,6 +128,7 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
         return habits;  
     }
 
+    @SuppressWarnings("null")
     @Override
     public List<Habit> findAll() {
         List<Habit> habits = new ArrayList<>();
@@ -146,7 +149,7 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
                                 resultSet.getString("name_habit"),
                                 resultSet.getString("description"),
                                 person, 
-                                Period.values()[resultSet.getInt("period_id")],
+                                Period.values()[resultSet.getInt("period")],
                                 resultSet.getDate("registration").toLocalDate());
                 habits.add(habit);
             }
@@ -164,6 +167,7 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
         return habits;
     }
 
+    @SuppressWarnings("null")
     @Override
     public boolean exist(Habit habit) {
         boolean result = false;
@@ -191,6 +195,7 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
         return result;
     }
 
+    @SuppressWarnings("null")
     @Override
     public Habit findById(int id) {
         Habit habit = null;
@@ -211,7 +216,7 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
                                 resultSet.getString("name_habit"),
                                 resultSet.getString("description"),
                                 person, 
-                                Period.values()[resultSet.getInt("period_id")],
+                                Period.values()[resultSet.getInt("period")],
                                 resultSet.getDate("registration").toLocalDate());
             }
             resultSet.close();

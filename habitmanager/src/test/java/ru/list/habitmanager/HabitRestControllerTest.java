@@ -3,6 +3,7 @@ package ru.list.habitmanager;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -122,32 +124,32 @@ public class HabitRestControllerTest {
                     .andExpect(status().isOk());
     }
 
-    // @Test
-    // @DisplayName("Добавление привычки")
-    // public void addHabitTest() throws Exception {
-    //     String jsonHabit = """
-    //         {
-    //             "id": 3,
-    //             "name": "Walk",
-    //             "description": "walk everyday",
-    //             "person_id": 1,
-    //             "period_id": 1,
-    //             "registration": "2024-10-10"
-    //         }
-    //             """;
+    @Test
+    @DisplayName("Добавление привычки")
+    public void addHabitTest() throws Exception {
+        String jsonHabit = """
+            {
+                "id": 3,
+                "name": "Walk",
+                "description": "walk everyday",
+                "person_id": 1,
+                "period_id": 1,
+                "registration": "2024-10-10"
+            }
+                """;
 
-    //     HabitResponse habitResponse = new HabitResponse(3, "Walk", "walk everyday", 1, 1, "2024-10-10");
-    //     Person person = new Person(1,"Test User1","user1@server.com","password", Role.ROLE_USER,true);
-    //     Habit habit = new Habit(3,"Walk", "walk everyday",person,Period.daily,LocalDate.of(2024, 10,10));
+        HabitResponse habitResponse = new HabitResponse(3, "Walk", "walk everyday", 1, 1, "2024-10-10");
+        Person person = new Person(1,"Test User1","user1@server.com","password", Role.ROLE_USER,true);
+        Habit habit = new Habit(3,"Walk", "walk everyday",person,Period.daily,LocalDate.of(2024, 10,10));
 
-    //     Mockito.when(habitMapperMockito.toHabit(habitResponse)).thenReturn(habit);
-    //     Mockito.when(habitServiceMockito.addHabit(habit)).thenReturn(true);
-    //     Mockito.when(personServiceMockito.getPersonById(1)).thenReturn(person);
+        Mockito.when(habitMapperMockito.toHabit(habitResponse)).thenReturn(habit);
+        Mockito.when(habitServiceMockito.addHabit(habit)).thenReturn(true);
+        Mockito.when(personServiceMockito.getPersonById(1)).thenReturn(person);
 
-    //     this.mockMvc.perform(post("/habits")
-    //                 .contentType(MediaType.APPLICATION_JSON)
-    //                 .content(jsonHabit))
-    //                 .andDo(print()).andExpect(status().isOk());
-    // }
+        this.mockMvc.perform(post("/habits")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(jsonHabit))
+                    .andDo(print()).andExpect(status().isOk());
+    }
 
 }
