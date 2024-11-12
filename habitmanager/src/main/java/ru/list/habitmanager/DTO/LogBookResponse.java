@@ -17,7 +17,7 @@ public class LogBookResponse {
     /**
      * идентификатор записи
      */
-     int id;
+    private int id;
     /**
      * дата выполнения привычки
      */
