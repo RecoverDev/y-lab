@@ -15,8 +15,8 @@ import ru.list.habitmanager.Service.HabitService;
 @Service
 @RequiredArgsConstructor
 public class HabitServiceImplementation implements HabitService {
-    private final HabitRepository repository = null;
-    private final LogBookRepository logBookRepository = null;
+    private final HabitRepository repository;
+    private final LogBookRepository logBookRepository;
 
     @Override
     public boolean addHabit(Habit habit) {
@@ -32,7 +32,7 @@ public class HabitServiceImplementation implements HabitService {
         }
         List<LogBook> logBooks = logBookRepository.findByHabit(habit);
         for (LogBook logBook : logBooks) {
-            if (logBookRepository.delete(logBook.getId())) {
+            if (!logBookRepository.delete(logBook.getId())) {
                 return false;
             }
         }

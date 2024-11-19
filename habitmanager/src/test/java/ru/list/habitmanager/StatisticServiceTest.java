@@ -68,18 +68,18 @@ public class StatisticServiceTest {
         Habit habit1 = new Habit(1,"Read book", "read book everyday",person,Period.daily,LocalDate.of(2024, 10,1));
         Habit habit2 = new Habit(2,"yoga", "yoga", person, Period.weekly, LocalDate.of(2024, 10,2));
 
-        LogBook logBook1 = new LogBook(1,LocalDate.of(2024, 10, 1), habit1);
-        LogBook logBook2 = new LogBook(2,LocalDate.of(2024, 10, 2), habit1);
-        LogBook logBook3 = new LogBook(3,LocalDate.of(2024, 10, 3), habit1);
-        LogBook logBook4 = new LogBook(4,LocalDate.of(2024, 10, 4), habit1);
-        LogBook logBook5 = new LogBook(5,LocalDate.of(2024, 10, 5), habit1);
-        LogBook logBook6 = new LogBook(6,LocalDate.of(2024, 10, 6), habit1);
-        LogBook logBook7 = new LogBook(7,LocalDate.of(2024, 10, 7), habit1);
-        LogBook logBook8 = new LogBook(8,LocalDate.of(2024, 10, 10), habit1);
-        LogBook logBook9 = new LogBook(9,LocalDate.of(2024, 10, 11), habit1);
+        LogBook logBook1 = new LogBook(1,LocalDate.now().minusDays(10),  habit1);
+        LogBook logBook2 = new LogBook(2,LocalDate.now().minusDays(9), habit1);
+        LogBook logBook3 = new LogBook(3,LocalDate.now().minusDays(8), habit1);
+        LogBook logBook4 = new LogBook(4,LocalDate.now().minusDays(7), habit1);
+        LogBook logBook5 = new LogBook(5,LocalDate.now().minusDays(6), habit1);
+        LogBook logBook6 = new LogBook(6,LocalDate.now().minusDays(5), habit1);
+        LogBook logBook7 = new LogBook(7,LocalDate.now().minusDays(4), habit1);
+        LogBook logBook8 = new LogBook(8,LocalDate.now().minusDays(3), habit1);
+        LogBook logBook9 = new LogBook(9,LocalDate.now().minusDays(2), habit1);
 
-        LogBook logBook10 = new LogBook(10,LocalDate.of(2024, 10, 2), habit2);
-        LogBook logBook11 = new LogBook(11,LocalDate.of(2024, 10, 9), habit2);
+        LogBook logBook10 = new LogBook(10,LocalDate.now().minusDays(10), habit2);
+        LogBook logBook11 = new LogBook(11,LocalDate.now().minusDays(3), habit2);
 
         habitRepositoryMockito = Mockito.mock(HabitRepository.class);
         Mockito.when(habitRepositoryMockito.findByPerson(person)).thenReturn(List.of(habit1,habit2));
@@ -89,7 +89,7 @@ public class StatisticServiceTest {
                .thenReturn(List.of(logBook1, logBook2, logBook3, logBook4, logBook5, logBook6, logBook7, logBook8, logBook9, logBook10, logBook11));
 
         StatisticService statisticService = new StatisticServiceImplementation(habitRepositoryMockito, logBookRepositoryMockito);
-        Assertions.assertEquals(79, Math.ceil(statisticService.percentSuccess(person)));
+        Assertions.assertEquals(56, Math.ceil(statisticService.percentSuccess(person)));
     }
 
     @Test
@@ -100,18 +100,18 @@ public class StatisticServiceTest {
         Habit habit1 = new Habit(1,"Read book", "read book everyday",person,Period.daily,LocalDate.of(2024, 10,1));
         Habit habit2 = new Habit(2,"yoga", "yoga", person, Period.weekly, LocalDate.of(2024, 10,2));
 
-        LogBook logBook1 = new LogBook(1,LocalDate.of(2024, 10, 1), habit1);
-        LogBook logBook2 = new LogBook(2,LocalDate.of(2024, 10, 2), habit1);
-        LogBook logBook3 = new LogBook(3,LocalDate.of(2024, 10, 3), habit1);
-        LogBook logBook4 = new LogBook(4,LocalDate.of(2024, 10, 4), habit1);
-        LogBook logBook5 = new LogBook(5,LocalDate.of(2024, 10, 5), habit1);
-        LogBook logBook6 = new LogBook(6,LocalDate.of(2024, 10, 6), habit1);
-        LogBook logBook7 = new LogBook(7,LocalDate.of(2024, 10, 7), habit1);
-        LogBook logBook8 = new LogBook(8,LocalDate.of(2024, 10, 10), habit1);
-        LogBook logBook9 = new LogBook(9,LocalDate.of(2024, 10, 11), habit1);
+        LogBook logBook1 = new LogBook(1,LocalDate.now().minusDays(10),  habit1);
+        LogBook logBook2 = new LogBook(2,LocalDate.now().minusDays(9), habit1);
+        LogBook logBook3 = new LogBook(3,LocalDate.now().minusDays(8), habit1);
+        LogBook logBook4 = new LogBook(4,LocalDate.now().minusDays(7), habit1);
+        LogBook logBook5 = new LogBook(5,LocalDate.now().minusDays(6), habit1);
+        LogBook logBook6 = new LogBook(6,LocalDate.now().minusDays(5), habit1);
+        LogBook logBook7 = new LogBook(7,LocalDate.now().minusDays(4), habit1);
+        LogBook logBook8 = new LogBook(8,LocalDate.now().minusDays(3), habit1);
+        LogBook logBook9 = new LogBook(9,LocalDate.now().minusDays(2), habit1);
 
-        LogBook logBook10 = new LogBook(10,LocalDate.of(2024, 10, 2), habit2);
-        LogBook logBook11 = new LogBook(11,LocalDate.of(2024, 10, 9), habit2);
+        LogBook logBook10 = new LogBook(10,LocalDate.now().minusDays(10), habit2);
+        LogBook logBook11 = new LogBook(11,LocalDate.now().minusDays(3), habit2);
 
         habitRepositoryMockito = Mockito.mock(HabitRepository.class);
         Mockito.when(habitRepositoryMockito.findByPerson(person)).thenReturn(List.of(habit1,habit2));
