@@ -4,7 +4,6 @@ import java.util.List;
 
 import ru.list.habitmanager.Model.Habit;
 import ru.list.habitmanager.Model.LogBook;
-import ru.list.habitmanager.Model.Person;
 
 /**
  * хранилище записей о выполнении привычки

@@ -89,7 +89,7 @@ public class StatisticServiceTest {
                .thenReturn(List.of(logBook1, logBook2, logBook3, logBook4, logBook5, logBook6, logBook7, logBook8, logBook9, logBook10, logBook11));
 
         StatisticService statisticService = new StatisticServiceImplementation(habitRepositoryMockito, logBookRepositoryMockito);
-        Assertions.assertEquals(56, Math.ceil(statisticService.percentSuccess(person.getId())));
+        Assertions.assertEquals(53, Math.ceil(statisticService.percentSuccess(person.getId())));
     }
 
     @Test

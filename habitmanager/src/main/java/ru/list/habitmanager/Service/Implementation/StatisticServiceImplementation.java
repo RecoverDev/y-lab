@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import lombok.RequiredArgsConstructor;
 import ru.list.habitmanager.Model.Habit;
 import ru.list.habitmanager.Model.LogBook;
@@ -14,7 +16,7 @@ import ru.list.habitmanager.Repository.HabitRepository;
 import ru.list.habitmanager.Repository.LogBookRepository;
 import ru.list.habitmanager.Service.StatisticService;
 
-
+@Service
 @RequiredArgsConstructor
 public class StatisticServiceImplementation implements StatisticService {
     private final HabitRepository habitRepository;

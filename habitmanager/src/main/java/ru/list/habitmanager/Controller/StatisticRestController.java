@@ -51,14 +51,19 @@ public class StatisticRestController {
     @Operation(summary = "Получение процента выполнения привычек пользователя", tags = "Statistic")
     @ApiResponses(value = {@ApiResponse(responseCode =  "200", 
                                         description = "Получен процент выполнения привычек пользователя ",
-                                        content = {@Content(mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = LogBookResponse.class)))})})
+                                        content = {@Content(mediaType = "Double",
+                                    array = @ArraySchema(schema = @Schema(implementation = Double.class)))})})
     @GetMapping("/percent/{id}")
     public ResponseEntity<Double> getPercentByPerson(@PathVariable(name="id") int id) {
         double percent = statisticService.percentSuccess(id);
         return new ResponseEntity<>(percent, HttpStatus.OK);
     }
 
+    @Operation(summary = "Получение списка записей выполнения привычек за несколько последних дней пользователя", tags = "Statistic")
+    @ApiResponses(value = {@ApiResponse(responseCode =  "200", 
+                                        description = "Получен список записей выполнения привычек пользователя ",
+                                        content = {@Content(mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = LogBookResponse.class)))})})
     @GetMapping("/execution/{id}/{days}")
     public ResponseEntity<List<LogBookResponse>> getExecutionHabitByPerson(@PathVariable(name="id") int id, @PathVariable(name="days") int days) {
         List<LogBook> logBooks = statisticService.executionHabit(id, days);
@@ -67,6 +72,11 @@ public class StatisticRestController {
 
     }
 
+    @Operation(summary = "Получение прогресса выполнения привычек пользователя", tags = "Statistic")
+    @ApiResponses(value = {@ApiResponse(responseCode =  "200", 
+                                        description = "Получен прогресс выполнения привычек пользователя ",
+                                        content = {@Content(mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = HabitResponse.class)))})})
     @GetMapping("/progress/{id}")
     public ResponseEntity<Map<HabitResponse, Long>> getprogressHabitByPerson(@PathVariable(name="id") int id) {
         Map<Habit,Long> progress = statisticService.progressHabit(id);
