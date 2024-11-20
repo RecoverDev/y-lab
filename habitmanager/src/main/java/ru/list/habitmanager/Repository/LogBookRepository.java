@@ -25,10 +25,10 @@ public interface LogBookRepository {
     boolean delete(int id);
     /**
      * возвращает список записей о привычках пользователя
-     * @param person - пользователь
+     * @param id - ID пользователя
      * @return List<LogBook>
      */
-    List<LogBook> findByPerson(Person person);
+    List<LogBook> findByPerson(int id);
     /**
      * возвращает список всех привычек в хранилище
      * @return List<LogBook>

@@ -120,7 +120,7 @@ public class LogBookRepositoryDBTest {
             LogBookRepository repository = new LogBookRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", Role.ROLE_USER, true);
     
-            logBooks = repository.findByPerson(person);
+            logBooks = repository.findByPerson(person.getId());
         }  catch (SQLException e) {
             System.out.println("Ошибка создания подключения к БД");
         }

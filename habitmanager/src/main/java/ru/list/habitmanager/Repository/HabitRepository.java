@@ -25,10 +25,10 @@ public interface HabitRepository {
     boolean delete(Habit habit);
     /**
      * возвращает список всех привычек пользователя
-     * @param person - пользователь
+     * @param id - ID пользователя
      * @return - List<Yabit>
      */
-    List<Habit> findByPerson(Person person);
+    List<Habit> findByPerson(int id);
     /**
      * возвращает список всех привычек в хранилище
      * @return - List<Habit>

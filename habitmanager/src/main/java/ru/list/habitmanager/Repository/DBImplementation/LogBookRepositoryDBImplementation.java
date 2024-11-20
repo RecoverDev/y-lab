@@ -94,15 +94,21 @@ public class LogBookRepositoryDBImplementation implements LogBookRepository {
 
     @SuppressWarnings("null")
     @Override
-    public List<LogBook> findByPerson(Person person) {
+    public List<LogBook> findByPerson(int id) {
         List<LogBook> logBooks = new ArrayList<>();
         PreparedStatement statement = null;
-        String sql = String.format("SELECT * FROM %s l JOIN %s h ON l.habit_id = h.id WHERE h.person_id = ? ",nameTable,habitTable);
+        String sql = String.format("SELECT * FROM %s l JOIN %s h ON l.habit_id = h.id JOIN %s p ON h.person_id = p.id WHERE h.person_id = ? ",nameTable,habitTable, personTable);
         try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, person.getId());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
+                Person person = new Person(resultSet.getInt("person_id"),
+                                resultSet.getString("username"),
+                                resultSet.getString("email"),
+                                resultSet.getString("password"),
+                                Role.valueOf(resultSet.getString("role")),
+                                resultSet.getBoolean("blocked"));
                 Habit habit = new Habit(resultSet.getInt("habit_id"), 
                                 resultSet.getString("name_habit"),
                                 resultSet.getString("description"),

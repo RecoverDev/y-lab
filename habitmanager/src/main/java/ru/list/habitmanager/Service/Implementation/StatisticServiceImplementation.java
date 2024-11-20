@@ -10,7 +10,6 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import ru.list.habitmanager.Model.Habit;
 import ru.list.habitmanager.Model.LogBook;
-import ru.list.habitmanager.Model.Person;
 import ru.list.habitmanager.Repository.HabitRepository;
 import ru.list.habitmanager.Repository.LogBookRepository;
 import ru.list.habitmanager.Service.StatisticService;
@@ -23,9 +22,9 @@ public class StatisticServiceImplementation implements StatisticService {
 
 
     @Override
-    public List<LogBook> streakHabits(Person person) {
-        List<Habit> habits = habitRepository.findByPerson(person);
-        List<LogBook> logBooks = logBookRepository.findByPerson(person);
+    public List<LogBook> streakHabits(int id) {
+        List<Habit> habits = habitRepository.findByPerson(id);
+        List<LogBook> logBooks = logBookRepository.findByPerson(id);
         List<LogBook> result = new ArrayList<>();
         for (Habit habit : habits) {
             List<LogBook> logs = logBooks.stream().filter(l -> l.getHabit().equals(habit)).sorted((l1,l2) -> (l1.getDate().compareTo(l2.getDate()) * -1)).toList();
@@ -48,9 +47,9 @@ public class StatisticServiceImplementation implements StatisticService {
     }
 
     @Override
-    public double percentSuccess(Person person) {
-        List<Habit> habits = habitRepository.findByPerson(person);
-        List<LogBook> logBooks = logBookRepository.findByPerson(person);
+    public double percentSuccess(int id) {
+        List<Habit> habits = habitRepository.findByPerson(id);
+        List<LogBook> logBooks = logBookRepository.findByPerson(id);
         double expectation = 0;
         double reality = 0;
         for (Habit habit : habits) {
@@ -66,8 +65,8 @@ public class StatisticServiceImplementation implements StatisticService {
     }
 
     @Override
-    public List<LogBook> executionHabit(Person person, int days) {
-        List<LogBook> logs = logBookRepository.findByPerson(person)
+    public List<LogBook> executionHabit(int id, int days) {
+        List<LogBook> logs = logBookRepository.findByPerson(id)
                                               .stream()
                                               .filter(l -> Period.between(l.getDate(), LocalDate.now()).getDays() <= days)
                                               .toList();
@@ -76,9 +75,9 @@ public class StatisticServiceImplementation implements StatisticService {
     }
 
     @Override
-    public Map<Habit, Long> progressHabit(Person person) {
-        List<Habit> habits = habitRepository.findByPerson(person);
-        List<LogBook> logBooks = logBookRepository.findByPerson(person);
+    public Map<Habit, Long> progressHabit(int id) {
+        List<Habit> habits = habitRepository.findByPerson(id);
+        List<LogBook> logBooks = logBookRepository.findByPerson(id);
         Map<Habit,Long> result = new HashMap<>();
 
         for (Habit habit : habits) {

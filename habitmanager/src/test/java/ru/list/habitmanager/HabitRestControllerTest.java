@@ -60,7 +60,7 @@ public class HabitRestControllerTest {
         Person person = new Person(1,"Test User1","user1@server.com","password", Role.ROLE_USER,true);
         Habit habit1 = new Habit(1,"Read book", "read book everyday",person,Period.daily,LocalDate.of(2024, 10,1));
         Habit habit2 = new Habit(2,"yoga", "yoga", person, Period.weekly, LocalDate.of(2024, 10,2));
-        Mockito.when(habitServiceMockito.getHabitsByPerson(person)).thenReturn(List.of(habit1,habit2));
+        Mockito.when(habitServiceMockito.getHabitsByPerson(person.getId())).thenReturn(List.of(habit1,habit2));
         Mockito.when(personServiceMockito.getCurrentPerson()).thenReturn(person);
 
         HabitResponse habitResponse1 = new HabitResponse(1,"Read book", "read book everyday",1,1,"2024-10-1");

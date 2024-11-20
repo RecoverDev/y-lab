@@ -48,7 +48,7 @@ public class HabitRestController {
         if (currentPerson == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<Habit> habits = habitService.getHabitsByPerson(currentPerson);
+        List<Habit> habits = habitService.getHabitsByPerson(currentPerson.getId());
         List<HabitResponse> habitResponses = mapper.toListHabitResponse(habits);
         return new ResponseEntity<>(habitResponses, HttpStatus.OK);
     }

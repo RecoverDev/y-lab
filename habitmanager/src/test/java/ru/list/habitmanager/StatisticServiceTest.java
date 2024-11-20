@@ -49,15 +49,15 @@ public class StatisticServiceTest {
         LogBook logBook11 = new LogBook(11,LocalDate.of(2024, 10, 9), habit2);
 
         habitRepositoryMockito = Mockito.mock(HabitRepository.class);
-        Mockito.when(habitRepositoryMockito.findByPerson(person)).thenReturn(List.of(habit1,habit2));
+        Mockito.when(habitRepositoryMockito.findByPerson(person.getId())).thenReturn(List.of(habit1,habit2));
 
         logBookRepositoryMockito = Mockito.mock(LogBookRepository.class);
-        Mockito.when(logBookRepositoryMockito.findByPerson(person))
+        Mockito.when(logBookRepositoryMockito.findByPerson(person.getId()))
                .thenReturn(List.of(logBook1, logBook2, logBook3, logBook4, logBook5, logBook6, logBook7, logBook8, logBook9, logBook10, logBook11));
 
         StatisticService statisticService = new StatisticServiceImplementation(habitRepositoryMockito, logBookRepositoryMockito);
 
-        Assertions.assertEquals(4, statisticService.streakHabits(person).size());
+        Assertions.assertEquals(4, statisticService.streakHabits(person.getId()).size());
     }
 
     @Test
@@ -82,14 +82,14 @@ public class StatisticServiceTest {
         LogBook logBook11 = new LogBook(11,LocalDate.now().minusDays(3), habit2);
 
         habitRepositoryMockito = Mockito.mock(HabitRepository.class);
-        Mockito.when(habitRepositoryMockito.findByPerson(person)).thenReturn(List.of(habit1,habit2));
+        Mockito.when(habitRepositoryMockito.findByPerson(person.getId())).thenReturn(List.of(habit1,habit2));
 
         logBookRepositoryMockito = Mockito.mock(LogBookRepository.class);
-        Mockito.when(logBookRepositoryMockito.findByPerson(person))
+        Mockito.when(logBookRepositoryMockito.findByPerson(person.getId()))
                .thenReturn(List.of(logBook1, logBook2, logBook3, logBook4, logBook5, logBook6, logBook7, logBook8, logBook9, logBook10, logBook11));
 
         StatisticService statisticService = new StatisticServiceImplementation(habitRepositoryMockito, logBookRepositoryMockito);
-        Assertions.assertEquals(56, Math.ceil(statisticService.percentSuccess(person)));
+        Assertions.assertEquals(56, Math.ceil(statisticService.percentSuccess(person.getId())));
     }
 
     @Test
@@ -114,14 +114,14 @@ public class StatisticServiceTest {
         LogBook logBook11 = new LogBook(11,LocalDate.now().minusDays(3), habit2);
 
         habitRepositoryMockito = Mockito.mock(HabitRepository.class);
-        Mockito.when(habitRepositoryMockito.findByPerson(person)).thenReturn(List.of(habit1,habit2));
+        Mockito.when(habitRepositoryMockito.findByPerson(person.getId())).thenReturn(List.of(habit1,habit2));
 
         logBookRepositoryMockito = Mockito.mock(LogBookRepository.class);
-        Mockito.when(logBookRepositoryMockito.findByPerson(person))
+        Mockito.when(logBookRepositoryMockito.findByPerson(person.getId()))
                .thenReturn(List.of(logBook1, logBook2, logBook3, logBook4, logBook5, logBook6, logBook7, logBook8, logBook9, logBook10, logBook11));
 
         StatisticService statisticService = new StatisticServiceImplementation(habitRepositoryMockito, logBookRepositoryMockito);
-        Assertions.assertEquals(9, statisticService.progressHabit(person).get(habit1));
+        Assertions.assertEquals(9, statisticService.progressHabit(person.getId()).get(habit1));
         
     }
 

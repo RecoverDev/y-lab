@@ -69,9 +69,9 @@ public class HabitServiceTest {
         Habit habit1 = new Habit(1,"Полезная привычка","Очень полезная привычка", person, Period.daily,LocalDate.now());        
         Habit habit2 = new Habit(2,"Вторая полезная привычка","Очень полезная привычка", person, Period.daily,LocalDate.now());
 
-        Mockito.when(habitRepositoryMockito.findByPerson(person)).thenReturn(List.of(habit1, habit2));
+        Mockito.when(habitRepositoryMockito.findByPerson(person.getId())).thenReturn(List.of(habit1, habit2));
 
-        assertThat(habitService.getHabitsByPerson(person).size()).isEqualTo(2);
+        assertThat(habitService.getHabitsByPerson(person.getId()).size()).isEqualTo(2);
     }
 
     @Test

@@ -45,13 +45,13 @@ public class HabitServiceImplementation implements HabitService {
     }
 
     @Override
-    public List<Habit> getHabitsByPerson(Person person) {
-        return repository.findByPerson(person);
+    public List<Habit> getHabitsByPerson(int id) {
+        return repository.findByPerson(id);
     }
 
     @Override
     public Habit getHAbitByPosition(Person person, int position) {
-        List<Habit> habits= repository.findByPerson(person);
+        List<Habit> habits= repository.findByPerson(person.getId());
         if (position > 0 & position <= habits.size()) {
             return habits.get(position - 1);
         }

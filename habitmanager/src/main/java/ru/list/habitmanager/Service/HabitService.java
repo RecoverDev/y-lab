@@ -29,10 +29,10 @@ public interface HabitService {
     void editHabit(Habit habit);
     /**
      * Получение списка привычек пользователя
-     * @param person - пользователь
+     * @param id - ID пользователя
      * @return List<Habit>
      */
-    List<Habit> getHabitsByPerson(Person person);
+    List<Habit> getHabitsByPerson(int id);
     /**
      * Получение привычки по номеру
      * @param person - пользователь

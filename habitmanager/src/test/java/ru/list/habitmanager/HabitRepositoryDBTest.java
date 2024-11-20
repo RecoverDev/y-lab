@@ -117,7 +117,7 @@ public class HabitRepositoryDBTest {
             HabitRepository repository = new HabitRepositoryDBImplementation(dbConnectionMockito);
             Person person = new Person(1,"Test User", "user1@server.com", "111", Role.ROLE_USER, true);
     
-            habits = repository.findByPerson(person);
+            habits = repository.findByPerson(person.getId());
         }  catch (SQLException e) {
             System.out.println("Ошибка создания подключения к БД");
         }

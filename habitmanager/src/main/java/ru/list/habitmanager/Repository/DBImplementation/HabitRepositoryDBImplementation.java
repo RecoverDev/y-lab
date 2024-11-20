@@ -71,7 +71,7 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
     public boolean delete(Habit habit) {
         boolean result = false;
         PreparedStatement statement = null;
-        String sql = "DELETE FROM " + nameTable + " WHERE id = ?";
+        String sql = String.format("DELETE FROM %s WHERE id = ?",nameTable);
         try (Connection connection = dbConnection.getConnection()) {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
@@ -97,15 +97,21 @@ public class HabitRepositoryDBImplementation implements HabitRepository {
 
     @SuppressWarnings("null")
     @Override
-    public List<Habit> findByPerson(Person person) {
+    public List<Habit> findByPerson(int id) {
         List<Habit> habits = new ArrayList<>();
         PreparedStatement statement = null;
-        String sql = "SELECT * FROM " + nameTable + " WHERE person_id = ?";
+        String sql = String.format("SELECT * FROM %s h JOIN %s p ON h.person_id = p.id WHERE h.person_id = ?",nameTable,personTable);
         try (Connection connection = dbConnection.getConnection()) {
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, person.getId());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
+                Person person = new Person(resultSet.getInt("person_id"),
+                                resultSet.getString("username"),
+                                resultSet.getString("email"),
+                                resultSet.getString("password"),
+                                Role.valueOf(resultSet.getString("role")),
+                                resultSet.getBoolean("blocked"));
                 Habit habit = new Habit(resultSet.getInt("id"), 
                                         resultSet.getString("name_habit"),
                                         resultSet.getString("description"),
